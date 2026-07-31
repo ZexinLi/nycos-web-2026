@@ -1,0 +1,73 @@
+:root{
+/* ── raw palette ── */
+/* warm museum neutrals (whisper-warm, not stark) */
+--color-paper:#F7F4EE;         /* primary canvas — warm gallery paper */
+--color-paper-soft:#EFEBE1;    /* recessed / alternating band */
+--color-white:#FFFFFF;         /* raised card surface */
+--color-ink:#141420;           /* primary text — softened from v2 #010120 */
+--color-ink-deep:#010120;      /* dark gallery-wall bands (from v2 canvas-dark) */
+--color-ink-soft:#4A4A52;      /* secondary text */
+--color-ink-faint:#77736B;     /* tertiary / warm muted (warmed from v2 #767676) */
+--color-hairline:#E2DCCF;      /* warm hairline */
+--color-hairline-strong:#CBC2AE;
+
+/* v2 brand accents — the gradient/curtain family (used verbatim) */
+--color-opera-red:#C8102E;     /* cultural primary — Chinese celebration + theatrical curtain */
+--color-opera-red-deep:#9E0C24;
+--color-blue:#0C46E8;
+--color-periwinkle:#BDBBFF;
+--color-mint:#C8F6F9;
+--color-blush:#FBDFE4;
+--color-gold:#9C7A3C;          /* single restrained metallic detail (rules, fine lines) */
+--color-gold-soft:#C9AD79;
+
+/* ── semantic surfaces ── */
+--surface-page:var(--color-paper);
+--surface-page-alt:var(--color-paper-soft);
+--surface-card:var(--color-white);
+--surface-card-raised:var(--color-white);
+--surface-inverse:var(--color-ink-deep);
+--surface-accent:var(--color-opera-red);
+--surface-accent-deep:var(--color-opera-red-deep);
+--surface-tint-periwinkle:var(--color-periwinkle);
+--surface-tint-mint:var(--color-mint);
+--surface-tint-blush:var(--color-blush);
+
+/* ── semantic text ── */
+--text-primary:var(--color-ink);
+--text-secondary:var(--color-ink-soft);
+--text-tertiary:var(--color-ink-faint);
+--text-on-inverse:var(--color-paper);
+--text-on-accent:#FFFFFF;
+--text-accent:var(--color-opera-red);
+--text-gold:var(--color-gold);
+
+/* ── borders ── */
+--border-subtle:var(--color-hairline);
+--border-strong:var(--color-hairline-strong);
+--border-inverse:rgba(247,244,238,0.16);
+
+/* ── accents ── */
+--accent-primary:var(--color-opera-red);
+--accent-primary-hover:var(--color-opera-red-deep);
+--accent-gold:var(--color-gold);
+--accent-gold-hover:var(--color-gold-soft);
+
+/* ── the "curtain" gradient — the single decorative brand object, hero/cover only ── */
+--gradient-curtain:linear-gradient(103deg,#C8102E 0%,#9E0C24 34%,#0C46E8 78%,#BDBBFF 100%); /* @kind color */
+--gradient-curtain-radial:radial-gradient(120% 140% at 18% 22%,#C8102E 0%,#9E0C24 40%,#0C46E8 84%,#BDBBFF 100%); /* @kind color */
+
+/* ── links & focus ── */
+--link-color:var(--color-opera-red);
+--link-hover:var(--color-opera-red-deep);
+--focus-ring:var(--color-opera-red);
+
+/* ── back-compat aliases (old NYCOS component token names) ── */
+--color-ivory:var(--color-paper);
+--color-ivory-deep:var(--color-paper-soft);
+--color-parchment:var(--color-white);
+--color-sand:var(--color-hairline);
+--color-sand-deep:var(--color-hairline-strong);
+--color-opera-red-bright:#E11D2E;
+--color-gold-pale:#EADFC6;
+}
