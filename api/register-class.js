@@ -6,7 +6,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, klass, email, phone, minor, emerg, emergPhone, pay } = req.body || {};
+  const {
+    name, klass, email, phone, minor, emerg, emergPhone, pay,
+    amount, paypalOrderId, paypalCaptureId,
+  } = req.body || {};
 
   if (typeof name !== 'string' || !name.trim()) {
     return res.status(400).json({ error: 'Name is required' });
@@ -22,6 +25,9 @@ export default async function handler(req, res) {
   }
   if (minor && (typeof emerg !== 'string' || !emerg.trim() || typeof emergPhone !== 'string' || !emergPhone.trim())) {
     return res.status(400).json({ error: 'Emergency contact is required for minors' });
+  }
+  if (pay === 'paypal' && (!paypalOrderId || !paypalCaptureId)) {
+    return res.status(400).json({ error: 'PayPal payment was not confirmed' });
   }
 
   const token = process.env.AIRTABLE_TOKEN;
@@ -51,6 +57,9 @@ export default async function handler(req, res) {
           'Emergency Contact': emerg || '',
           'Emergency Phone': emergPhone || '',
           'Payment Method': pay || '',
+          Amount: typeof amount === 'number' ? amount : Number(amount) || 0,
+          'PayPal Order ID': paypalOrderId || '',
+          'PayPal Capture ID': paypalCaptureId || '',
         },
       }),
     }

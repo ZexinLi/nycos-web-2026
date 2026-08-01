@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/styles.css">
 <script src="_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/_ds_bundle.js"></script>
 <script src="./image-slot.js"></script>
+<script src="./paypal-integration.js"></script>
 <script type="importmap">
 {
   "imports": {
@@ -755,10 +756,42 @@ select:focus,input:focus{outline:none}
 </sc-if>
 </div>
 
+<div style="display:flex;flex-direction:column;gap:16px;padding-top:22px;border-top:1px solid var(--border-subtle)">
+<span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.fMembership }} *</span>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+<select value="{{ form.membership }}" onChange="{{ onMembership }}" style="font-family:var(--font-body);font-size:16px;color:var(--text-primary);background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:12px 14px;appearance:none">
+<sc-for list="{{ membershipOpts }}" as="m" hint-placeholder-count="3">
+<option value="{{ m.id }}">{{ m.label }}</option>
+</sc-for>
+</select>
+<sc-if value="{{ showFormat }}" hint-placeholder-val="{{ false }}">
+<select value="{{ form.format }}" onChange="{{ onFormat }}" style="font-family:var(--font-body);font-size:16px;color:var(--text-primary);background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:12px 14px;appearance:none">
+<sc-for list="{{ formatOpts }}" as="fo" hint-placeholder-count="3">
+<option value="{{ fo.id }}">{{ fo.label }}</option>
+</sc-for>
+</select>
+</sc-if>
+</div>
+<sc-if value="{{ showQty }}" hint-placeholder-val="{{ false }}">
+<div style="max-width:220px">
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.Input" label="{{ qtyLabel }}" type="number" value="{{ qty }}" on-change="{{ onHours }}" hint-size="100%,64px"></x-import>
+</div>
+</sc-if>
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:18px 22px;background:var(--surface-inverse);border-radius:var(--radius-sm)">
+<div style="display:flex;flex-direction:column;gap:3px">
+<span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.amountLabel }}</span>
+<sc-if value="{{ packageNote }}" hint-placeholder-val="{{ false }}">
+<span style="font-family:var(--font-mono);font-size:10px;color:rgba(247,244,238,0.6)">{{ packageNote }}</span>
+</sc-if>
+</div>
+<span style="font-family:var(--font-display);font-size:28px;letter-spacing:-0.08em;color:var(--color-paper)">{{ amountDisplay }}</span>
+</div>
+</div>
+
 <div style="display:flex;flex-direction:column;gap:14px;padding-top:22px;border-top:1px solid var(--border-subtle)">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.payLabel }} *</span>
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-<sc-for list="{{ pays }}" as="p" hint-placeholder-count="3">
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+<sc-for list="{{ pays }}" as="p" hint-placeholder-count="2">
 <div onClick="{{ p.go }}" style="{{ p.style }}">
 <span style="font-family:var(--font-body);font-weight:500;font-size:14.5px">{{ p.label }}</span>
 <span style="font-size:12px;line-height:1.5;opacity:0.75">{{ p.note }}</span>
@@ -782,8 +815,14 @@ select:focus,input:focus{outline:none}
 </div>
 </sc-if>
 <sc-if value="{{ isOnline }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;align-items:flex-start;gap:12px;padding:20px 24px;background:var(--surface-page-alt);border-left:2px solid var(--color-gold)">
+<div style="display:flex;flex-direction:column;gap:14px;padding:20px 24px;background:var(--surface-page-alt);border-left:2px solid var(--color-gold)">
 <p style="font-size:14px;line-height:1.7;color:var(--text-secondary);margin:0;max-width:640px;text-wrap:pretty">{{ t.onlineNote }}</p>
+<sc-if value="{{ paypalReady }}" hint-placeholder-val="{{ false }}">
+<div id="paypal-buttons-container" style="max-width:320px;min-height:44px"></div>
+</sc-if>
+<sc-if value="{{ !paypalReady }}" hint-placeholder-val="{{ true }}">
+<span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;color:var(--text-tertiary)">{{ t.paypalLoading }}</span>
+</sc-if>
 </div>
 </sc-if>
 </div>
@@ -796,7 +835,9 @@ select:focus,input:focus{outline:none}
 
 <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:22px;border-top:1px solid var(--border-subtle)">
 <span style="font-size:12.5px;line-height:1.6;color:var(--text-tertiary);max-width:420px">{{ t.regFootnote }}</span>
+<sc-if value="{{ isZelle }}" hint-placeholder-val="{{ false }}">
 <button type="submit" disabled="{{ regLoading }}" style="font-family:var(--font-body);font-weight:500;font-size:15px;letter-spacing:0.02em;background:var(--accent-primary);color:#fff;border:none;border-radius:var(--radius-sm);padding:15px 30px;cursor:pointer;white-space:nowrap;opacity:{{ submitOpacity }}" style-hover="background:var(--accent-primary-hover)">{{ submitLabel }}</button>
+</sc-if>
 </div>
 </form>
 </sc-if>
@@ -1531,8 +1572,8 @@ select:focus,input:focus{outline:none}
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Input" label="{{ t.mbFormStudent }}" value="{{ mform.sid }}" on-change="{{ setMSid }}" hint-size="100%,70px"></x-import>
 <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:12px;margin-top:4px">
 <span style="font-family:var(--font-mono);font-size:9.5px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.mbPayLabel }}</span>
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-<sc-for list="{{ mPays }}" as="p" hint-placeholder-count="3">
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+<sc-for list="{{ mPays }}" as="p" hint-placeholder-count="2">
 <div onClick="{{ p.pick }}" style="{{ p.style }}">
 <span style="font-family:var(--font-body);font-weight:500;font-size:14px">{{ p.label }}</span>
 <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.75">{{ p.note }}</span>
@@ -1928,7 +1969,7 @@ const EN = {
   classList: ['Movement Introduction 身訓入門課', 'Voice & Singing Introduction 唱腔入門課', 'Dan Role One-on-One 旦角一對一課程*', 'Movement Foundations 身訓基礎課', 'Voice & Singing Foundations 唱腔基礎課', 'Lao Sheng One-on-One 老生一對一課程*', 'Kunqu Introduction: Voice, Recitation & Movement 崑曲唱唸身段入門課程', 'Kunqu Classic Excerpts Foundation 崑曲經典片段基礎課程', 'Kunqu Excerpt One-on-One 崑曲折子戲一對一課程', 'Calligraphy Online — Eva Su', 'Calligraphy Onsite — Daniel Yu', 'Calligraphy Onsite — Charlie Chen', 'Chinese Painting — He Shan'],
   regLabel: 'Registration',
   regTitle: 'Sign up for a class',
-  regIntro: 'One form. Choose how you’d like to pay at the bottom — card and PayPal are handled online, Zelle is a transfer you make yourself and we confirm by hand.',
+  regIntro: 'One form. Choose how you’d like to pay at the bottom — PayPal is handled online, Zelle is a transfer you make yourself and we confirm by hand.',
   fName: 'Student name', fNamePh: 'First and last name',
   fClass: 'Class',
   fEmail: 'Email', fPhone: 'Phone',
@@ -1937,10 +1978,15 @@ const EN = {
   fEmergPhone: 'Emergency phone',
   payLabel: 'How you’d like to pay',
   pays: [
-    { id: 'card', label: 'Card', note: 'Secure checkout, Stripe' },
-    { id: 'paypal', label: 'PayPal', note: 'Redirects to PayPal' },
+    { id: 'paypal', label: 'PayPal', note: 'Pay securely with PayPal' },
     { id: 'zelle', label: 'Zelle', note: 'You transfer, we confirm' }
   ],
+  fMembership: 'Membership status', mMember: 'Member', mNonmember: 'Non-member', mStudent: 'Student member',
+  fFormat: 'Class format', fmtGroup: 'Group (3+ students)', fmtSemi: 'Semi-private (2 students)', fmtPrivate: 'Private lesson',
+  fHours: 'Number of hours', fSessions: 'Number of trial sessions',
+  amountLabel: 'Amount due', amountPackage: 'sessions, member package',
+  paypalLoading: 'Loading PayPal…', paypalPickClass: 'Select a class and payment details above to continue.',
+  paypalErrorMsg: 'Payment could not be completed. Please try again, or choose Zelle instead.',
   zTitle: 'Paying by Zelle',
   zBody: 'Send your tuition by Zelle after you submit this form, then leave the rest to us. Your place is held for five days while we match the transfer to your registration by hand — you’ll get a confirmation email once we do.',
   zAcctLabel: 'Zelle recipient', zAcct: '[TBC — NYCOS to supply]',
@@ -2803,7 +2849,7 @@ const ZH = {
   classList: ['身訓入門課', '唱腔入門課', '旦角一對一課程*', '身訓基礎課', '唱腔基礎課', '老生一對一課程*', '崑曲唱唸身段入門課程', '崑曲經典片段基礎課程', '崑曲折子戲一對一課程', '線上書法課 · 蘇藝', '線下書法課 · 虞文輝', '線下書法課 · 陳定佳', '國畫課 · 何山'],
   regLabel: '線上報名',
   regTitle: '報名上課',
-  regIntro: '一張表單即可完成。付款方式請在下方選擇：信用卡與 PayPal 於線上完成，Zelle 需由您自行轉帳，我們人工核銷確認。',
+  regIntro: '一張表單即可完成。付款方式請在下方選擇：PayPal 於線上完成，Zelle 需由您自行轉帳，我們人工核銷確認。',
   fName: '學員姓名', fNamePh: '請填寫全名',
   fClass: '選擇課程',
   fEmail: '電子郵件', fPhone: '聯絡電話',
@@ -2812,10 +2858,15 @@ const ZH = {
   fEmergPhone: '緊急聯絡電話',
   payLabel: '付款方式',
   pays: [
-    { id: 'card', label: '信用卡', note: '安全結帳 · Stripe' },
-    { id: 'paypal', label: 'PayPal', note: '轉往 PayPal 頁面' },
+    { id: 'paypal', label: 'PayPal', note: '透過 PayPal 安全付款' },
     { id: 'zelle', label: 'Zelle', note: '您轉帳，我們核銷' }
   ],
+  fMembership: '會員身份', mMember: '會員', mNonmember: '非會員', mStudent: '學生會員',
+  fFormat: '上課方式', fmtGroup: '團體班（3人以上）', fmtSemi: '半私人班（2人）', fmtPrivate: '私人課',
+  fHours: '時數', fSessions: '試聽堂數',
+  amountLabel: '應付金額', amountPackage: '堂，會員套裝價',
+  paypalLoading: 'PayPal 載入中…', paypalPickClass: '請先於上方選擇課程與付款詳情。',
+  paypalErrorMsg: '付款未能完成，請再試一次，或改用 Zelle 付款。',
   zTitle: '以 Zelle 付款',
   zBody: '送出表單後，請透過 Zelle 轉帳學費，其餘交給我們。我們會為您保留名額五天，並人工核對轉帳與報名資料，核銷完成後寄出確認信。',
   zAcctLabel: 'Zelle 收款帳號', zAcct: '待梨園社提供',
@@ -3546,8 +3597,10 @@ class Component extends DCLogic {
     mpay: 0,
     joined: false,
     mform: { name: '', email: '', phone: '', sid: '', renew: false },
-    pay: 'card',
-    form: { name: '', klass: '', email: '', phone: '', minor: false, emerg: '', emergPhone: '' }
+    pay: 'paypal',
+    form: { name: '', klass: '', email: '', phone: '', minor: false, emerg: '', emergPhone: '', membership: 'member', format: 'group', hours: 1 },
+    paypalStatus: 'idle',
+    paypalResult: null
   };
 
   componentDidMount() {
@@ -3556,6 +3609,10 @@ class Component extends DCLogic {
       if (saved === 'en' || saved === 'zh') this.setState({ lang: saved });
     } catch (e) {}
     this.observeMission();
+    fetch('/api/paypal-config').then(r => r.ok ? r.json() : null).then(data => {
+      if (data && data.clientId) this.setState({ paypalClientId: data.clientId });
+    }).catch(() => {});
+    this.syncPaypalButtons();
   }
 
   pick(l) {
@@ -3594,13 +3651,86 @@ class Component extends DCLogic {
     this._mObs.observe(el);
   }
 
-  componentDidUpdate() { if (!this.state.mReveal) this.observeMission(); }
+  componentDidUpdate() {
+    if (!this.state.mReveal) this.observeMission();
+    this.syncPaypalButtons();
+  }
+
+  registerAfterPayment(paymentExtra) {
+    const lang = this.state.lang || this.props.lang || 'en';
+    const t = CONTENT[lang] || EN;
+    const { name, klass, email, phone, minor, emerg, emergPhone } = this.state.form;
+    const screen = this.state.screen || this.props.startScreen || 'home';
+    const { amount } = this.computePrice(screen, klass);
+    this.setState({ regLoading: true, regError: null });
+    return fetch('/api/register-class', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, klass, email, phone, minor, emerg, emergPhone, pay: this.state.pay, amount, ...paymentExtra })
+    }).then((r) => {
+      if (!r.ok) throw new Error('register failed');
+      this.setState({ submitted: true, regLoading: false });
+    }).catch(() => {
+      this.setState({ regError: t.regErrorMsg, regLoading: false });
+    });
+  }
+
+  onPaypalSuccess(result) {
+    this.setState({ paypalStatus: 'captured', paypalResult: result });
+    this.registerAfterPayment({ paypalOrderId: result.orderID || result.id || '', paypalCaptureId: result.captureId || '' });
+  }
+
+  onPaypalError() {
+    const lang = this.state.lang || this.props.lang || 'en';
+    const t = CONTENT[lang] || EN;
+    this.setState({ regError: t.paypalErrorMsg });
+  }
+
+  syncPaypalButtons() {
+    const screen = this.state.screen || this.props.startScreen || 'home';
+    const klass = this.state.form.klass;
+    const { amount } = this.computePrice(screen, klass);
+    const shouldShow = (screen === 'opera' || screen === 'brush') && this.state.pay === 'paypal' && !this.state.submitted && !!this.state.paypalClientId && amount > 0;
+    const key = shouldShow ? [screen, this.state.paypalClientId, amount].join('|') : null;
+    if (key === this._paypalMountKey) return;
+    this._paypalMountKey = key;
+    const container = document.getElementById('paypal-buttons-container');
+    if (!container) return;
+    container.innerHTML = '';
+    if (!shouldShow || !window.NYCOSPaypal) return;
+    window.NYCOSPaypal.mount(container, this.state.paypalClientId, amount, (result) => this.onPaypalSuccess(result), () => this.onPaypalError());
+  }
 
   set(k, v) { this.setState(s => ({ form: { ...s.form, [k]: v } })); }
 
   mset(k, v) { this.setState(s => ({ mform: { ...s.mform, [k]: v } })); }
 
   cset(k, v) { this.setState(s => ({ cform: { ...s.cform, [k]: v } })); }
+
+  computePrice(screen, klass) {
+    const f = this.state.form;
+    if (screen === 'opera') {
+      const RATES = {
+        member: { group: 20, semi: 30, private: 55 },
+        nonmember: { group: 40, private: 65 },
+        student: { group: 10, private: 20 }
+      };
+      const rates = RATES[f.membership] || RATES.member;
+      const rate = rates[f.format] || rates.group;
+      const hours = Math.max(1, Number(f.hours) || 1);
+      return { amount: rate * hours, unit: 'hour', qty: hours, rate };
+    }
+    if (screen === 'brush') {
+      const isPainting = /Painting/i.test(klass || '');
+      if (f.membership === 'nonmember') {
+        const sessions = Math.max(1, Number(f.hours) || 1);
+        return { amount: 65 * sessions, unit: 'session', qty: sessions, rate: 65 };
+      }
+      const sessions = isPainting ? 4 : 10;
+      return { amount: isPainting ? 180 : 380, unit: 'package', qty: sessions, rate: null };
+    }
+    return { amount: 0, unit: null, qty: 0, rate: null };
+  }
 
   renderVals() {
     const lang = this.state.lang || this.props.lang || 'en';
@@ -3688,6 +3818,7 @@ class Component extends DCLogic {
       : { eyebrow: t.opEyebrow, title: t.opTitle, intro: t.opIntro, facts: t.opFacts, classList: pageClassList };
     const klass = this.state.form.klass || pageClassList[0];
     const isZelle = this.state.pay === 'zelle';
+    const pricing = this.computePrice(screen, klass);
 
     const mTier = t.tiers[this.state.tier] || t.tiers[0];
     const ev = this.state.ev;
@@ -4181,6 +4312,12 @@ class Component extends DCLogic {
       onMinor: (e) => this.set('minor', e.target.checked),
       onEmerg: (e) => this.set('emerg', e.target.value),
       onEmergPhone: (e) => this.set('emergPhone', e.target.value),
+      onMembership: (e) => {
+        const v = e.target.value;
+        this.setState(s => ({ form: { ...s.form, membership: v, format: (v !== 'member' && s.form.format === 'semi') ? 'group' : s.form.format } }));
+      },
+      onFormat: (e) => this.set('format', e.target.value),
+      onHours: (e) => this.set('hours', Math.max(1, Number(e.target.value) || 1)),
       pays: t.pays.map(p => ({
         label: p.label, note: p.note,
         style: payStyle(this.state.pay === p.id),
@@ -4192,18 +4329,8 @@ class Component extends DCLogic {
       submit: (e) => {
         e.preventDefault();
         if (this.state.regLoading) return;
-        const { name, klass, email, phone, minor, emerg, emergPhone } = this.state.form;
-        this.setState({ regLoading: true, regError: null });
-        fetch('/api/register-class', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, klass, email, phone, minor, emerg, emergPhone, pay: this.state.pay })
-        }).then((r) => {
-          if (!r.ok) throw new Error('register failed');
-          this.setState({ submitted: true, regLoading: false });
-        }).catch(() => {
-          this.setState({ regError: t.regErrorMsg, regLoading: false });
-        });
+        if (this.state.pay === 'paypal') return;
+        this.registerAfterPayment({});
       },
       submitted: this.state.submitted,
       notSubmitted: !this.state.submitted,
@@ -4211,8 +4338,24 @@ class Component extends DCLogic {
       regError: this.state.regError,
       submitLabel: this.state.regLoading ? t.regSubmitting : t.submit,
       submitOpacity: this.state.regLoading ? 0.7 : 1,
-      reset: () => this.setState({ submitted: false, regError: null }),
-      nextSteps: (isZelle ? t.stepsZelle : t.stepsOnline).map((v, i) => ({ n: String(i + 1).padStart(2, '0'), v }))
+      reset: () => this.setState({ submitted: false, regError: null, paypalStatus: 'idle', paypalResult: null }),
+      nextSteps: (isZelle ? t.stepsZelle : t.stepsOnline).map((v, i) => ({ n: String(i + 1).padStart(2, '0'), v })),
+      pricing,
+      amountDue: pricing.amount,
+      amountDisplay: '$' + pricing.amount.toFixed(2),
+      packageNote: (screen === 'brush' && this.state.form.membership !== 'nonmember') ? (pricing.qty + ' ' + t.amountPackage) : '',
+      showQty: screen === 'opera' || (screen === 'brush' && this.state.form.membership === 'nonmember'),
+      qtyLabel: screen === 'opera' ? t.fHours : t.fSessions,
+      qty: this.state.form.hours,
+      showFormat: screen === 'opera',
+      membershipOpts: (screen === 'opera' ? ['member', 'nonmember', 'student'] : ['member', 'nonmember']).map(id => ({
+        id, label: id === 'member' ? t.mMember : id === 'nonmember' ? t.mNonmember : t.mStudent
+      })),
+      formatOpts: (this.state.form.membership === 'member' ? ['group', 'semi', 'private'] : ['group', 'private']).map(id => ({
+        id, label: id === 'group' ? t.fmtGroup : id === 'semi' ? t.fmtSemi : t.fmtPrivate
+      })),
+      paypalClientId: this.state.paypalClientId || '',
+      paypalReady: !!this.state.paypalClientId
     };
   }
 }
