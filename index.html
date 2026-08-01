@@ -3671,7 +3671,10 @@ class Component extends DCLogic {
       body: JSON.stringify({ name, klass, email, phone, minor, emerg, emergPhone, pay: this.state.pay, amount, ...paymentExtra })
     }).then((r) => {
       if (!r.ok) throw new Error('register failed');
-      this.setState({ submitted: true, regLoading: false });
+      this.setState({ submitted: true, regLoading: false }, () => {
+        const el = document.getElementById('register');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     }).catch(() => {
       this.setState({ regError: t.regErrorMsg, regLoading: false });
     });
