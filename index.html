@@ -3659,8 +3659,10 @@ class Component extends DCLogic {
   registerAfterPayment(paymentExtra) {
     const lang = this.state.lang || this.props.lang || 'en';
     const t = CONTENT[lang] || EN;
-    const { name, klass, email, phone, minor, emerg, emergPhone } = this.state.form;
+    const { name, email, phone, minor, emerg, emergPhone } = this.state.form;
     const screen = this.state.screen || this.props.startScreen || 'home';
+    const pageClassList = (screen === 'brush' ? t.groups.slice(3) : t.groups.slice(0, 3)).reduce((a, g) => a.concat(g.items.map(c => c.title)), []);
+    const klass = this.state.form.klass || pageClassList[0] || '';
     const { amount } = this.computePrice(screen, klass);
     this.setState({ regLoading: true, regError: null });
     return fetch('/api/register-class', {
