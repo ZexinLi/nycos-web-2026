@@ -18,7 +18,21 @@
 <script src="./image-slot.js"></script>
 <script src="./paypal-integration.js"></script>
 <style>
+/* Spectral (--font-display) draws the dollar sign with TWO vertical strokes.
+   Scope only U+0024 to Noto Serif TC — the site's companion serif, already
+   loaded here — which draws it with a single stroke. Local serifs and then
+   Spectral itself act as fallbacks if the webfont can't load. */
+@font-face{
+  font-family:'NYCOSDollar';
+  font-style:normal;
+  font-weight:100 900;
+  font-display:swap;
+  src:url(https://fonts.gstatic.com/s/notoseriftc/v36/XLYzIZb5bJNDGYxLBibeHZ0BnHwmuanx8cUaGX9aMNpEM2cuqnONmmU.woff2) format('woff2'),
+      local('Georgia'), local('Times New Roman'), local('Liberation Serif'), local('DejaVu Serif');
+  unicode-range:U+0024;
+}
 :root{
+  --font-display:'NYCOSDollar','Spectral',var(--font-cjk-serif),Georgia,'Times New Roman',serif;
   --ease-out: cubic-bezier(0.23,1,0.32,1);
   --ease-in-out: cubic-bezier(0.77,0,0.175,1);
   /* Press feedback: softer than --ease-out, which lands ~90% instantly and reads as a snap.
