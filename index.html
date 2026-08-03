@@ -41,6 +41,9 @@
   --ease-press-out: cubic-bezier(0.33,1,0.68,1);
   --press-in: 110ms;
   --press-out: 260ms;
+  /* Gentle ease-in-out for page transitions and scroll reveals. Deliberately
+     softer than --ease-in-out (0.77,0,0.175,1), which is too dramatic here. */
+  --ease-soft: cubic-bezier(0.4,0,0.2,1);
 }
 html,body{margin:0;padding:0}
 body{background:#F7F4EE;font-family:'Instrument Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -58,9 +61,30 @@ select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary)
 @keyframes nycos-fade-in{from{opacity:0}to{opacity:1}}
 @keyframes nycos-pop-in{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
 @keyframes nycos-drop-in{from{opacity:0;transform:scale(0.96) translateY(-4px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+/* --- Page transition: each screen's <main> settles in on mount --- */
+@keyframes nycos-page-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+main{animation:nycos-page-in 460ms var(--ease-soft) both}
+
+/* --- Scroll reveal ---------------------------------------------------------
+   Progressive enhancement: the hiding rule only applies once JS has put
+   .nycos-reveal on <html>, so if the script never runs the content is simply
+   visible rather than stuck at opacity 0. The first block of each screen is
+   skipped — it's above the fold and already covered by the page transition —
+   as is anything marked data-no-reveal (blocks with bespoke choreography). */
+.nycos-reveal main > *:not(:first-child):not([data-no-reveal]){
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity 700ms var(--ease-soft), transform 700ms var(--ease-soft);
+}
+/* Must out-specify the hiding rule above, so it repeats the same negations. */
+.nycos-reveal main > *[data-revealed]:not(:first-child):not([data-no-reveal]){opacity:1;transform:none}
+
 @media (prefers-reduced-motion: reduce){
   [style*="nycos-trust"]{animation:none !important}
   [style*="animation:nycos-"]{animation-duration:0.01ms !important;animation-iteration-count:1 !important}
+  main{animation:none}
+  .nycos-reveal main > *:not(:first-child):not([data-no-reveal]){opacity:1;transform:none;transition:none}
 }
 @keyframes nycos-spin{to{transform:rotate(360deg)}}
 .nycos-spinner{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;animation:nycos-spin 600ms linear infinite;vertical-align:-2px;margin-right:8px}
@@ -146,7 +170,7 @@ select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary)
 </div>
 </div>
 
-<section ref="{{ missionRef }}" style="position:relative;max-width:760px;margin:0 auto;padding:96px 32px 88px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;overflow:hidden">
+<section ref="{{ missionRef }}" data-no-reveal="" style="position:relative;max-width:760px;margin:0 auto;padding:96px 32px 88px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;overflow:hidden">
 <div style="position:absolute;left:50%;top:50%;width:120%;height:130%;transform:translate(-50%,-50%);background:radial-gradient(60% 58% at 50% 42%,rgba(255,255,255,0.9) 0%,rgba(255,255,255,0) 68%);pointer-events:none"></div>
 
 <div style="position:relative;width:220px;height:1px;margin-bottom:6px">
@@ -1850,6 +1874,129 @@ select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary)
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;wkHeroVariant&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;dark&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;dark&quot;, &quot;red&quot;], &quot;section&quot;: &quot;Workshops&quot;}}">
+/* ---------------------------------------------------------------------------
+   Motion helpers: eased in-page scrolling + scroll-reveal observer.
+   Kept at module scope so a single observer/listener is shared by all renders.
+--------------------------------------------------------------------------- */
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
+
+// Arm the reveal styles only once JS is confirmed running (see .nycos-reveal in
+// the stylesheet) — otherwise a script failure would leave content invisible.
+if (typeof document !== 'undefined' && !prefersReducedMotion()) {
+  document.documentElement.classList.add('nycos-reveal');
+}
+
+const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+let scrollRaf = null;
+function stopScrollAnim() {
+  if (scrollRaf !== null) { cancelAnimationFrame(scrollRaf); scrollRaf = null; }
+}
+// Layout position, walking offsetParents. Unlike getBoundingClientRect this
+// ignores transforms, so a section still mid-reveal doesn't skew the target.
+function layoutTop(el) {
+  let y = 0;
+  for (let n = el; n; n = n.offsetParent) y += n.offsetTop;
+  return y;
+}
+
+// Native scroll-behavior:smooth can't take a custom curve, so animate manually.
+// getTarget is re-resolved every frame: reveal and height animations above the
+// target can move it while we're still travelling.
+function easedScrollTo(getTarget, duration) {
+  if (typeof window === 'undefined') return;
+  const resolve = () => {
+    const maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    const raw = typeof getTarget === 'function' ? getTarget() : getTarget;
+    return Math.max(0, Math.min(raw, maxY));
+  };
+  const startY = window.pageYOffset;
+  const firstEnd = resolve();
+  if (prefersReducedMotion() || Math.abs(firstEnd - startY) < 2) { window.scrollTo(0, firstEnd); return; }
+  // Longer trips get a little more time, but stay within a snappy band.
+  const dur = duration || Math.min(1000, Math.max(420, Math.abs(firstEnd - startY) * 0.5));
+  stopScrollAnim();
+  let startTs = null;
+  const step = (ts) => {
+    if (startTs === null) startTs = ts;
+    const p = Math.min(1, (ts - startTs) / dur);
+    window.scrollTo(0, startY + (resolve() - startY) * easeInOutCubic(p));
+    scrollRaf = p < 1 ? requestAnimationFrame(step) : null;
+  };
+  scrollRaf = requestAnimationFrame(step);
+}
+
+function scrollToElement(el) {
+  if (!el) return;
+  easedScrollTo(() => {
+    const header = document.querySelector('header');
+    const headerH = header ? header.getBoundingClientRect().height : 0;
+    return layoutTop(el) - headerH - 8;
+  });
+}
+
+if (typeof document !== 'undefined') {
+  // Hand the scroll back to the user the moment they take over.
+  ['wheel', 'touchstart', 'keydown'].forEach((evt) =>
+    window.addEventListener(evt, stopScrollAnim, { passive: true }));
+
+  // Eased in-page anchor jumps ("See what's on", "Sign up", etc.).
+  document.addEventListener('click', (e) => {
+    const a = e.target && e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = (a.getAttribute('href') || '').slice(1);
+    if (!id) return;                       // bare href="#" placeholders: leave alone
+    const target = document.getElementById(id);
+    if (!target) return;
+    e.preventDefault();
+    scrollToElement(target);
+  });
+}
+
+let revealObs = null;
+function revealObserver() {
+  if (revealObs || typeof IntersectionObserver === 'undefined') return revealObs;
+  revealObs = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      entry.target.setAttribute('data-revealed', '');
+      revealObs.unobserve(entry.target);    // reveal once, then stop watching
+    }
+  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.05 });
+  return revealObs;
+}
+
+function scanReveal() {
+  if (typeof document === 'undefined') return;
+  if (!document.documentElement.classList.contains('nycos-reveal')) return;
+  const obs = revealObserver();
+  if (!obs) return;
+  const main = document.querySelector('main');
+  if (!main) return;
+  Array.prototype.forEach.call(main.children, (el, i) => {
+    if (i === 0) return;                                  // hero: page transition covers it
+    if (el.hasAttribute('data-no-reveal')) return;
+    if (el.hasAttribute('data-revealed') || el.__nycosWatched) return;
+    el.__nycosWatched = true;
+    obs.observe(el);
+  });
+}
+
+// Screens that share an sc-if branch (e.g. opera vs brush) reuse the same DOM
+// nodes, so clear the marks to let the reveal play again on the new screen.
+function resetReveal() {
+  const main = document.querySelector('main');
+  if (!main) return;
+  Array.prototype.forEach.call(main.children, (el) => {
+    el.removeAttribute('data-revealed');
+    el.__nycosWatched = false;
+    if (revealObs) revealObs.unobserve(el);
+  });
+}
+
 const EN = {
   mark: 'NYCOS',
   org: 'New York Chinese Opera Society',
@@ -3654,6 +3801,8 @@ class Component extends DCLogic {
     this.observeMission();
     this.setupReveal(this.classesGridRef, 'classesReveal', '_classesObs');
     this.setupReveal(this.pastGridRef, 'pastReveal', '_pastObs');
+    this._lastScreen = this.state.screen || this.props.startScreen || 'home';
+    scanReveal();
     fetch('/api/paypal-config').then(r => r.ok ? r.json() : null).then(data => {
       if (data && data.clientId) this.setState({ paypalClientId: data.clientId });
     }).catch(() => {});
@@ -3677,7 +3826,9 @@ class Component extends DCLogic {
     if (this._mObs) { this._mObs.disconnect(); this._mObs = null; }
     if (this._classesObs) { this._classesObs.disconnect(); this._classesObs = null; }
     if (this._pastObs) { this._pastObs.disconnect(); this._pastObs = null; }
-    if (typeof window !== 'undefined') window.scrollTo(0, 0);
+    // Land at the top instantly — an eased scroll here would fight the
+    // incoming page transition.
+    if (typeof window !== 'undefined') { stopScrollAnim(); window.scrollTo(0, 0); }
   }
 
   missionRef = React.createRef();
@@ -3724,6 +3875,18 @@ class Component extends DCLogic {
     if (!this.state.mReveal) this.observeMission();
     if (!this.state.classesReveal) this.setupReveal(this.classesGridRef, 'classesReveal', '_classesObs');
     if (!this.state.pastReveal) this.setupReveal(this.pastGridRef, 'pastReveal', '_pastObs');
+
+    const screen = this.state.screen || this.props.startScreen || 'home';
+    if (screen !== this._lastScreen) {
+      this._lastScreen = screen;
+      const main = document.querySelector('main');
+      // Screens sharing an sc-if branch reuse the same <main>, so the mount
+      // animation won't replay on its own — restart it by hand.
+      if (main) { main.style.animation = 'none'; void main.offsetWidth; main.style.animation = ''; }
+      resetReveal();
+    }
+    scanReveal();
+
     this.syncPaypalButtons();
   }
 
@@ -3744,7 +3907,7 @@ class Component extends DCLogic {
       if (!r.ok) throw new Error('register failed');
       this.setState({ submitted: true, regLoading: false }, () => {
         const el = document.getElementById('register');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollToElement(el);
       });
     }).catch(() => {
       this.setState({ regError: t.regErrorMsg, regLoading: false });
