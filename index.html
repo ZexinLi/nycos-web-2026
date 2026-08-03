@@ -27,6 +27,7 @@ body{background:#F7F4EE;font-family:'Instrument Sans',system-ui,sans-serif;-webk
 a{color:#C8102E}a:hover{color:#9E0C24}
 *{box-sizing:border-box}
 select:focus,input:focus{outline:none}
+select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary);outline-offset:2px;border-radius:2px}
 @keyframes nycos-trust{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes nycos-sway{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
 @keyframes nycos-write{0%,100%{transform:translate(0,0) rotate(0deg)}35%{transform:translate(2px,-2px) rotate(-13deg)}70%{transform:translate(-1px,1px) rotate(7deg)}}
@@ -39,6 +40,12 @@ select:focus,input:focus{outline:none}
 @keyframes nycos-drop-in{from{opacity:0;transform:scale(0.96) translateY(-4px)}to{opacity:1;transform:scale(1) translateY(0)}}
 @media (prefers-reduced-motion: reduce){
   [style*="nycos-trust"]{animation:none !important}
+  [style*="animation:nycos-"]{animation-duration:0.01ms !important;animation-iteration-count:1 !important}
+}
+@keyframes nycos-spin{to{transform:rotate(360deg)}}
+.nycos-spinner{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;animation:nycos-spin 600ms linear infinite;vertical-align:-2px;margin-right:8px}
+@media (prefers-reduced-motion: reduce){
+  .nycos-spinner{animation-duration:1.2s}
 }
 </style>
 </helmet>
@@ -131,7 +138,7 @@ select:focus,input:focus{outline:none}
 <div style="{{ mMarkWrap }}">
 <sc-if value="{{ mRevealed }}" hint-placeholder-val="{{ false }}">
 <div style="{{ mMark }}">
-<img src="assets/logo-mark.png" alt="NYCOS" style="display:block;width:100%;height:100%;object-fit:contain">
+<img src="assets/logo-mark.png" alt="NYCOS" style="display:block;width:100%;height:100%;object-fit:contain" loading="lazy">
 </div>
 </sc-if>
 </div>
@@ -153,7 +160,7 @@ select:focus,input:focus{outline:none}
 <sc-for list="{{ t.events }}" as="e" hint-placeholder-count="2">
 <div onClick="{{ goEvents }}" style="display:flex;flex-direction:column;gap:14px;cursor:pointer">
 <div style="position:relative;aspect-ratio:4/5;border-radius:var(--radius-sm);overflow:hidden;background:var(--color-ink-deep)">
-<img src="{{ e.img }}" alt="{{ e.title }}" style="width:100%;height:100%;object-fit:cover;object-position:top center">
+<img src="{{ e.img }}" alt="{{ e.title }}" style="width:100%;height:100%;object-fit:cover;object-position:top center" loading="lazy">
 <span style="position:absolute;top:14px;left:14px;font-family:var(--font-mono);font-size:9px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:#fff;background:var(--accent-primary);padding:5px 10px;border-radius:var(--radius-pill)">{{ e.tag }}</span>
 </div>
 <div style="display:flex;flex-direction:column;gap:6px">
@@ -388,7 +395,7 @@ select:focus,input:focus{outline:none}
 <div onClick="{{ c.toggle }}" style="display:grid;grid-template-columns:120px 1fr 220px 24px;gap:26px;align-items:center;padding:22px 4px;cursor:pointer;transition:background 160ms var(--ease-out);" style-hover="background:var(--surface-page-alt)">
 <div style="aspect-ratio:1/1;background:var(--surface-page-alt);border:1px solid var(--border-subtle);display:flex;align-items:flex-end;padding:8px;overflow:hidden;position:relative">
 <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}">
-<img src="{{ c.img }}" alt="{{ c.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+<img src="{{ c.img }}" alt="{{ c.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" loading="lazy">
 </sc-if>
 <sc-if value="{{ c.noImg }}" hint-placeholder-val="{{ true }}">
 <span style="font-family:var(--font-mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-tertiary);line-height:1.4">{{ t.photoTbc }}</span>
@@ -836,7 +843,7 @@ select:focus,input:focus{outline:none}
 <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:22px;border-top:1px solid var(--border-subtle)">
 <span style="font-size:12.5px;line-height:1.6;color:var(--text-tertiary);max-width:420px">{{ t.regFootnote }}</span>
 <sc-if value="{{ isZelle }}" hint-placeholder-val="{{ false }}">
-<button type="submit" disabled="{{ regLoading }}" style="font-family:var(--font-body);font-weight:500;font-size:15px;letter-spacing:0.02em;background:var(--accent-primary);color:#fff;border:none;border-radius:var(--radius-sm);padding:15px 30px;cursor:pointer;white-space:nowrap;opacity:{{ submitOpacity }};transition:background 160ms var(--ease-out),transform 160ms var(--ease-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97)">{{ submitLabel }}</button>
+<button type="submit" disabled="{{ regLoading }}" style="font-family:var(--font-body);font-weight:500;font-size:15px;letter-spacing:0.02em;background:var(--accent-primary);color:#fff;border:none;border-radius:var(--radius-sm);padding:15px 30px;cursor:pointer;white-space:nowrap;opacity:{{ submitOpacity }};transition:background 160ms var(--ease-out),transform 160ms var(--ease-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97)"><sc-if value="{{ regLoading }}" hint-placeholder-val="{{ false }}"><span class="nycos-spinner"></span></sc-if>{{ submitLabel }}</button>
 </sc-if>
 </div>
 </form>
@@ -1006,7 +1013,7 @@ select:focus,input:focus{outline:none}
 <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary);line-height:1.6">{{ w.meta }}</span>
 <sc-if value="{{ w.img }}" hint-placeholder-val="{{ false }}">
 <div style="aspect-ratio:4/3;border-radius:var(--radius-sm);overflow:hidden">
-<img src="{{ w.img }}" alt="{{ w.title }}" style="width:100%;height:100%;object-fit:cover;display:block">
+<img src="{{ w.img }}" alt="{{ w.title }}" style="width:100%;height:100%;object-fit:cover;display:block" loading="lazy">
 </div>
 </sc-if>
 <sc-if value="{{ w.noImg }}" hint-placeholder-val="{{ true }}">
@@ -1648,7 +1655,7 @@ select:focus,input:focus{outline:none}
 
 <section style="background:var(--surface-page);padding:24px 32px 0">
 <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:center">
-<img src="assets/contact-figures.png" alt="{{ t.ctEyebrow }}" style="display:block;height:440px;width:auto;max-width:100%;object-fit:contain">
+<img src="assets/contact-figures.png" alt="{{ t.ctEyebrow }}" style="display:block;height:440px;width:auto;max-width:100%;object-fit:contain" loading="lazy">
 </div>
 </section>
 
@@ -1686,7 +1693,7 @@ select:focus,input:focus{outline:none}
 </div>
 </sc-if>
 <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-<a onClick="{{ sendMsg }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;padding:14px 30px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;opacity:{{ sendOpacity }};transition:background 160ms var(--ease-out),transform 160ms var(--ease-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97)">{{ sendLabel }}</a>
+<a onClick="{{ sendMsg }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;padding:14px 30px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;opacity:{{ sendOpacity }};transition:background 160ms var(--ease-out),transform 160ms var(--ease-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97)"><sc-if value="{{ sendLoading }}" hint-placeholder-val="{{ false }}"><span class="nycos-spinner"></span></sc-if>{{ sendLabel }}</a>
 <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.ctRouteTbc }}</span>
 </div>
 </div>
@@ -1753,11 +1760,11 @@ select:focus,input:focus{outline:none}
 <span style="font-family:var(--font-mono);font-size:9.5px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.ctSocialLabel }}</span>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
 <div style="display:flex;flex-direction:column;gap:8px;align-items:center;padding:16px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm)">
-<img src="uploads/CleanShot.jpg" alt="Instagram QR" style="width:74px;height:74px;object-fit:cover;border:1px solid var(--border-subtle)">
+<img src="uploads/CleanShot.jpg" alt="Instagram QR" style="width:74px;height:74px;object-fit:cover;border:1px solid var(--border-subtle)" loading="lazy">
 <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.ctInstagramTag }}</span>
 </div>
 <div style="display:flex;flex-direction:column;gap:8px;align-items:center;padding:16px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm)">
-<img src="uploads/小红书qr.jpg" alt="小紅書 QR" style="width:74px;height:74px;object-fit:cover;border:1px solid var(--border-subtle)">
+<img src="uploads/小红书qr.jpg" alt="小紅書 QR" style="width:74px;height:74px;object-fit:cover;border:1px solid var(--border-subtle)" loading="lazy">
 <span style="font-family:var(--font-cjk-serif);font-size:12px;color:var(--text-tertiary)">{{ t.ctXhsTag }}</span>
 </div>
 </div>
@@ -1776,7 +1783,7 @@ select:focus,input:focus{outline:none}
 <footer style="background:var(--surface-inverse);color:var(--text-on-inverse);font-family:var(--font-body);padding:72px 32px 28px">
 <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px">
 <div style="display:flex;flex-direction:column;gap:14px">
-<img src="assets/logo-mark.png" alt="NYCOS" style="height:38px;width:auto;filter:brightness(0) invert(1);opacity:0.92;align-self:flex-start">
+<img src="assets/logo-mark.png" alt="NYCOS" style="height:38px;width:auto;filter:brightness(0) invert(1);opacity:0.92;align-self:flex-start" loading="lazy">
 <p style="font-size:13px;line-height:1.65;color:rgba(247,244,238,0.6);max-width:290px;margin:0">{{ t.footTagline }}</p>
 <div style="display:flex;flex-direction:column;gap:5px;margin-top:6px;font-size:13px;color:rgba(247,244,238,0.82)">
 <span>{{ t.addr1 }}</span><span>{{ t.addr2 }}</span>
