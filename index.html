@@ -80,6 +80,26 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 /* Must out-specify the hiding rule above, so it repeats the same negations. */
 .nycos-reveal main > *[data-revealed]:not(:first-child):not([data-no-reveal]){opacity:1;transform:none}
 
+/* Blocks holding a run of cards cascade their items one by one instead of
+   fading in as a single slab, so the block itself must stop animating (it
+   would otherwise fade the whole group in before the stagger could read). */
+.nycos-reveal main > *[data-stagger]:not(:first-child):not([data-no-reveal]){
+  opacity:1;transform:none;transition:none;
+}
+/* Timing matches the home page class list, which already staggered this way
+   and is the reference for how the cascade should feel. */
+.nycos-reveal [data-reveal-item]{
+  opacity:0;
+  transform:translateY(16px);
+  transition:opacity 500ms var(--ease-soft), transform 500ms var(--ease-soft);
+  transition-delay:calc(var(--i,0) * 80ms);
+}
+.nycos-reveal main > *[data-revealed] [data-reveal-item]{opacity:1;transform:none}
+
+@media (prefers-reduced-motion: reduce){
+  .nycos-reveal [data-reveal-item]{opacity:1;transform:none;transition:none}
+}
+
 @media (prefers-reduced-motion: reduce){
   [style*="nycos-trust"]{animation:none !important}
   [style*="animation:nycos-"]{animation-duration:0.01ms !important;animation-iteration-count:1 !important}
@@ -1969,6 +1989,61 @@ function revealObserver() {
   return revealObs;
 }
 
+/* Find the block's main run of cards so they can cascade in one by one, the
+   way the home page's class list does. Guards keep it to real content
+   collections: items must be substantial (skips the logo marquee, label rows
+   and meta lines) and the run must be short enough that a stagger still feels
+   brisk. Of the candidates, the tallest run wins — that's the block's main
+   content grid rather than a wrapper that happens to hold two tall columns. */
+const STAGGER_MIN_ITEMS = 2;
+const STAGGER_MAX_ITEMS = 12;
+const STAGGER_MIN_ITEM_H = 56;   // px
+
+function findStaggerGroup(block) {
+  let best = null;
+  const visit = (el, depth) => {
+    if (depth > 6) return;
+    const kids = Array.prototype.filter.call(el.children, (c) => c.nodeType === 1);
+    // A long run (the logo marquee) would turn into a slow crawl, so cap it.
+    if (kids.length >= STAGGER_MIN_ITEMS && kids.length <= STAGGER_MAX_ITEMS) {
+      // Only the substantial children cascade. Card lists usually sit in a
+      // plain block container alongside a heading row and a footer link; those
+      // are short, so they just arrive with the block instead of stealing a
+      // slot in the sequence.
+      const items = kids.filter((k) => k.getBoundingClientRect().height >= STAGGER_MIN_ITEM_H);
+      if (items.length >= STAGGER_MIN_ITEMS) {
+        const total = items.reduce((a, k) => a + k.getBoundingClientRect().height, 0);
+        if (!best || total > best.total) best = { kids: items, total };
+      }
+    }
+    for (const k of kids) visit(k, depth + 1);
+  };
+  visit(block, 0);
+  return best;
+}
+
+function applyStagger(block) {
+  const group = findStaggerGroup(block);
+  if (!group) return;
+  block.setAttribute('data-stagger', '');   // block itself stops fading as one unit
+  group.kids.forEach((kid, i) => {
+    kid.setAttribute('data-reveal-item', '');
+    kid.style.setProperty('--i', String(i));
+  });
+  block.__nycosItems = group.kids;
+}
+
+function clearStagger(block) {
+  block.removeAttribute('data-stagger');
+  if (block.__nycosItems) {
+    block.__nycosItems.forEach((kid) => {
+      kid.removeAttribute('data-reveal-item');
+      kid.style.removeProperty('--i');
+    });
+    block.__nycosItems = null;
+  }
+}
+
 function scanReveal() {
   if (typeof document === 'undefined') return;
   if (!document.documentElement.classList.contains('nycos-reveal')) return;
@@ -1981,6 +2056,7 @@ function scanReveal() {
     if (el.hasAttribute('data-no-reveal')) return;
     if (el.hasAttribute('data-revealed') || el.__nycosWatched) return;
     el.__nycosWatched = true;
+    applyStagger(el);                                     // runs pre-paint, so no flash
     obs.observe(el);
   });
 }
@@ -1993,6 +2069,7 @@ function resetReveal() {
   Array.prototype.forEach.call(main.children, (el) => {
     el.removeAttribute('data-revealed');
     el.__nycosWatched = false;
+    clearStagger(el);            // content differs on the new screen: re-pick the run
     if (revealObs) revealObs.unobserve(el);
   });
 }
