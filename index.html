@@ -175,7 +175,7 @@ select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary)
 </section>
 
 <section style="background:var(--surface-card);border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);padding:88px 0">
-<div style="max-width:1200px;margin:0 auto;padding:0 32px">
+<div ref="{{ classesGridRef }}" style="max-width:1200px;margin:0 auto;padding:0 32px">
 <div style="display:flex;gap:64px;align-items:flex-end;margin-bottom:40px">
 <div style="flex:0 0 420px;display:flex;flex-direction:column;gap:10px">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-accent)">{{ t.classesLabel }}</span>
@@ -183,8 +183,10 @@ select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary)
 </div>
 <p style="flex:1;font-size:15px;line-height:1.65;color:var(--text-secondary);margin:0 0 6px;max-width:520px;text-wrap:pretty">{{ t.classesIntro }}</p>
 </div>
-<sc-for list="{{ t.classes }}" as="c" hint-placeholder-count="3">
+<sc-for list="{{ classesWithReveal }}" as="c" hint-placeholder-count="3">
+<div style="{{ c.revealStyle }}">
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.ProgramCard" image="{{ c.img }}" title="{{ c.title }}" description="{{ c.desc }}" meta="{{ c.meta }}" hint-size="100%,190px"></x-import>
+</div>
 </sc-for>
 <div style="border-top:1px solid var(--border-subtle);padding-top:26px;display:flex;align-items:center;gap:14px">
 <a onClick="{{ goPrograms }}" style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-accent);text-decoration:none;padding-bottom:2px;border-bottom:1px solid var(--border-strong);cursor:pointer;transition:border-bottom-color 160ms var(--ease-out);" style-hover="border-bottom-color:var(--text-accent)">{{ t.allClasses }} →</a>
@@ -1323,8 +1325,9 @@ select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary)
 </div>
 </div>
 
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
+<div ref="{{ pastGridRef }}" style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
 <sc-for list="{{ past }}" as="p" hint-placeholder-count="6">
+<div style="{{ p.revealStyle }}">
 <div onClick="{{ p.open }}" onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" style="{{ p.cardStyle }}">
 <div style="aspect-ratio:3/4;background:var(--surface-page-alt);border-bottom:1px solid var(--border-subtle);display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:13px;position:relative;overflow:hidden">
 <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ false }}">
@@ -1357,6 +1360,7 @@ select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary)
 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"></path><circle cx="12" cy="10" r="2.4"></circle></svg>
 </span>
 <span style="font-size:12.5px;line-height:1.5;color:var(--text-secondary)">{{ p.place }}</span>
+</div>
 </div>
 </div>
 </div>
@@ -3595,6 +3599,10 @@ class Component extends DCLogic {
     hoverNav: null,
     mReveal: false,
     mReduce: false,
+    classesReveal: false,
+    classesRevealReduce: false,
+    pastReveal: false,
+    pastRevealReduce: false,
     who: 0,
     pastN: 6,
     ev: { sort: 'upcoming', filter: 'all' },
@@ -3624,6 +3632,8 @@ class Component extends DCLogic {
       if (saved === 'en' || saved === 'zh') this.setState({ lang: saved });
     } catch (e) {}
     this.observeMission();
+    this.setupReveal(this.classesGridRef, 'classesReveal', '_classesObs');
+    this.setupReveal(this.pastGridRef, 'pastReveal', '_pastObs');
     fetch('/api/paypal-config').then(r => r.ok ? r.json() : null).then(data => {
       if (data && data.clientId) this.setState({ paypalClientId: data.clientId });
     }).catch(() => {});
@@ -3635,16 +3645,24 @@ class Component extends DCLogic {
     this.setState({ lang: l });
   }
 
-  componentWillUnmount() { if (this._mObs) { this._mObs.disconnect(); this._mObs = null; } }
+  componentWillUnmount() {
+    if (this._mObs) { this._mObs.disconnect(); this._mObs = null; }
+    if (this._classesObs) { this._classesObs.disconnect(); this._classesObs = null; }
+    if (this._pastObs) { this._pastObs.disconnect(); this._pastObs = null; }
+  }
 
   go(screen) {
     const ok = ['home', 'about', 'programs', 'opera', 'brush', 'workshops', 'youth', 'events', 'membership', 'volunteer', 'contact'];
-    this.setState({ screen: ok.indexOf(screen) >= 0 ? screen : 'home', menu: null, submitted: false, lb: null, pastN: 6, dd: null, joined: false, sent: false, mReveal: false });
+    this.setState({ screen: ok.indexOf(screen) >= 0 ? screen : 'home', menu: null, submitted: false, lb: null, pastN: 6, dd: null, joined: false, sent: false, mReveal: false, classesReveal: false, pastReveal: false });
     if (this._mObs) { this._mObs.disconnect(); this._mObs = null; }
+    if (this._classesObs) { this._classesObs.disconnect(); this._classesObs = null; }
+    if (this._pastObs) { this._pastObs.disconnect(); this._pastObs = null; }
     if (typeof window !== 'undefined') window.scrollTo(0, 0);
   }
 
   missionRef = React.createRef();
+  classesGridRef = React.createRef();
+  pastGridRef = React.createRef();
 
   get mr() { return this.state.mReveal; }
   get mNo() { return this.state.mReduce; }
@@ -3666,8 +3684,26 @@ class Component extends DCLogic {
     this._mObs.observe(el);
   }
 
+  setupReveal(ref, stateKey, obsProp) {
+    const el = ref.current;
+    if (!el || this[obsProp]) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      this.setState({ [stateKey]: true, [stateKey + 'Reduce']: true });
+      return;
+    }
+    this[obsProp] = new IntersectionObserver((entries) => {
+      if (entries.some(e => e.isIntersecting)) {
+        this.setState({ [stateKey]: true });
+        if (this[obsProp]) { this[obsProp].disconnect(); this[obsProp] = null; }
+      }
+    }, { threshold: 0.15 });
+    this[obsProp].observe(el);
+  }
+
   componentDidUpdate() {
     if (!this.state.mReveal) this.observeMission();
+    if (!this.state.classesReveal) this.setupReveal(this.classesGridRef, 'classesReveal', '_classesObs');
+    if (!this.state.pastReveal) this.setupReveal(this.pastGridRef, 'pastReveal', '_pastObs');
     this.syncPaypalButtons();
   }
 
@@ -3759,6 +3795,17 @@ class Component extends DCLogic {
     const screen = this.state.screen || this.props.startScreen || 'home';
     const isOpera = screen === 'opera';
     const isBrush = screen === 'brush';
+
+    const classesReveal = this.state.classesReveal;
+    const classesRevealNo = this.state.classesRevealReduce;
+    const classesWithReveal = t.classes.map((c, i) => ({
+      ...c,
+      revealStyle: {
+        opacity: classesReveal ? 1 : 0,
+        transform: classesReveal ? 'translateY(0)' : 'translateY(16px)',
+        transition: classesRevealNo ? 'none' : ('opacity 500ms var(--ease-out) ' + (i * 80) + 'ms, transform 500ms var(--ease-out) ' + (i * 80) + 'ms')
+      }
+    }));
 
     const base = {
       fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase',
@@ -3964,9 +4011,16 @@ class Component extends DCLogic {
       })),
       past: sortedPast.slice(0, this.state.pastN).map((p, i) => {
         const hov = this.state.hoverPast === i;
+        const pastReveal = this.state.pastReveal;
+        const pastDelay = (i % 6) * 70;
         return {
           ...p,
           hasImg: !!p.img,
+          revealStyle: {
+            opacity: pastReveal ? 1 : 0,
+            transform: pastReveal ? 'translateY(0)' : 'translateY(16px)',
+            transition: this.state.pastRevealReduce ? 'none' : ('opacity 500ms var(--ease-out) ' + pastDelay + 'ms, transform 500ms var(--ease-out) ' + pastDelay + 'ms')
+          },
           posterStyle: {
             position: 'absolute', inset: 0,
             backgroundColor: p.posterBg || 'transparent',
@@ -4116,6 +4170,9 @@ class Component extends DCLogic {
       notJoined: !this.state.joined,
       missionRef: this.missionRef,
       mRevealed: this.mr,
+      classesGridRef: this.classesGridRef,
+      classesWithReveal,
+      pastGridRef: this.pastGridRef,
       mSeam: {
         position: 'absolute', left: '50%', top: '50%', width: '2px',
         height: this.mr ? '26px' : '0px',
