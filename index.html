@@ -69,23 +69,21 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 /* --- Scroll reveal ---------------------------------------------------------
    Progressive enhancement: the hiding rule only applies once JS has put
    .nycos-reveal on <html>, so if the script never runs the content is simply
-   visible rather than stuck at opacity 0. The first block of each screen is
-   skipped — it's above the fold and already covered by the page transition —
-   as is anything marked data-no-reveal (blocks with bespoke choreography). */
-.nycos-reveal main > *:not(:first-child):not([data-no-reveal]){
+   visible rather than stuck at opacity 0. JS tags the blocks to animate with
+   data-reveal-block; it skips the first block of each screen (above the fold,
+   already covered by the page transition) and anything marked data-no-reveal
+   (blocks with their own choreography). */
+.nycos-reveal [data-reveal-block]{
   opacity:0;
   transform:translateY(18px);
   transition:opacity 700ms var(--ease-soft), transform 700ms var(--ease-soft);
 }
-/* Must out-specify the hiding rule above, so it repeats the same negations. */
-.nycos-reveal main > *[data-revealed]:not(:first-child):not([data-no-reveal]){opacity:1;transform:none}
+.nycos-reveal [data-reveal-block][data-revealed]{opacity:1;transform:none}
 
 /* Blocks holding a run of cards cascade their items one by one instead of
    fading in as a single slab, so the block itself must stop animating (it
    would otherwise fade the whole group in before the stagger could read). */
-.nycos-reveal main > *[data-stagger]:not(:first-child):not([data-no-reveal]){
-  opacity:1;transform:none;transition:none;
-}
+.nycos-reveal [data-reveal-block][data-stagger]{opacity:1;transform:none;transition:none}
 /* Timing matches the home page class list, which already staggered this way
    and is the reference for how the cascade should feel. */
 .nycos-reveal [data-reveal-item]{
@@ -94,7 +92,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
   transition:opacity 500ms var(--ease-soft), transform 500ms var(--ease-soft);
   transition-delay:calc(var(--i,0) * 80ms);
 }
-.nycos-reveal main > *[data-revealed] [data-reveal-item]{opacity:1;transform:none}
+.nycos-reveal [data-reveal-block][data-revealed] [data-reveal-item]{opacity:1;transform:none}
 
 @media (prefers-reduced-motion: reduce){
   .nycos-reveal [data-reveal-item]{opacity:1;transform:none;transition:none}
@@ -104,7 +102,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
   [style*="nycos-trust"]{animation:none !important}
   [style*="animation:nycos-"]{animation-duration:0.01ms !important;animation-iteration-count:1 !important}
   main{animation:none}
-  .nycos-reveal main > *:not(:first-child):not([data-no-reveal]){opacity:1;transform:none;transition:none}
+  .nycos-reveal [data-reveal-block]{opacity:1;transform:none;transition:none}
 }
 @keyframes nycos-spin{to{transform:rotate(360deg)}}
 .nycos-spinner{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;animation:nycos-spin 600ms linear infinite;vertical-align:-2px;margin-right:8px}
@@ -239,7 +237,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <section style="background:var(--surface-card);border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);padding:88px 0">
-<div ref="{{ classesGridRef }}" style="max-width:1200px;margin:0 auto;padding:0 32px">
+<div style="max-width:1200px;margin:0 auto;padding:0 32px">
 <div style="display:flex;gap:64px;align-items:flex-end;margin-bottom:40px">
 <div style="flex:0 0 420px;display:flex;flex-direction:column;gap:10px">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-accent)">{{ t.classesLabel }}</span>
@@ -247,8 +245,8 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 <p style="flex:1;font-size:15px;line-height:1.65;color:var(--text-secondary);margin:0 0 6px;max-width:520px;text-wrap:pretty">{{ t.classesIntro }}</p>
 </div>
-<sc-for list="{{ classesWithReveal }}" as="c" hint-placeholder-count="3">
-<div style="{{ c.revealStyle }}">
+<sc-for list="{{ t.classes }}" as="c" hint-placeholder-count="3">
+<div>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.ProgramCard" image="{{ c.img }}" title="{{ c.title }}" description="{{ c.desc }}" meta="{{ c.meta }}" hint-size="100%,190px"></x-import>
 </div>
 </sc-for>
@@ -1389,9 +1387,9 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </div>
 
-<div ref="{{ pastGridRef }}" style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
 <sc-for list="{{ past }}" as="p" hint-placeholder-count="6">
-<div style="{{ p.revealStyle }}">
+<div>
 <div onClick="{{ p.open }}" onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" style="{{ p.cardStyle }}">
 <div style="aspect-ratio:3/4;background:var(--surface-page-alt);border-bottom:1px solid var(--border-subtle);display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:13px;position:relative;overflow:hidden">
 <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ false }}">
@@ -2044,6 +2042,17 @@ function clearStagger(block) {
   }
 }
 
+// Some design-system components wrap their content in a display:contents box.
+// Such an element generates no box at all, so opacity/transform do nothing to
+// it and IntersectionObserver can never report it — animate its real child.
+function resolveBlock(el) {
+  let n = el, guard = 0;
+  while (n && getComputedStyle(n).display === 'contents' && n.firstElementChild && guard++ < 4) {
+    n = n.firstElementChild;
+  }
+  return n;
+}
+
 function scanReveal() {
   if (typeof document === 'undefined') return;
   if (!document.documentElement.classList.contains('nycos-reveal')) return;
@@ -2051,11 +2060,14 @@ function scanReveal() {
   if (!obs) return;
   const main = document.querySelector('main');
   if (!main) return;
-  Array.prototype.forEach.call(main.children, (el, i) => {
+  Array.prototype.forEach.call(main.children, (wrapper, i) => {
     if (i === 0) return;                                  // hero: page transition covers it
-    if (el.hasAttribute('data-no-reveal')) return;
+    if (wrapper.hasAttribute('data-no-reveal')) return;
+    const el = resolveBlock(wrapper);
+    if (!el || el.hasAttribute('data-no-reveal')) return;
     if (el.hasAttribute('data-revealed') || el.__nycosWatched) return;
     el.__nycosWatched = true;
+    el.setAttribute('data-reveal-block', '');
     applyStagger(el);                                     // runs pre-paint, so no flash
     obs.observe(el);
   });
@@ -2066,8 +2078,9 @@ function scanReveal() {
 function resetReveal() {
   const main = document.querySelector('main');
   if (!main) return;
-  Array.prototype.forEach.call(main.children, (el) => {
+  main.querySelectorAll('[data-reveal-block]').forEach((el) => {
     el.removeAttribute('data-revealed');
+    el.removeAttribute('data-reveal-block');
     el.__nycosWatched = false;
     clearStagger(el);            // content differs on the new screen: re-pick the run
     if (revealObs) revealObs.unobserve(el);
@@ -3843,10 +3856,6 @@ class Component extends DCLogic {
     hoverNav: null,
     mReveal: false,
     mReduce: false,
-    classesReveal: false,
-    classesRevealReduce: false,
-    pastReveal: false,
-    pastRevealReduce: false,
     who: 0,
     pastN: 6,
     ev: { sort: 'upcoming', filter: 'all' },
@@ -3876,8 +3885,6 @@ class Component extends DCLogic {
       if (saved === 'en' || saved === 'zh') this.setState({ lang: saved });
     } catch (e) {}
     this.observeMission();
-    this.setupReveal(this.classesGridRef, 'classesReveal', '_classesObs');
-    this.setupReveal(this.pastGridRef, 'pastReveal', '_pastObs');
     this._lastScreen = this.state.screen || this.props.startScreen || 'home';
     scanReveal();
     fetch('/api/paypal-config').then(r => r.ok ? r.json() : null).then(data => {
@@ -3893,24 +3900,18 @@ class Component extends DCLogic {
 
   componentWillUnmount() {
     if (this._mObs) { this._mObs.disconnect(); this._mObs = null; }
-    if (this._classesObs) { this._classesObs.disconnect(); this._classesObs = null; }
-    if (this._pastObs) { this._pastObs.disconnect(); this._pastObs = null; }
   }
 
   go(screen) {
     const ok = ['home', 'about', 'programs', 'opera', 'brush', 'workshops', 'youth', 'events', 'membership', 'volunteer', 'contact'];
-    this.setState({ screen: ok.indexOf(screen) >= 0 ? screen : 'home', menu: null, submitted: false, lb: null, pastN: 6, dd: null, joined: false, sent: false, mReveal: false, classesReveal: false, pastReveal: false });
+    this.setState({ screen: ok.indexOf(screen) >= 0 ? screen : 'home', menu: null, submitted: false, lb: null, pastN: 6, dd: null, joined: false, sent: false, mReveal: false });
     if (this._mObs) { this._mObs.disconnect(); this._mObs = null; }
-    if (this._classesObs) { this._classesObs.disconnect(); this._classesObs = null; }
-    if (this._pastObs) { this._pastObs.disconnect(); this._pastObs = null; }
     // Land at the top instantly — an eased scroll here would fight the
     // incoming page transition.
     if (typeof window !== 'undefined') { stopScrollAnim(); window.scrollTo(0, 0); }
   }
 
   missionRef = React.createRef();
-  classesGridRef = React.createRef();
-  pastGridRef = React.createRef();
 
   get mr() { return this.state.mReveal; }
   get mNo() { return this.state.mReduce; }
@@ -3932,26 +3933,9 @@ class Component extends DCLogic {
     this._mObs.observe(el);
   }
 
-  setupReveal(ref, stateKey, obsProp) {
-    const el = ref.current;
-    if (!el || this[obsProp]) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      this.setState({ [stateKey]: true, [stateKey + 'Reduce']: true });
-      return;
-    }
-    this[obsProp] = new IntersectionObserver((entries) => {
-      if (entries.some(e => e.isIntersecting)) {
-        this.setState({ [stateKey]: true });
-        if (this[obsProp]) { this[obsProp].disconnect(); this[obsProp] = null; }
-      }
-    }, { threshold: 0.15 });
-    this[obsProp].observe(el);
-  }
 
   componentDidUpdate() {
     if (!this.state.mReveal) this.observeMission();
-    if (!this.state.classesReveal) this.setupReveal(this.classesGridRef, 'classesReveal', '_classesObs');
-    if (!this.state.pastReveal) this.setupReveal(this.pastGridRef, 'pastReveal', '_pastObs');
 
     const screen = this.state.screen || this.props.startScreen || 'home';
     if (screen !== this._lastScreen) {
@@ -4055,17 +4039,6 @@ class Component extends DCLogic {
     const screen = this.state.screen || this.props.startScreen || 'home';
     const isOpera = screen === 'opera';
     const isBrush = screen === 'brush';
-
-    const classesReveal = this.state.classesReveal;
-    const classesRevealNo = this.state.classesRevealReduce;
-    const classesWithReveal = t.classes.map((c, i) => ({
-      ...c,
-      revealStyle: {
-        opacity: classesReveal ? 1 : 0,
-        transform: classesReveal ? 'translateY(0)' : 'translateY(16px)',
-        transition: classesRevealNo ? 'none' : ('opacity 500ms var(--ease-out) ' + (i * 80) + 'ms, transform 500ms var(--ease-out) ' + (i * 80) + 'ms')
-      }
-    }));
 
     const base = {
       fontFamily: 'var(--font-mono)', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase',
@@ -4271,16 +4244,9 @@ class Component extends DCLogic {
       })),
       past: sortedPast.slice(0, this.state.pastN).map((p, i) => {
         const hov = this.state.hoverPast === i;
-        const pastReveal = this.state.pastReveal;
-        const pastDelay = (i % 6) * 70;
         return {
           ...p,
           hasImg: !!p.img,
-          revealStyle: {
-            opacity: pastReveal ? 1 : 0,
-            transform: pastReveal ? 'translateY(0)' : 'translateY(16px)',
-            transition: this.state.pastRevealReduce ? 'none' : ('opacity 500ms var(--ease-out) ' + pastDelay + 'ms, transform 500ms var(--ease-out) ' + pastDelay + 'ms')
-          },
           posterStyle: {
             position: 'absolute', inset: 0,
             backgroundColor: p.posterBg || 'transparent',
@@ -4430,9 +4396,6 @@ class Component extends DCLogic {
       notJoined: !this.state.joined,
       missionRef: this.missionRef,
       mRevealed: this.mr,
-      classesGridRef: this.classesGridRef,
-      classesWithReveal,
-      pastGridRef: this.pastGridRef,
       mSeam: {
         position: 'absolute', left: '50%', top: '50%', width: '2px',
         height: this.mr ? '26px' : '0px',
