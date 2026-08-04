@@ -117,9 +117,8 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </helmet>
 
 <header style="display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;row-gap:14px;padding:20px 32px;background:var(--surface-page);border-bottom:1px solid var(--border-subtle);font-family:var(--font-body);position:sticky;top:0;z-index:40">
-<a onClick="{{ goHome }}" style="display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none;flex:0 0 auto">
-<img src="assets/logo-mark.png" alt="NYCOS" style="height:30px;width:auto">
-<span style="font-family:var(--font-display);font-size:18px;letter-spacing:-0.08em;color:var(--text-primary)">{{ t.mark }}</span>
+<a onClick="{{ goHome }}" style="display:flex;align-items:center;cursor:pointer;text-decoration:none;flex:0 0 auto">
+<img src="assets/logo-lockup-horizontal.png" alt="{{ t.org }}" style="height:38px;width:auto">
 </a>
 <nav style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;row-gap:8px;flex:1 1 auto;justify-content:center;min-width:0">
 <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
@@ -1889,7 +1888,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <footer style="background:var(--surface-inverse);color:var(--text-on-inverse);font-family:var(--font-body);padding:72px 32px 28px">
 <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px">
 <div style="display:flex;flex-direction:column;gap:14px">
-<img src="assets/logo-mark.png" alt="NYCOS" style="height:38px;width:auto;filter:brightness(0) invert(1);opacity:0.92;align-self:flex-start" loading="lazy">
+<img src="assets/logo-lockup-horizontal.png" alt="{{ t.org }}" style="height:34px;width:auto;filter:brightness(0) invert(1);opacity:0.92;align-self:flex-start" loading="lazy">
 <p style="font-size:13px;line-height:1.65;color:rgba(247,244,238,0.6);max-width:290px;margin:0">{{ t.footTagline }}</p>
 <div style="display:flex;flex-direction:column;gap:5px;margin-top:6px;font-size:13px;color:rgba(247,244,238,0.82)">
 <span>{{ t.addr1 }}</span><span>{{ t.addr2 }}</span>
