@@ -84,8 +84,9 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
    fading in as a single slab, so the block itself must stop animating (it
    would otherwise fade the whole group in before the stagger could read). */
 .nycos-reveal [data-reveal-block][data-stagger]{opacity:1;transform:none;transition:none}
-/* Blocks whose reveal was redirected onto a text sub-element (their photo
-   sibling must stay put) likewise stop animating themselves. */
+/* Solid-color "band" blocks (Donate CTA, tax-note strip, Newsletter) keep an
+   always-visible background — their reveal is redirected onto a text child
+   instead, so the block itself stops animating too. */
 .nycos-reveal [data-reveal-block][data-reveal-parent]{opacity:1;transform:none;transition:none}
 /* Timing matches the home page class list, which already staggered this way
    and is the reference for how the cascade should feel. */
@@ -305,12 +306,16 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </section>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.donateTitle }}" description="{{ t.donateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
-<div style="background:var(--surface-accent-deep);padding:14px 32px;text-align:center">
+</div>
+<div data-reveal-text-only style="background:var(--surface-accent-deep);padding:14px 32px;text-align:center">
 <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:rgba(255,255,255,0.72)">{{ t.taxNote }}</span>
 </div>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
 
 </main>
 </sc-if>
@@ -357,9 +362,13 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </section>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.pDonateTitle }}" description="{{ t.pDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+</div>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
 
 </main>
 </sc-if>
@@ -936,9 +945,13 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </section>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.pDonateTitle }}" description="{{ t.pDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+</div>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
 
 </main>
 </sc-if>
@@ -1041,9 +1054,13 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </section>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.abDonateTitle }}" description="{{ t.abDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+</div>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
 
 </main>
 </sc-if>
@@ -1108,9 +1125,13 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </section>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.wkDonateTitle }}" description="{{ t.wkDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+</div>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
 
 </main>
 </sc-if>
@@ -1187,7 +1208,9 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </section>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
 
 </main>
 </sc-if>
@@ -1280,9 +1303,13 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </section>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.ytDonateTitle }}" description="{{ t.ytDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+</div>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
 
 </main>
 </sc-if>
@@ -1464,9 +1491,13 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <div id="ev-newsletter"></div>
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.evDonateTitle }}" description="{{ t.evDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+</div>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
 
 </main>
 </sc-if>
@@ -1712,9 +1743,13 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </section>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.mbDonateTitle }}" description="{{ t.mbDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+</div>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
 
 </main>
 </sc-if>
@@ -1843,7 +1878,9 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div><a href="mailto:nycosyouth@gmail.com" style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--text-accent); text-decoration: none; border-bottom: 1px solid transparent; width: 285px; height: 8px;transition:border-bottom-color 160ms var(--ease-out);" style-hover="border-bottom-color:currentColor">{{ r.v }}</a>
 </section>
 
+<div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
 
 </main>
 </sc-if>
@@ -2023,68 +2060,44 @@ function findStaggerGroup(block) {
   return best;
 }
 
-// Photos should already be sitting there, not sliding/fading in with the
-// text — only the copy reveals. Every card pattern on this site (event
-// cards, poster cards, ProgramCard, EditorialBlock) puts the photo and the
-// text in their own sibling wrapper, so excluding media only ever means
-// picking the OTHER sibling — the photo itself is never touched.
-function isMediaEl(el) {
-  if (el.tagName === 'IMG') return true;
-  const bg = getComputedStyle(el).backgroundImage;
-  return !!(bg && bg !== 'none');
-}
-function containsMedia(el) {
-  if (isMediaEl(el)) return true;
-  return !!(el.querySelector && (el.querySelector('img') || el.querySelector('[style*="background-image"]')));
-}
-// Returns what should actually carry the reveal animation for a card/section:
-// itself, if there's no photo anywhere inside it; otherwise its non-photo
-// direct sibling(s), leaving the photo wrapper untouched and always visible.
-// Empty array means "all photo, no text" — nothing animates, nothing hides.
-function pickTextTargets(el) {
-  if (!containsMedia(el)) return [el];
-  // List items are often a thin single-child shell (a plain <div> wrapper
-  // per sc-for row) around the actual photo+text pair, so the split doesn't
-  // necessarily live one level down — drill through shells until reaching
-  // the node that actually branches.
-  let host = el, guard = 0;
-  while (host && guard++ < 6) {
-    const kids = Array.prototype.filter.call(host.children, (c) => c.nodeType === 1);
-    if (kids.length !== 1) break;
-    host = kids[0];
-  }
-  const kids = Array.prototype.filter.call(host.children, (c) => c.nodeType === 1);
-  return kids.filter((k) => !containsMedia(k));
-}
-
 function applyStagger(block) {
   const group = findStaggerGroup(block);
   if (!group) return;
   block.setAttribute('data-stagger', '');   // block itself stops fading as one unit
-  const marked = [];
   group.kids.forEach((kid, i) => {
-    pickTextTargets(kid).forEach((t) => {
-      t.setAttribute('data-reveal-item', '');
-      t.style.setProperty('--i', String(i));
-      marked.push(t);
-    });
+    kid.setAttribute('data-reveal-item', '');
+    kid.style.setProperty('--i', String(i));
   });
-  block.__nycosItems = marked;
+  block.__nycosItems = group.kids;
 }
 
-// Companion to applyStagger for blocks that DIDN'T match a repeating-card
-// pattern but still hold a single photo+text pair (e.g. an EditorialBlock).
-// The block itself must stop fading — its photo needs to stay put — so the
-// animation is redirected onto just the resolved text sibling(s).
-function applySingleReveal(block) {
-  const targets = pickTextTargets(block);
-  if (targets.length === 1 && targets[0] === block) return;   // no photo: default whole-block fade is fine as-is
+// Drills through single-child wrapper shells (an x-import's own internal
+// wrapper, a component's outer <section>, ...) until reaching the node that
+// actually holds multiple children — i.e. the real text content, past
+// whatever shell structure sits above it.
+function pickBandTextTarget(el) {
+  let host = el, guard = 0;
+  while (host && guard++ < 8) {
+    const kids = Array.prototype.filter.call(host.children, (c) => c.nodeType === 1);
+    if (kids.length !== 1) break;
+    host = kids[0];
+  }
+  return host !== el ? host : null;
+}
+
+// The three solid-color "band" sections (Donate CTA, its tax-note strip, the
+// Newsletter band — marked data-reveal-text-only in the template) keep an
+// always-visible background; only their text fades. The block itself is
+// excluded from the default fade (data-reveal-parent) and the animation is
+// redirected onto its resolved text content, which has no background of its
+// own, so the section's color is never touched by the child's opacity.
+function applyBandReveal(block) {
+  const target = pickBandTextTarget(block);
+  if (!target) return;
   block.setAttribute('data-reveal-parent', '');
-  targets.forEach((t, i) => {
-    t.setAttribute('data-reveal-item', '');
-    t.style.setProperty('--i', String(i));
-  });
-  block.__nycosItems = targets;
+  target.setAttribute('data-reveal-item', '');
+  target.style.setProperty('--i', '0');
+  block.__nycosItems = [target];
 }
 
 function clearStagger(block) {
@@ -2130,8 +2143,8 @@ function scanReveal() {
     if (el.hasAttribute('data-revealed') || el.__nycosWatched) return;
     el.__nycosWatched = true;
     el.setAttribute('data-reveal-block', '');
-    applyStagger(el);                                     // runs pre-paint, so no flash
-    if (!el.hasAttribute('data-stagger')) applySingleReveal(el);
+    if (el.hasAttribute('data-reveal-text-only')) applyBandReveal(el);
+    else applyStagger(el);                                // runs pre-paint, so no flash
     obs.observe(el);
     markedRevealBlocks.add(el);
   });
@@ -2151,8 +2164,8 @@ function scanReveal() {
     const stale = items && items.some((it) => !document.body.contains(it));
     if (!stale) return;
     clearStagger(el);
-    applyStagger(el);
-    if (!el.hasAttribute('data-stagger')) applySingleReveal(el);
+    if (el.hasAttribute('data-reveal-text-only')) applyBandReveal(el);
+    else applyStagger(el);
   });
 }
 
