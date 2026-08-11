@@ -14,8 +14,8 @@
 /* v2 brand accents — the gradient/curtain family (used verbatim) */
 --color-opera-red:#C8102E;     /* cultural primary — Chinese celebration + theatrical curtain */
 --color-opera-red-deep:#9E0C24;
---color-blue:#0C46E8;
---color-periwinkle:#BDBBFF;
+--color-blue:#0033A0;
+--color-periwinkle:#A9B7DC;
 --color-mint:#C8F6F9;
 --color-blush:#FBDFE4;
 --color-gold:#9C7A3C;          /* single restrained metallic detail (rules, fine lines) */
@@ -54,8 +54,8 @@
 --accent-gold-hover:var(--color-gold-soft);
 
 /* ── the "curtain" gradient — the single decorative brand object, hero/cover only ── */
---gradient-curtain:linear-gradient(103deg,#C8102E 0%,#9E0C24 34%,#0C46E8 78%,#BDBBFF 100%); /* @kind color */
---gradient-curtain-radial:radial-gradient(120% 140% at 18% 22%,#C8102E 0%,#9E0C24 40%,#0C46E8 84%,#BDBBFF 100%); /* @kind color */
+--gradient-curtain:linear-gradient(103deg,#C8102E 0%,#9E0C24 34%,#0033A0 78%,#A9B7DC 100%); /* @kind color */
+--gradient-curtain-radial:radial-gradient(120% 140% at 18% 22%,#C8102E 0%,#9E0C24 40%,#0033A0 84%,#A9B7DC 100%); /* @kind color */
 
 /* ── links & focus ── */
 --link-color:var(--color-opera-red);
