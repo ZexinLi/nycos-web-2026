@@ -51,6 +51,7 @@ export default async function handler(req, res) {
           Tier: tier,
           'Payment Method': pay || '',
           Amount: typeof amount === 'number' ? amount : Number(amount) || 0,
+          'Payment Status': pay === 'paypal' ? 'Paid' : 'Pending — awaiting Zelle transfer',
           'PayPal Order ID': paypalOrderId || '',
           'PayPal Capture ID': paypalCaptureId || '',
         },
