@@ -240,6 +240,21 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
   .nycos-grid-collapse{
     grid-template-columns:1fr !important;
   }
+  /* Registration/contact forms: the compiled Input/Select design-system
+     component renders at a fixed ~401px whatever its grid cell's actual
+     width is (its own `hint-size="100%,64px"` doesn't translate to a real
+     100% at runtime). Harmless in a 2-up desktop grid wider than 401px, but
+     once .nycos-grid-collapse above drops those fields to one narrow mobile
+     column, the fixed width becomes the page's own horizontal-scroll cause.
+     Targeted by tag name, not a style/class match, since — per the note
+     below — this runtime's inline-style reserialization breaks [style*=]
+     substring selectors against compiled component output the same way it
+     does template markup. */
+  form input, form select, form textarea{
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+  }
 }
 
 /* --- Mobile flex collapse ---------------------------------------------------
@@ -276,6 +291,68 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
     flex:1 1 auto !important;
     max-width:100% !important;
   }
+}
+
+/* --- Hero headline scaling ---------------------------------------------------
+   Every hero <h1> across the site is set inline at a fixed 64px with no
+   responsive fallback — fine on desktop, but on a 375px phone the display
+   face's wide letterforms wrap to one or two words per line, several screen
+   heights tall. Shared class rather than a [style*=] selector for the same
+   reserialization reason noted above (this runtime re-adds a space after
+   every inline style ':' at render time, which breaks substring matches
+   against the un-spaced source). Two steps: a tablet trim, then a steeper
+   phone cut where the wrapping problem actually bites. */
+@media (max-width:1000px){
+  .nycos-hero-h1{font-size:44px !important}
+}
+@media (max-width:640px){
+  .nycos-hero-h1{font-size:34px !important;line-height:1.1 !important}
+}
+
+/* --- Blue-block hero padding ---------------------------------------------------
+   The rounded blue-card heroes (About, Programs, Events, Membership, Contact)
+   pair a 40px section gutter with a 72px/64px card padding — desktop-scaled
+   values that together eat 208px off a 375px phone width, squeezing the text
+   column down to ~167px and forcing near-single-word line wraps regardless of
+   the font-size fix above. Trimmed in two steps like the headline rule. */
+@media (max-width:1000px){
+  .nycos-hero-outer{padding-left:24px !important;padding-right:24px !important}
+  .nycos-hero-card{padding-left:40px !important;padding-right:40px !important}
+}
+@media (max-width:640px){
+  .nycos-hero-outer{padding-left:16px !important;padding-right:16px !important}
+  .nycos-hero-card{padding:40px 22px !important}
+  /* Membership hero: the fan-cutout figure is sized as a % of the card's own
+     height, which itself grows with the text content (eyebrow, title, lede,
+     and the "at a glance" facts row all stacking in normal flow). On mobile
+     that combination makes the image tall enough to cover the facts row
+     underneath it. Pinned to a small fixed height here so it reads as a
+     corner accent instead of competing with the text for space. */
+  .nycos-hero-bleed-fig{height:130px !important;max-width:40% !important}
+  /* Facts stack full-width instead of a 2-up wrap — the side-border divider
+     only makes sense between items sharing a row. */
+  .nycos-mb-facts-row{flex-direction:column !important;gap:14px !important}
+  .nycos-mb-fact{padding:0 !important;border-left:none !important}
+  .nycos-mb-fact + .nycos-mb-fact{border-left:none !important;padding-left:0 !important;border-top:1px solid rgba(247,244,238,0.2);padding-top:14px !important}
+  /* Opera/Brush/Workshops hero: the side-figure image is sized as a % of
+     the section's own height, which is itself a large fixed padding-bottom
+     (144–280px, calibrated on desktop to let the figure bleed cleanly past
+     the section edge) plus a 184px top padding for header clearance. Both
+     are desktop-scaled gaps that just leave dead space once the figure
+     itself is dropped below — simplest mobile treatment is to hide the
+     decorative figure outright and let the text sit in a normal-sized
+     hero instead of chasing an image that has nowhere non-overlapping
+     left to go. */
+  .nycos-cream-hero{margin-top:0 !important;padding:32px 16px 40px !important}
+  .nycos-hero-side-fig{
+    display:none !important;
+  }
+  /* Opera page only: the "Professional Training Pathway" card is pulled up
+     with a fixed -180px margin to counteract the hero's desktop-only extra
+     padding-bottom (280px, for the tall bled figure). That padding just got
+     trimmed to 40px above for mobile, so the same fixed pull-up now drags
+     the dark card up over the hero's own text instead of just closing a gap. */
+  .nycos-pathway-pullup{margin-top:0 !important}
 }
 
 
@@ -445,7 +522,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <section style="position:relative;background:var(--surface-page);padding:110px 32px 40px;overflow:hidden">
 <div style="max-width:820px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold)">{{ t.aEyebrow }}</span>
-<h1 style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.05;letter-spacing:-0.08em;color:#22328c;margin:0;text-wrap:pretty">{{ t.cTitle }}</h1>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.05;letter-spacing:-0.08em;color:#22328c;margin:0;text-wrap:pretty">{{ t.cTitle }}</h1>
 <p style="font-size:17px;line-height:1.7;color:#3b4aa8;margin:0;max-width:520px;text-wrap:pretty">{{ t.cSub }}</p>
 <div style="display:flex;gap:14px;margin-top:6px">
 <a href="#upcoming" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;letter-spacing:0.02em;padding:15px 30px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.cCta1 }}</a>
@@ -586,9 +663,6 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </sc-for>
 </div>
-<div style="display:flex;justify-content:center;padding-top:20px">
-<span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;color:var(--text-tertiary)">{{ t.benefitTbc }}</span>
-</div>
 </section>
 
 <div data-reveal-text-only>
@@ -608,12 +682,12 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <sc-if value="{{ isPrograms }}" hint-placeholder-val="{{ false }}">
 <main data-screen-label="Programs">
 
-<section style="margin-top:-88px;background:var(--surface-page);padding:130px 40px 60px;position:relative">
-<div style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:hidden">
+<section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:130px 40px 60px;position:relative">
+<div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:hidden">
 <img src="assets/programs-hero-figure.webp" alt="" style="position:absolute;right:0;top:0;height:100%;width:auto;object-fit:cover">
-<div style="position:relative;display:flex;flex-direction:column;gap:18px;max-width:600px">
-<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.pEyebrow }}</span>
-<h1 style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.pTitle }}</h1>
+<div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px;max-width:600px">
+<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.pEyebrow }}</span>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.pTitle }}</h1>
 <p style="font-size:16.5px;line-height:1.7;color:rgba(247,244,238,0.78);margin:0;max-width:520px;text-wrap:pretty">{{ t.pIntro }}</p>
 </div>
 </div>
@@ -652,11 +726,11 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <main data-screen-label="Class page">
 
 <sc-if value="{{ isOpera }}" hint-placeholder-val="{{ false }}">
-<section style="margin-top:-88px;background:var(--surface-page);padding:184px 32px 280px;position:relative;overflow:hidden">
-<img src="assets/opera-class-hero-warrior-figure.webp" alt="" style="position:absolute;right:4%;top:104px;height:86%;width:auto;max-width:52%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 74%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 74%)">
+<section class="nycos-cream-hero" style="margin-top:-88px;background:var(--surface-page);padding:184px 32px 280px;position:relative;overflow:hidden">
+<img class="nycos-hero-side-fig" src="assets/opera-class-hero-warrior-figure.webp" alt="" style="position:absolute;right:4%;top:104px;height:86%;width:auto;max-width:52%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 74%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 74%)">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 32px;display:flex;flex-direction:column;gap:18px">
-<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-accent)">{{ page.eyebrow }}</span>
-<h1 style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-blue);margin:0;max-width:700px;text-wrap:pretty">{{ page.title }}</h1>
+<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--text-accent)">{{ page.eyebrow }}</span>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-blue);margin:0;max-width:700px;text-wrap:pretty">{{ page.title }}</h1>
 <sc-if value="{{ page.titleAlt }}" hint-placeholder-val="{{ false }}">
 <span style="font-family:var(--font-cjk-serif);font-size:22px;color:rgba(0,51,160,0.72);line-height:1.3">{{ page.titleAlt }}</span>
 </sc-if>
@@ -665,11 +739,11 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 </sc-if>
 <sc-if value="{{ isBrush }}" hint-placeholder-val="{{ false }}">
-<section style="margin-top:-88px;background:var(--surface-page);padding:184px 32px 144px;position:relative;overflow:hidden">
-<img src="assets/class-hero-brush-tip.webp" alt="" style="position:absolute;right:0%;top:110px;height:98%;width:auto;max-width:50%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 78%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 78%)">
+<section class="nycos-cream-hero" style="margin-top:-88px;background:var(--surface-page);padding:184px 32px 144px;position:relative;overflow:hidden">
+<img class="nycos-hero-side-fig" src="assets/class-hero-brush-tip.webp" alt="" style="position:absolute;right:0%;top:110px;height:98%;width:auto;max-width:50%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 78%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 78%)">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 32px;display:flex;flex-direction:column;gap:18px">
-<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-accent)">{{ page.eyebrow }}</span>
-<h1 style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-blue);margin:0;max-width:700px;text-wrap:pretty">{{ page.title }}</h1>
+<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--text-accent)">{{ page.eyebrow }}</span>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-blue);margin:0;max-width:700px;text-wrap:pretty">{{ page.title }}</h1>
 <sc-if value="{{ page.titleAlt }}" hint-placeholder-val="{{ false }}">
 <span style="font-family:var(--font-cjk-serif);font-size:22px;color:rgba(0,51,160,0.72);line-height:1.3">{{ page.titleAlt }}</span>
 </sc-if>
@@ -690,7 +764,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </sc-if>
 
 <sc-if value="{{ isPathwayView }}" hint-placeholder-val="{{ false }}">
-<section style="max-width:1200px;margin:-180px auto 0;position:relative;padding:48px 32px 0">
+<section class="nycos-pathway-pullup" style="max-width:1200px;margin:-180px auto 0;position:relative;padding:48px 32px 0">
 <div style="background:var(--surface-inverse);padding:48px 40px;border-radius:24px;display:flex;flex-direction:column;gap:10px;margin-bottom:56px">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.opPathway.eyebrow }}</span>
 <h2 style="font-family:var(--font-display);font-weight:400;font-size:32px;letter-spacing:-0.08em;color:var(--color-paper);margin:0;text-wrap:pretty">{{ t.opPathway.title }}</h2>
@@ -736,15 +810,12 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 <sc-for list="{{ g.items }}" as="c" hint-placeholder-count="4">
 <div style="border-bottom:1px solid var(--border-subtle)">
-<div class="nycos-grid-collapse" onClick="{{ c.toggle }}" style="display:grid;grid-template-columns:120px 1fr 220px 24px;gap:26px;align-items:center;padding:22px 4px;cursor:pointer;transition:background 160ms var(--ease-out);" style-hover="background:var(--surface-page-alt)">
-<div style="aspect-ratio:1/1;background:var(--surface-page-alt);border:1px solid var(--border-subtle);display:flex;align-items:flex-end;padding:8px;overflow:hidden;position:relative">
+<div class="nycos-grid-collapse" onClick="{{ c.toggle }}" style="{{ c.mainGridStyle }}" style-hover="background:var(--surface-page-alt)">
 <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}">
+<div style="aspect-ratio:1/1;background:var(--surface-page-alt);border:1px solid var(--border-subtle);display:flex;align-items:flex-end;padding:8px;overflow:hidden;position:relative">
 <img src="{{ c.img }}" alt="{{ c.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" loading="lazy">
-</sc-if>
-<sc-if value="{{ c.noImg }}" hint-placeholder-val="{{ true }}">
-<span style="font-family:var(--font-mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-tertiary);line-height:1.4">{{ t.photoTbc }}</span>
-</sc-if>
 </div>
+</sc-if>
 <div style="display:flex;flex-direction:column;gap:7px">
 <div style="display:flex;align-items:flex-start;gap:11px;flex-wrap:wrap">
 <div style="display:flex;flex-direction:column;gap:1px">
@@ -766,8 +837,10 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <span style="{{ c.chevStyle }}">+</span>
 </div>
 <sc-if value="{{ c.open }}" hint-placeholder-val="{{ false }}">
-<div class="nycos-grid-collapse" style="display:grid;grid-template-columns:120px 1fr 220px 24px;gap:26px;padding:0 4px 30px">
+<div class="nycos-grid-collapse" style="{{ c.detailGridStyle }}">
+<sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}">
 <div></div>
+</sc-if>
 <div class="nycos-grid-collapse" style="display:grid;grid-template-columns:repeat(2,1fr);gap:22px 32px;padding:22px 26px;background:var(--surface-page-alt);border-left:2px solid var(--accent-primary)">
 <sc-for list="{{ c.detail }}" as="d" hint-placeholder-count="4">
 <div style="display:flex;flex-direction:column;gap:5px">
@@ -1037,8 +1110,9 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </sc-if>
 
 <sc-if value="{{ isOpera }}" hint-placeholder-val="{{ false }}">
-<section style="background:var(--surface-card);padding:72px 32px;margin-top:40px">
-<div class="nycos-grid-collapse" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 340px;gap:64px;align-items:start">
+<section style="background:var(--surface-card);padding:72px 0;margin-top:40px">
+<div style="max-width:1200px;margin:0 auto;padding:0 32px">
+<div class="nycos-grid-collapse" style="max-width:1200px;margin:0;display:grid;grid-template-columns:1fr 340px;gap:64px;align-items:start">
 <div style="display:flex;flex-direction:column;gap:16px">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-accent)">{{ t.inOperaLabel }}</span>
 <h2 style="font-family:var(--font-display);font-weight:400;font-size:34px;letter-spacing:-0.08em;color:var(--text-primary);margin:0;line-height:1.12;max-width:520px;text-wrap:pretty">{{ t.inOperaTitle }}</h2>
@@ -1055,11 +1129,13 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-tertiary);line-height:1.7;margin-top:4px">{{ t.inGuestNote }}</span>
 </div>
 </div>
+</div>
 </section>
 </sc-if>
 
-<section id="register" style="background:var(--surface-page-alt);padding:80px 32px">
-<div style="max-width:1000px;margin:0 auto">
+<section id="register" style="background:var(--surface-page-alt);padding:80px 0">
+<div style="max-width:1200px;margin:0 auto;padding:0 32px">
+<div style="max-width:1200px;margin:0">
 <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:36px">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-accent)">{{ t.regLabel }}</span>
 <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
@@ -1107,77 +1183,6 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </sc-if>
 </div>
 
-<div style="display:flex;flex-direction:column;gap:16px;padding-top:22px;border-top:1px solid var(--border-subtle)">
-<span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.fMembership }} *</span>
-<div class="nycos-grid-collapse" style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
-<select value="{{ form.membership }}" onChange="{{ onMembership }}" style="font-family:var(--font-body);font-size:16px;color:var(--text-primary);background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:12px 14px;appearance:none">
-<sc-for list="{{ membershipOpts }}" as="m" hint-placeholder-count="3">
-<option value="{{ m.id }}">{{ m.label }}</option>
-</sc-for>
-</select>
-<sc-if value="{{ showFormat }}" hint-placeholder-val="{{ false }}">
-<select value="{{ form.format }}" onChange="{{ onFormat }}" style="font-family:var(--font-body);font-size:16px;color:var(--text-primary);background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:12px 14px;appearance:none">
-<sc-for list="{{ formatOpts }}" as="fo" hint-placeholder-count="3">
-<option value="{{ fo.id }}">{{ fo.label }}</option>
-</sc-for>
-</select>
-</sc-if>
-</div>
-<sc-if value="{{ showQty }}" hint-placeholder-val="{{ false }}">
-<div style="max-width:220px">
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.Input" label="{{ qtyLabel }}" type="number" value="{{ qty }}" on-change="{{ onHours }}" hint-size="100%,64px"></x-import>
-</div>
-</sc-if>
-<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;background:var(--surface-inverse);border-radius:var(--radius-sm)">
-<div style="display:flex;flex-direction:column;gap:3px">
-<span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.amountLabel }}</span>
-<sc-if value="{{ packageNote }}" hint-placeholder-val="{{ false }}">
-<span style="font-family:var(--font-mono);font-size:10px;color:rgba(247,244,238,0.6)">{{ packageNote }}</span>
-</sc-if>
-</div>
-<span style="font-family:var(--font-display);font-size:28px;letter-spacing:-0.08em;color:var(--color-paper)">{{ amountDisplay }}</span>
-</div>
-</div>
-
-<div style="display:flex;flex-direction:column;gap:14px;padding-top:22px;border-top:1px solid var(--border-subtle)">
-<span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.payLabel }} *</span>
-<div class="nycos-grid-collapse" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
-<sc-for list="{{ pays }}" as="p" hint-placeholder-count="2">
-<div onClick="{{ p.go }}" style="{{ p.style }}" style-active="transform:scale(0.985);transition:transform var(--press-in) var(--ease-press-in)">
-<span style="font-family:var(--font-body);font-weight:500;font-size:14.5px">{{ p.label }}</span>
-<span style="font-size:12px;line-height:1.5;opacity:0.75">{{ p.note }}</span>
-</div>
-</sc-for>
-</div>
-<sc-if value="{{ isZelle }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:14px;padding:24px 26px;background:var(--surface-tint-blush);border-left:2px solid var(--accent-primary)">
-<span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-primary)">{{ t.zTitle }}</span>
-<p style="font-size:14px;line-height:1.7;color:var(--text-primary);margin:0;max-width:640px;text-wrap:pretty">{{ t.zBody }}</p>
-<div class="nycos-grid-collapse" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-top:4px">
-<div style="display:flex;flex-direction:column;gap:5px">
-<span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.zAcctLabel }}</span>
-<span style="font-family:var(--font-mono);font-size:14px;color:var(--text-primary)">{{ t.zAcct }}</span>
-</div>
-<div style="display:flex;flex-direction:column;gap:5px">
-<span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.zMemoLabel }}</span>
-<span style="font-family:var(--font-mono);font-size:14px;color:var(--text-primary)">{{ memoPreview }}</span>
-</div>
-</div>
-</div>
-</sc-if>
-<sc-if value="{{ isOnline }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:14px;padding:20px 24px;background:var(--surface-page-alt);border-left:2px solid var(--color-gold)">
-<p style="font-size:14px;line-height:1.7;color:var(--text-secondary);margin:0;max-width:640px;text-wrap:pretty">{{ t.onlineNote }}</p>
-<sc-if value="{{ paypalReady }}" hint-placeholder-val="{{ false }}">
-<div id="paypal-buttons-container" style="max-width:320px;min-height:44px"></div>
-</sc-if>
-<sc-if value="{{ !paypalReady }}" hint-placeholder-val="{{ true }}">
-<span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;color:var(--text-tertiary)">{{ t.paypalLoading }}</span>
-</sc-if>
-</div>
-</sc-if>
-</div>
-
 <sc-if value="{{ regError }}" hint-placeholder-val="{{ false }}">
 <div style="padding:14px 18px;background:var(--surface-tint-blush);border-left:2px solid var(--accent-primary);border-radius:var(--radius-sm);animation:nycos-fade-up 180ms var(--ease-out) both">
 <span style="font-size:13.5px;color:var(--accent-primary)">{{ regError }}</span>
@@ -1186,9 +1191,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:22px;border-top:1px solid var(--border-subtle)">
 <span style="font-size:12.5px;line-height:1.6;color:var(--text-tertiary);max-width:420px">{{ t.regFootnote }}</span>
-<sc-if value="{{ isZelle }}" hint-placeholder-val="{{ false }}">
 <button type="submit" disabled="{{ regLoading }}" style="font-family:var(--font-body);font-weight:500;font-size:15px;letter-spacing:0.02em;background:var(--accent-primary);color:#fff;border:none;border-radius:var(--radius-sm);padding:15px 30px;cursor:pointer;white-space:nowrap;opacity:{{ submitOpacity }};transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)"><sc-if value="{{ regLoading }}" hint-placeholder-val="{{ false }}"><span class="nycos-spinner"></span></sc-if>{{ submitLabel }}</button>
-</sc-if>
 </div>
 </form>
 </sc-if>
@@ -1211,6 +1214,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </sc-if>
 
 </div>
+</div>
 </section>
 
 <div data-reveal-text-only>
@@ -1227,11 +1231,12 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
 <main data-screen-label="About">
 
-<section style="margin-top:-88px;background:var(--surface-page);padding:132px 40px 40px;position:relative">
-<div style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
+<section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:132px 40px 40px;position:relative">
+<div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
 <img src="assets/about-hero-blue-card-figures.webp" alt="" style="position:absolute;right:7%;bottom:-40px;height:115%;width:auto;max-width:34%;object-fit:contain;object-position:bottom center">
-<div style="position:relative;display:flex;flex-direction:column;gap:18px;max-width:640px">
-<h1 style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;text-wrap:pretty">{{ t.abLede }}</h1>
+<div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
+<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.abEyebrow }}</span>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:640px;text-wrap:pretty">{{ t.abLede }}</h1>
 </div>
 </div>
 </section>
@@ -1328,11 +1333,11 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <sc-if value="{{ isWorkshops }}" hint-placeholder-val="{{ false }}">
 <main data-screen-label="Workshops">
 
-<section style="margin-top:-88px;background:var(--surface-page);padding:184px 32px 144px;position:relative;overflow:hidden">
-<img src="assets/workshops-hero-side-figure.webp" alt="" style="position:absolute;right:4%;top:90px;height:127%;width:auto;max-width:100%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0) 62%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0) 62%)">
+<section class="nycos-cream-hero" style="margin-top:-88px;background:var(--surface-page);padding:184px 32px 144px;position:relative;overflow:hidden">
+<img class="nycos-hero-side-fig" src="assets/workshops-hero-side-figure.webp" alt="" style="position:absolute;right:4%;top:90px;height:127%;width:auto;max-width:100%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0) 62%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0) 62%)">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 32px;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--text-accent)">{{ t.wkEyebrow }}</span>
-<h1 style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-blue);margin:0;max-width:620px;text-wrap:pretty">{{ t.wkTitle }}</h1>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-blue);margin:0;max-width:620px;text-wrap:pretty">{{ t.wkTitle }}</h1>
 <p style="font-size:16.5px;line-height:1.7;color:rgba(0,51,160,0.72);margin:0;max-width:560px;text-wrap:pretty">{{ t.wkIntro }}</p>
 </div>
 </section>
@@ -1402,7 +1407,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <div class="nycos-grid-collapse" style="position:relative;max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 320px;gap:64px;align-items:end">
 <div style="display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.vlEyebrow }}</span>
-<h1 style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:640px;text-wrap:pretty">{{ t.vlTitle }}</h1>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:640px;text-wrap:pretty">{{ t.vlTitle }}</h1>
 <p style="font-size:16.5px;line-height:1.7;color:rgba(247,244,238,0.78);margin:0;max-width:560px;text-wrap:pretty">{{ t.vlLede }}</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:12px;border-left:1px solid rgba(247,244,238,0.2);padding-left:28px">
@@ -1480,7 +1485,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <img src="assets/youth-hero-stage.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 32px;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.ytEyebrow }}</span>
-<h1 style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:640px;text-wrap:pretty">{{ t.ytTitle }}</h1>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:640px;text-wrap:pretty">{{ t.ytTitle }}</h1>
 <p style="font-size:16.5px;line-height:1.7;color:rgba(247,244,238,0.78);margin:0;max-width:560px;text-wrap:pretty">{{ t.ytLede }}</p>
 </div>
 </section>
@@ -1573,12 +1578,12 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <sc-if value="{{ isEvents }}" hint-placeholder-val="{{ false }}">
 <main data-screen-label="Events">
 
-<section style="margin-top:-88px;background:var(--surface-page);padding:175px 40px 40px;position:relative">
-<div style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
+<section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:175px 40px 40px;position:relative">
+<div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
 <img src="assets/events-hero-flag-dancer-cutout.webp" alt="" style="position:absolute;right:4%;bottom:0;height:120%;width:auto;max-width:60%;object-fit:contain;object-position:bottom center">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.evEyebrow }}</span>
-<h1 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:64px;line-height:1.04;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.evTitle }}</h1>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:64px;line-height:1.04;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.evTitle }}</h1>
 <p style="font-size:16.5px;line-height:1.7;color:rgba(247,244,238,0.78);margin:0;max-width:560px;text-wrap:pretty">{{ t.evLede }}</p>
 </div>
 </div>
@@ -1863,15 +1868,15 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <sc-if value="{{ isMembership }}" hint-placeholder-val="{{ false }}">
 <main data-screen-label="Membership">
 
-<section style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 70px;position:relative">
-<div style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
-<img src="assets/membership-hero-fan-cutout-2.webp" alt="" style="position:absolute;right:4%;bottom:0;height:116%;width:auto;max-width:58%;object-fit:contain;object-position:bottom center;z-index:45;pointer-events:none">
+<section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 70px;position:relative">
+<div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
+<img class="nycos-hero-bleed-fig" src="assets/membership-hero-fan-cutout-2.webp" alt="" style="position:absolute;right:4%;bottom:0;height:116%;width:auto;max-width:58%;object-fit:contain;object-position:bottom center;z-index:45;pointer-events:none">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.mbEyebrow }}</span>
-<h1 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:64px;line-height:1.04;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.mbTitle }}</h1>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:64px;line-height:1.04;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.mbTitle }}</h1>
 <p style="font-size:16.5px;line-height:1.7;color:rgba(247,244,238,0.78);margin:0;max-width:560px;text-wrap:pretty">{{ t.mbLede }}</p>
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--color-gold-soft);margin-top:10px">{{ t.mbFactsLabel }}</span>
-<div style="display:flex;flex-wrap:wrap;gap:0 0;margin-top:-6px">
+<div class="nycos-mb-facts-row" style="display:flex;flex-wrap:wrap;gap:0 0;margin-top:-6px">
 <sc-for list="{{ t.mbFacts }}" as="f" hint-placeholder-count="4">
 <div class="nycos-mb-fact">
 <span style="font-size:15px;font-weight:500;color:var(--color-paper)">{{ f.v }}</span>
@@ -1958,8 +1963,38 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <span style="font-family:var(--font-display);letter-spacing:-0.08em;font-size:34px;line-height:1;color:var(--text-accent)">{{ tier.amt }}</span>
 </span>
 </div>
-<a onClick="{{ joinNow }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;text-align:center;padding:14px 24px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.mbSubmit }}</a>
-<span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-tertiary);line-height:1.7">{{ t.benefitTbc }}</span>
+<sc-if value="{{ isMZelle }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px;padding:20px 22px;background:var(--surface-tint-blush);border-left:2px solid var(--accent-primary)">
+<span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-primary)">{{ t.zTitle }}</span>
+<p style="font-size:13.5px;line-height:1.65;color:var(--text-primary);margin:0">{{ t.mZBody }}</p>
+<div style="display:flex;flex-direction:column;gap:5px">
+<span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.zAcctLabel }}</span>
+<span style="font-family:var(--font-mono);font-size:13px;color:var(--text-primary)">{{ t.zAcct }}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.zMemoLabel }}</span>
+<span style="font-family:var(--font-mono);font-size:13px;color:var(--text-primary)">{{ mMemoPreview }}</span>
+</div>
+</div>
+<a onClick="{{ joinNow }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;text-align:center;padding:14px 24px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;opacity:{{ mSubmitOpacity }};transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ mSubmitLabel }}</a>
+</sc-if>
+<sc-if value="{{ isMOnline }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px;padding:16px 18px;background:var(--surface-page-alt);border-left:2px solid var(--color-gold)">
+<p style="font-size:13.5px;line-height:1.65;color:var(--text-secondary);margin:0">{{ t.onlineNote }}</p>
+<sc-if value="{{ paypalReady }}" hint-placeholder-val="{{ false }}">
+<div id="paypal-buttons-container" style="max-width:320px;min-height:44px"></div>
+</sc-if>
+<sc-if value="{{ !paypalReady }}" hint-placeholder-val="{{ true }}">
+<span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;color:var(--text-tertiary)">{{ t.paypalLoading }}</span>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ mError }}" hint-placeholder-val="{{ false }}">
+<div style="padding:12px 16px;background:var(--surface-tint-blush);border-left:2px solid var(--accent-primary);border-radius:var(--radius-sm)">
+<span style="font-size:13px;color:var(--accent-primary)">{{ mError }}</span>
+</div>
+</sc-if>
+<span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-tertiary);line-height:1.7">{{ t.mbFootnote }}</span>
 </div>
 </div>
 </sc-if>
@@ -1967,7 +2002,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <sc-if value="{{ joined }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start;padding:40px 44px;background:var(--surface-page);border:1px solid var(--border-subtle);border-top:2px solid var(--accent-primary);border-radius:var(--radius-sm);max-width:640px;animation:nycos-fade-up 240ms var(--ease-out) both">
 <span style="font-family:var(--font-display);letter-spacing:-0.08em;font-size:34px;line-height:1.1;color:var(--text-primary)">{{ t.mbThanksTitle }}</span>
-<p style="font-size:15.5px;line-height:1.7;color:var(--text-secondary);margin:0">{{ t.mbThanksBody }}</p>
+<p style="font-size:15.5px;line-height:1.7;color:var(--text-secondary);margin:0">{{ mbThanksBody }}</p>
 <a onClick="{{ joinAgain }}" style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-accent);text-decoration:none;border-bottom:1px solid currentColor;cursor:pointer;margin-top:4px">{{ t.mbThanksAgain }}</a>
 </div>
 </sc-if>
@@ -2002,9 +2037,14 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
 <main data-screen-label="Contact">
 
-<section style="margin-top:-88px;background:var(--surface-page);padding:130px 40px 60px;position:relative">
-<div style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;overflow:visible;height:287px">
-<img src="assets/contact-hero-waving-figure-trim.webp" alt="{{ t.ctEyebrow }}" style="position:absolute;left:50%;top:-15px;transform:translateX(-50%);height:302px;width:auto;object-fit:contain" loading="lazy">
+<section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:175px 40px 40px;position:relative">
+<div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
+<img class="nycos-hero-bleed-fig" src="assets/contact-hero-waving-figure-trim.webp" alt="" style="position:absolute;right:6%;bottom:0;height:118%;width:auto;object-fit:contain" loading="lazy">
+<div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px;max-width:600px">
+<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.ctEyebrow }}</span>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.ctTitle }}</h1>
+<p style="font-size:16.5px;line-height:1.7;color:rgba(247,244,238,0.78);margin:0;max-width:560px;text-wrap:pretty">{{ t.ctLede }}</p>
+</div>
 </div>
 </section>
 
@@ -2153,10 +2193,10 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </sc-for>
 </div>
-<div style="max-width:1200px;margin:56px auto 0;padding-top:24px;border-top:1px solid var(--border-inverse);display:flex;align-items:center;justify-content:space-between;gap:24px">
-<div style="display:flex;align-items:center;gap:18px">
+<div class="nycos-flex-collapse" style="max-width:1200px;margin:56px auto 0;padding-top:24px;border-top:1px solid var(--border-inverse);display:flex;align-items:center;justify-content:space-between;gap:24px">
+<div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.followLabel }}</span>
-<div style="display:flex;align-items:center;gap:14px">
+<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
 <a href="https://www.facebook.com/NYCOSYT" target="_blank" rel="noopener" aria-label="Facebook" style="color:rgba(247,244,238,0.75);display:flex;transition:color 160ms var(--ease-out);" style-hover="color:#fff"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"></rect><path d="M15.2 8.2h-1.4c-.9 0-1.3.5-1.3 1.3V21"></path><path d="M9.8 13.2h4.8"></path></svg></a>
 <a href="https://www.instagram.com/nycosyouth/" target="_blank" rel="noopener" aria-label="Instagram" style="color:rgba(247,244,238,0.75);display:flex;transition:color 160ms var(--ease-out);" style-hover="color:#fff"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="3.8"></circle><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"></circle></svg></a>
 <a href="https://www.youtube.com/@120nycos" target="_blank" rel="noopener" aria-label="YouTube" style="color:rgba(247,244,238,0.75);display:flex;transition:color 160ms var(--ease-out);" style-hover="color:#fff"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="5.5" width="19" height="13" rx="4"></rect><path d="M10.4 9.6l4.6 2.4-4.6 2.4z" fill="currentColor" stroke="none"></path></svg></a>
@@ -2552,7 +2592,7 @@ const EN = {
     { name: 'Family', amt: '70', per: '/year', tint: 'var(--surface-tint-periwinkle)', lines: ['Up to three household members', 'Full member benefits', ''] }
   ],
   join: 'Become a member',
-  benefitTbc: 'BENEFIT WORDING [TBC] · CARD / PAYPAL / ZELLE AT CHECKOUT',
+  mbFootnote: 'Membership details are stored for the office and exported to a spreadsheet for follow-up. We never share your information.',
   donateLabel: 'Support NYCOS',
   donateTitle: 'Keep a living art form living',
   donateDesc: 'Your gift pays for Youth Troupe training, brushes and ink for the calligraphy class, and the theatre rent that makes a public performance possible.',
@@ -2647,32 +2687,24 @@ const EN = {
   ],
   dLevel: 'Who it’s for', dWhen: 'Meets', dWhere: 'Where', dTeacher: 'Teacher', dFee: 'Tuition', dDur: 'Length', curriculumLabel: 'Course content', requirementsLabel: 'Enrolment requirements',
   classList: ['Movement Introduction 身訓入門課', 'Voice & Singing Introduction 唱腔入門課', 'Dan Role One-on-One 旦角一對一課程*', 'Movement Foundations 身訓基礎課', 'Voice & Singing Foundations 唱腔基礎課', 'Lao Sheng One-on-One 老生一對一課程*', 'Kunqu Introduction: Voice, Recitation & Movement 崑曲唱唸身段入門課程', 'Kunqu Classic Excerpts Foundation 崑曲經典片段基礎課程', 'Kunqu Excerpt One-on-One 崑曲折子戲一對一課程', 'Calligraphy Online — Eva Su', 'Calligraphy Onsite — Daniel Yu', 'Calligraphy Onsite — Charlie Chen', 'Chinese Painting — He Shan'],
-  regLabel: 'Registration',
-  regTitle: 'Sign up for a class',
-  regIntro: 'One form. Choose how you’d like to pay at the bottom — PayPal is handled online, Zelle is a transfer you make yourself and we confirm by hand.',
+  regLabel: 'Free Trial',
+  regTitle: 'Sign up for a free trial class',
+  regIntro: 'Tell us a little about the student below and we’ll be in touch by email to confirm your free trial class — no payment required.',
   fName: 'Student name', fNamePh: 'First and last name',
   fClass: 'Class',
   fEmail: 'Email', fPhone: 'Phone',
   fMinor: 'The student is under 18',
   fEmerg: 'Emergency contact', fEmergPh: 'Parent or guardian name',
   fEmergPhone: 'Emergency phone',
-  payLabel: 'How you’d like to pay',
   pays: [
     { id: 'paypal', label: 'PayPal', note: 'Pay securely with PayPal' },
     { id: 'zelle', label: 'Zelle', note: 'You transfer, we confirm' }
   ],
-  fMembership: 'Membership status', mMember: 'Member', mNonmember: 'Non-member', mStudent: 'Student member',
-  fFormat: 'Class format', fmtGroup: 'Group (3+ students)', fmtSemi: 'Semi-private (2 students)', fmtPrivate: 'Private lesson',
-  fHours: 'Number of hours', fSessions: 'Number of trial sessions',
-  amountLabel: 'Amount due', amountPackage: 'sessions, member package',
-  paypalLoading: 'Loading PayPal…', paypalPickClass: 'Select a class and payment details above to continue.',
+  paypalLoading: 'Loading PayPal…',
   paypalErrorMsg: 'Payment could not be completed. Please try again, or choose Zelle instead.',
   zTitle: 'Paying by Zelle',
-  zBody: 'Send your tuition by Zelle after you submit this form, then leave the rest to us. Your place is held for five days while we match the transfer to your registration by hand — you’ll get a confirmation email once we do.',
   zAcctLabel: 'Zelle recipient', zAcct: '917-680-6118 (Daniel Yu, NY Chinese Opera Society)',
   zMemoLabel: 'Put this in the memo',
-  zMemoLessonType: '1-on-1 / Group',
-  zMemoHours: '# of hours',
   onlineNote: 'You’ll be taken to a secure checkout page after you submit this form. Nothing is charged until you confirm there.',
   regFootnote: 'Registrations are stored for the office and exported to a spreadsheet for follow-up. We never share your details.',
   submit: 'Submit registration',
@@ -2681,14 +2713,9 @@ const EN = {
   thanksLabel: 'Received',
   thanksTitle: 'You’re on the list.',
   thanksBody: 'A confirmation email is on its way with the class details, the studio address and what to bring on the first day.',
-  stepsZelle: [
-    'Open Zelle and send your tuition to the recipient shown on the form.',
-    'Put your name and the class in the memo so we can match it.',
-    'We confirm the transfer by hand within two business days and email you.'
-  ],
-  stepsOnline: [
-    'Finish payment on the secure checkout page.',
-    'Watch for the confirmation email with the studio address.',
+  steps: [
+    'We’ll review your registration and confirm your free trial class by email.',
+    'Watch for a confirmation email with the studio address and class time.',
     'Arrive ten minutes early on the first day — comfortable clothes, flat shoes.'
   ],
   another: 'Register another student',
@@ -3195,10 +3222,13 @@ const EN = {
   mbFormRenew: 'This is a renewal',
   mbFormStudent: 'Student ID number (student tier only)',
   mbPayLabel: 'How would you like to pay?',
-  mbSubmit: 'Continue to payment',
+  mbSubmit: 'Submit membership',
   mbTotal: 'Total due today',
+  mZBody: 'Send your dues by Zelle after you submit this form, then leave the rest to us. Your membership is confirmed once we match the transfer by hand — you’ll get a confirmation email within two business days.',
+  mZMemo: 'Membership',
   mbThanksTitle: 'Welcome to the Society',
-  mbThanksBody: 'We have your details. A confirmation and payment link are on their way to your inbox — and your first invitation will follow shortly after.',
+  mbThanksBodyOnline: 'Your payment is confirmed. A welcome email is on its way, and your first members-only invitation will follow shortly.',
+  mbThanksBodyZelle: 'We’ve received your details. Send your dues by Zelle as shown, and we’ll confirm your membership by email within two business days.',
   mbThanksAgain: 'Enrol someone else',
   mbFundLabel: 'Where dues go',
   mbFundNote: 'Figures illustrative [TBC]',
@@ -3431,7 +3461,7 @@ const ZH = {
     { name: '家庭會員', amt: '70', per: '／年', tint: 'var(--surface-tint-periwinkle)', lines: ['同戶最多四人', '全員學費優惠', '家庭日場專屬座位'] }
   ],
   join: '成為會員',
-  benefitTbc: '福利文案待確認 · 結帳支援信用卡／PAYPAL／ZELLE',
+  mbFootnote: '會員資料供辦公室存檔，並匯出為表格以便後續聯繫。我們不會分享您的個人資料。',
   donateLabel: '支持梨園社',
   donateTitle: '讓活著的藝術繼續活著',
   donateDesc: '您的捐助用於青年團培訓、書法班的筆墨紙材，以及一場公演所需的劇場租金。',
@@ -3526,32 +3556,24 @@ const ZH = {
   ],
   dLevel: '適合對象', dWhen: '上課時間', dWhere: '上課地點', dTeacher: '授課老師', dFee: '學費', dDur: '課程長度', curriculumLabel: '課程內容', requirementsLabel: '報名要求',
   classList: ['身訓入門課', '唱腔入門課', '旦角一對一課程*', '身訓基礎課', '唱腔基礎課', '老生一對一課程*', '崑曲唱唸身段入門課程', '崑曲經典片段基礎課程', '崑曲折子戲一對一課程', '線上書法課 · 蘇藝', '線下書法課 · 虞文輝', '線下書法課 · 陳定佳', '國畫課 · 何山'],
-  regLabel: '線上報名',
-  regTitle: '報名上課',
-  regIntro: '一張表單即可完成。付款方式請在下方選擇：PayPal 於線上完成，Zelle 需由您自行轉帳，我們人工核銷確認。',
+  regLabel: '免費試聽',
+  regTitle: '報名免費試聽課',
+  regIntro: '請於下方填寫學員資料，我們將以電子郵件與您確認免費試聽課時間 —— 無需付款。',
   fName: '學員姓名', fNamePh: '請填寫全名',
   fClass: '選擇課程',
   fEmail: '電子郵件', fPhone: '聯絡電話',
   fMinor: '學員未滿十八歲',
   fEmerg: '緊急聯絡人', fEmergPh: '家長或監護人姓名',
   fEmergPhone: '緊急聯絡電話',
-  payLabel: '付款方式',
   pays: [
     { id: 'paypal', label: 'PayPal', note: '透過 PayPal 安全付款' },
     { id: 'zelle', label: 'Zelle', note: '您轉帳，我們核銷' }
   ],
-  fMembership: '會員身份', mMember: '會員', mNonmember: '非會員', mStudent: '學生會員',
-  fFormat: '上課方式', fmtGroup: '團體班（3人以上）', fmtSemi: '半私人班（2人）', fmtPrivate: '私人課',
-  fHours: '時數', fSessions: '試聽堂數',
-  amountLabel: '應付金額', amountPackage: '堂，會員套裝價',
-  paypalLoading: 'PayPal 載入中…', paypalPickClass: '請先於上方選擇課程與付款詳情。',
+  paypalLoading: 'PayPal 載入中…',
   paypalErrorMsg: '付款未能完成，請再試一次，或改用 Zelle 付款。',
   zTitle: '以 Zelle 付款',
-  zBody: '送出表單後，請透過 Zelle 轉帳學費，其餘交給我們。我們會為您保留名額五天，並人工核對轉帳與報名資料，核銷完成後寄出確認信。',
   zAcctLabel: 'Zelle 收款帳號', zAcct: '917-680-6118（Daniel Yu，紐約梨園社）',
   zMemoLabel: '請於備註填寫',
-  zMemoLessonType: '一對一／團體',
-  zMemoHours: '時數',
   onlineNote: '送出表單後將轉往安全結帳頁面。在您於該頁確認之前，不會產生任何款項。',
   regFootnote: '報名資料供辦公室存檔，並匯出為表格以便後續聯繫。我們不會分享您的個人資料。',
   submit: '送出報名',
@@ -3560,14 +3582,9 @@ const ZH = {
   thanksLabel: '已收到',
   thanksTitle: '報名已送出。',
   thanksBody: '確認信即將寄出，內含課程詳情、工作室地址，以及第一次上課需要攜帶的物品。',
-  stepsZelle: [
-    '開啟 Zelle，將學費轉至表單上顯示的收款帳號。',
-    '備註請填寫學員姓名與課程名稱，以便我們核對。',
-    '我們將於兩個工作日內人工核銷並以電子郵件通知您。'
-  ],
-  stepsOnline: [
-    '於安全結帳頁面完成付款。',
-    '留意確認信，內含工作室地址。',
+  steps: [
+    '我們將確認您的免費試聽課時間，並以電子郵件通知您。',
+    '留意確認信，內含工作室地址與上課時間。',
     '第一次上課請提早十分鐘到達，穿著舒適衣物與平底鞋。'
   ],
   another: '再報名一位學員',
@@ -4068,10 +4085,13 @@ const ZH = {
   mbFormRenew: '這是續會',
   mbFormStudent: '學生證號碼（僅學生會員）',
   mbPayLabel: '您希望如何付款？',
-  mbSubmit: '前往付款',
+  mbSubmit: '送出入會申請',
   mbTotal: '應付金額',
+  mZBody: '送出表單後，請透過 Zelle 轉帳會費，其餘交給我們。我們人工核對轉帳後即完成入會確認，並於兩個工作日內以電子郵件通知您。',
+  mZMemo: '會員',
   mbThanksTitle: '歡迎加入梨園社',
-  mbThanksBody: '我們已收到您的資料。確認信與付款連結即將寄達，第一份邀請也會隨後送到。',
+  mbThanksBodyOnline: '款項已確認，歡迎信即將寄出，第一份會員專屬邀請也會隨後送到。',
+  mbThanksBodyZelle: '我們已收到您的資料。請依指示透過 Zelle 轉帳會費，我們將於兩個工作日內以電子郵件確認您的會員身份。',
   mbThanksAgain: '為他人辦理入會',
   mbFundLabel: '會費的去向',
   mbFundNote: '比例為示意，待確認',
@@ -4276,9 +4296,10 @@ class Component extends DCLogic {
     cform: { name: '', email: '', phone: '', msg: '' },
     mpay: 0,
     joined: false,
+    mLoading: false,
+    mError: null,
     mform: { name: '', email: '', phone: '', sid: '', renew: false },
-    pay: 'paypal',
-    form: { name: '', klass: '', email: '', phone: '', minor: false, emerg: '', emergPhone: '', membership: 'member', format: 'group', hours: 1 },
+    form: { name: '', klass: '', email: '', phone: '', minor: false, emerg: '', emergPhone: '' },
     paypalStatus: 'idle',
     paypalResult: null
   };
@@ -4362,19 +4383,20 @@ class Component extends DCLogic {
     this.syncPaypalButtons();
   }
 
-  registerAfterPayment(paymentExtra) {
+  submitClassInfo(e) {
+    e.preventDefault();
+    if (this.state.regLoading) return;
     const lang = this.state.lang || this.props.lang || 'en';
     const t = CONTENT[lang] || EN;
     const { name, email, phone, minor, emerg, emergPhone } = this.state.form;
     const screen = this.state.screen || this.props.startScreen || 'home';
     const pageClassList = (screen === 'brush' ? t.groups.slice(3) : t.groups.slice(0, 3)).reduce((a, g) => a.concat(g.items.map(c => c.title)), []);
     const klass = this.state.form.klass || pageClassList[0] || '';
-    const { amount } = this.computePrice(screen, klass);
     this.setState({ regLoading: true, regError: null });
-    return fetch('/api/register-class', {
+    fetch('/api/register-class', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, klass, email, phone, minor, emerg, emergPhone, pay: this.state.pay, amount, ...paymentExtra })
+      body: JSON.stringify({ name, klass, email, phone, minor, emerg, emergPhone })
     }).then((r) => {
       if (!r.ok) throw new Error('register failed');
       this.setState({ submitted: true, regLoading: false }, () => {
@@ -4386,22 +4408,43 @@ class Component extends DCLogic {
     });
   }
 
-  onPaypalSuccess(result) {
-    this.setState({ paypalStatus: 'captured', paypalResult: result });
-    this.registerAfterPayment({ paypalOrderId: result.orderID || result.id || '', paypalCaptureId: result.captureId || '' });
-  }
-
-  onPaypalError() {
+  registerMembership(paymentExtra) {
     const lang = this.state.lang || this.props.lang || 'en';
     const t = CONTENT[lang] || EN;
-    this.setState({ regError: t.paypalErrorMsg });
+    const { name, email, phone, sid, renew } = this.state.mform;
+    const tier = t.tiers[this.state.tier] || t.tiers[0];
+    const pay = (t.pays[this.state.mpay] || t.pays[0]).id;
+    this.setState({ mLoading: true, mError: null });
+    return fetch('/api/join-membership', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, phone, sid, renew, tier: tier.name, amount: Number(tier.amt), pay, ...paymentExtra })
+    }).then((r) => {
+      if (!r.ok) throw new Error('join failed');
+      this.setState({ joined: true, mLoading: false });
+    }).catch(() => {
+      this.setState({ mError: t.regErrorMsg, mLoading: false });
+    });
+  }
+
+  onMPaypalSuccess(result) {
+    this.setState({ paypalStatus: 'captured', paypalResult: result });
+    this.registerMembership({ paypalOrderId: result.orderID || result.id || '', paypalCaptureId: result.captureId || '' });
+  }
+
+  onMPaypalError() {
+    const lang = this.state.lang || this.props.lang || 'en';
+    const t = CONTENT[lang] || EN;
+    this.setState({ mError: t.paypalErrorMsg });
   }
 
   syncPaypalButtons() {
     const screen = this.state.screen || this.props.startScreen || 'home';
-    const klass = this.state.form.klass;
-    const { amount } = this.computePrice(screen, klass);
-    const shouldShow = (screen === 'opera' || screen === 'brush') && this.state.pay === 'paypal' && !this.state.submitted && !!this.state.paypalClientId && amount > 0;
+    const lang = this.state.lang || this.props.lang || 'en';
+    const t = CONTENT[lang] || EN;
+    const tier = t.tiers[this.state.tier] || t.tiers[0];
+    const amount = Number(tier.amt) || 0;
+    const shouldShow = screen === 'membership' && this.state.mpay === 0 && !this.state.joined && !!this.state.paypalClientId && amount > 0;
     const key = shouldShow ? [screen, this.state.paypalClientId, amount].join('|') : null;
     if (key === this._paypalMountKey) return;
     this._paypalMountKey = key;
@@ -4409,7 +4452,7 @@ class Component extends DCLogic {
     if (!container) return;
     container.innerHTML = '';
     if (!shouldShow || !window.NYCOSPaypal) return;
-    window.NYCOSPaypal.mount(container, this.state.paypalClientId, amount, (result) => this.onPaypalSuccess(result), () => this.onPaypalError());
+    window.NYCOSPaypal.mount(container, this.state.paypalClientId, amount, (result) => this.onMPaypalSuccess(result), () => this.onMPaypalError());
   }
 
   set(k, v) { this.setState(s => ({ form: { ...s.form, [k]: v } })); }
@@ -4417,31 +4460,6 @@ class Component extends DCLogic {
   mset(k, v) { this.setState(s => ({ mform: { ...s.mform, [k]: v } })); }
 
   cset(k, v) { this.setState(s => ({ cform: { ...s.cform, [k]: v } })); }
-
-  computePrice(screen, klass) {
-    const f = this.state.form;
-    if (screen === 'opera') {
-      const RATES = {
-        member: { group: 20, semi: 30, private: 55 },
-        nonmember: { group: 40, private: 65 },
-        student: { group: 10, private: 20 }
-      };
-      const rates = RATES[f.membership] || RATES.member;
-      const rate = rates[f.format] || rates.group;
-      const hours = Math.max(1, Number(f.hours) || 1);
-      return { amount: rate * hours, unit: 'hour', qty: hours, rate };
-    }
-    if (screen === 'brush') {
-      const isPainting = /Painting/i.test(klass || '');
-      if (f.membership === 'nonmember') {
-        const sessions = Math.max(1, Number(f.hours) || 1);
-        return { amount: 65 * sessions, unit: 'session', qty: sessions, rate: 65 };
-      }
-      const sessions = isPainting ? 4 : 10;
-      return { amount: isPainting ? 180 : 380, unit: 'package', qty: sessions, rate: null };
-    }
-    return { amount: 0, unit: null, qty: 0, rate: null };
-  }
 
   renderVals() {
     const lang = this.state.lang || this.props.lang || 'en';
@@ -4531,7 +4549,15 @@ class Component extends DCLogic {
           hasCurriculum: !!(c.curriculum && c.curriculum.length),
           hasRequirements: !!(c.requirements && c.requirements.length),
           hasImg: !!c.img,
-          noImg: !c.img,
+          mainGridStyle: {
+            display: 'grid', gridTemplateColumns: c.img ? '120px 1fr 220px 24px' : '1fr 220px 24px',
+            gap: '26px', alignItems: 'center', padding: '22px 4px', cursor: 'pointer',
+            transition: 'background 160ms var(--ease-out)'
+          },
+          detailGridStyle: {
+            display: 'grid', gridTemplateColumns: c.img ? '120px 1fr 220px 24px' : '1fr 220px 24px',
+            gap: '26px', padding: '0 4px 30px'
+          },
           modeLabel: c.mode === 'online' ? t.pModeOnline : t.pModeOnsite,
           modeStyle: {
             fontFamily: 'var(--font-mono)', fontSize: '8.5px', fontWeight: 500, letterSpacing: '0.16em',
@@ -4574,8 +4600,6 @@ class Component extends DCLogic {
       ? { eyebrow: t.brEyebrow, title: t.brTitle, titleAlt: t.brTitleAlt, intro: t.brIntro, facts: t.brFacts, classList: pageClassList }
       : { eyebrow: t.opEyebrow, title: t.opTitle, intro: t.opIntro, facts: t.opFacts, classList: pageClassList };
     const klass = this.state.form.klass || pageClassList[0];
-    const isZelle = this.state.pay === 'zelle';
-    const pricing = this.computePrice(screen, klass);
 
     const mTier = t.tiers[this.state.tier] || t.tiers[0];
     const ev = this.state.ev;
@@ -4846,9 +4870,16 @@ class Component extends DCLogic {
       setMPhone: (e) => this.mset('phone', e.target.value),
       setMSid: (e) => this.mset('sid', e.target.value),
       toggleRenew: () => this.setState(s => ({ mform: { ...s.mform, renew: !s.mform.renew } })),
-      mPays: t.pays.map((p, i) => ({ ...p, pick: () => this.setState({ mpay: i }), style: payStyle(this.state.mpay === i) })),
-      joinNow: () => this.setState({ joined: true }),
-      joinAgain: () => this.setState({ joined: false, mform: { name: '', email: '', phone: '', sid: '', renew: false } }),
+      mPays: t.pays.map((p, i) => ({ ...p, pick: () => this.setState({ mpay: i, mError: null }), style: payStyle(this.state.mpay === i) })),
+      isMZelle: this.state.mpay === 1,
+      isMOnline: this.state.mpay === 0,
+      mMemoPreview: (this.state.mform.name || t.mbFormName) + ' + ' + mTier.name + ' ' + t.mZMemo,
+      mSubmitLabel: this.state.mLoading ? t.regSubmitting : t.mbSubmit,
+      mSubmitOpacity: this.state.mLoading ? 0.7 : 1,
+      mError: this.state.mError,
+      joinNow: () => this.registerMembership({}),
+      joinAgain: () => this.setState({ joined: false, mError: null, mform: { name: '', email: '', phone: '', sid: '', renew: false } }),
+      mbThanksBody: this.state.mpay === 1 ? t.mbThanksBodyZelle : t.mbThanksBodyOnline,
       joined: this.state.joined,
       notJoined: !this.state.joined,
       missionRef: this.missionRef,
@@ -5027,48 +5058,15 @@ class Component extends DCLogic {
       onMinor: (e) => this.set('minor', e.target.checked),
       onEmerg: (e) => this.set('emerg', e.target.value),
       onEmergPhone: (e) => this.set('emergPhone', e.target.value),
-      onMembership: (e) => {
-        const v = e.target.value;
-        this.setState(s => ({ form: { ...s.form, membership: v, format: (v !== 'member' && s.form.format === 'semi') ? 'group' : s.form.format } }));
-      },
-      onFormat: (e) => this.set('format', e.target.value),
-      onHours: (e) => this.set('hours', Math.max(1, Number(e.target.value) || 1)),
-      pays: t.pays.map(p => ({
-        label: p.label, note: p.note,
-        style: payStyle(this.state.pay === p.id),
-        go: () => this.setState({ pay: p.id })
-      })),
-      isZelle,
-      isOnline: !isZelle,
-      memoPreview: (this.state.form.name || t.fNamePh) + ' + ' + klass + ' + ' + t.zMemoLessonType + ' + ' + t.zMemoHours,
-      submit: (e) => {
-        e.preventDefault();
-        if (this.state.regLoading) return;
-        if (this.state.pay === 'paypal') return;
-        this.registerAfterPayment({});
-      },
+      submit: (e) => this.submitClassInfo(e),
       submitted: this.state.submitted,
       notSubmitted: !this.state.submitted,
       regLoading: this.state.regLoading,
       regError: this.state.regError,
       submitLabel: this.state.regLoading ? t.regSubmitting : t.submit,
       submitOpacity: this.state.regLoading ? 0.7 : 1,
-      reset: () => this.setState({ submitted: false, regError: null, paypalStatus: 'idle', paypalResult: null }),
-      nextSteps: (isZelle ? t.stepsZelle : t.stepsOnline).map((v, i) => ({ n: String(i + 1).padStart(2, '0'), v })),
-      pricing,
-      amountDue: pricing.amount,
-      amountDisplay: '$' + pricing.amount.toFixed(2),
-      packageNote: (screen === 'brush' && this.state.form.membership !== 'nonmember') ? (pricing.qty + ' ' + t.amountPackage) : '',
-      showQty: screen === 'opera' || (screen === 'brush' && this.state.form.membership === 'nonmember'),
-      qtyLabel: screen === 'opera' ? t.fHours : t.fSessions,
-      qty: this.state.form.hours,
-      showFormat: screen === 'opera',
-      membershipOpts: (screen === 'opera' ? ['member', 'nonmember', 'student'] : ['member', 'nonmember']).map(id => ({
-        id, label: id === 'member' ? t.mMember : id === 'nonmember' ? t.mNonmember : t.mStudent
-      })),
-      formatOpts: (this.state.form.membership === 'member' ? ['group', 'semi', 'private'] : ['group', 'private']).map(id => ({
-        id, label: id === 'group' ? t.fmtGroup : id === 'semi' ? t.fmtSemi : t.fmtPrivate
-      })),
+      reset: () => this.setState({ submitted: false, regError: null }),
+      nextSteps: t.steps.map((v, i) => ({ n: String(i + 1).padStart(2, '0'), v })),
       paypalClientId: this.state.paypalClientId || '',
       paypalReady: !!this.state.paypalClientId
     };
