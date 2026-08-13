@@ -946,7 +946,8 @@ function Newsletter({
       lineHeight: 'var(--leading-relaxed)',
       color: 'var(--text-secondary)',
       margin: 0,
-      maxWidth: '480px'
+      maxWidth: '480px',
+      whiteSpace: 'pre-line'
     }
   }, description), status === 'success' ? React.createElement('p', {
     style: {
