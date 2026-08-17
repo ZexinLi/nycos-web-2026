@@ -174,7 +174,13 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
   /* Full-width, generously padded rows instead of text-sized links — the
      whole row is now the tap target, not just the label glyphs, and each
      row gets a hairline divider since padding alone no longer separates
-     items the way the old `gap` did. */
+     items the way the old `gap` did. Targets both `a` and `button`: these
+     nav triggers were converted from `<a>` to `<button>` for keyboard
+     accessibility (a real link needs an href to be focusable — see the
+     accessibility pass elsewhere in this file), which silently broke the
+     old `a`-only selector below — the buttons kept their small ~4px desktop
+     padding instead, so the active-state underline ended up sitting right
+     on top of the row's own divider line, reading as a doubled-up line. */
   .nycos-header.nycos-mobile-open .nycos-nav-left>div,
   .nycos-header.nycos-mobile-open .nycos-nav-right nav>div{
     width:100%;border-bottom:1px solid var(--border-subtle);
@@ -185,9 +191,12 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
     border-bottom:none;
   }
   .nycos-header.nycos-mobile-open .nycos-nav-left>div>a,
-  .nycos-header.nycos-mobile-open .nycos-nav-right nav>div>a{
+  .nycos-header.nycos-mobile-open .nycos-nav-left>div>button,
+  .nycos-header.nycos-mobile-open .nycos-nav-right nav>div>a,
+  .nycos-header.nycos-mobile-open .nycos-nav-right nav>div>button{
     display:flex !important;width:100%;justify-content:center;
-    padding:16px 4px !important;
+    padding:24px 4px !important;
+    border-bottom:none !important;
   }
   .nycos-header.nycos-mobile-open .nycos-nav-right>a{
     width:100%;justify-content:center;padding:15px 18px !important;margin-top:16px;
@@ -270,6 +279,14 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
     flex-wrap:wrap !important;
     align-items:flex-start !important;
   }
+  /* About "Who we are": the 340px label column and the body-copy column sit
+     side by side on desktop, with the body column's 30px padding-top just
+     nudging its first line down to align with the heading's baseline. Once
+     nycos-grid-collapse stacks them into one column, that padding-top adds
+     to the grid's own 64px column-gap (now acting as a row-gap) and leaves
+     a ~94px dead gap between the heading and the body text below it. */
+  .nycos-ab-who{gap:20px !important}
+  .nycos-ab-who-body{padding-top:0 !important}
   .nycos-classes-head{
     flex:1 1 100% !important;
   }
@@ -286,10 +303,23 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
   .nycos-editorial-wrap section{
     flex-direction:column !important;
     gap:24px !important;
+    padding:48px 24px !important;
   }
   .nycos-editorial-wrap section > div{
     flex:1 1 auto !important;
     max-width:100% !important;
+  }
+  /* The "Draw by Zhizhi Yu" credit sits right-aligned under the Youth Troupe
+     illustration's 46% column on desktop. Once EditorialBlock collapses to
+     one column above, that column no longer exists, so the right-aligned
+     credit just reads as randomly indented — move it to the left edge with
+     the rest of the stacked content. */
+  .nycos-youth-credit{
+    justify-content:flex-start !important;
+  }
+  .nycos-youth-credit span{
+    width:auto !important;
+    text-align:left !important;
   }
 }
 
@@ -321,6 +351,12 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 }
 @media (max-width:640px){
   .nycos-hero-outer{padding-left:16px !important;padding-right:16px !important}
+  /* The 145px top padding on every one of these sections is calibrated for
+     the desktop nav bar's own height plus clearance — on the shorter mobile
+     nav (just logo + hamburger row) it leaves a large dead gap above every
+     blue hero card, on every page that uses this pattern (About, Programs,
+     Volunteer, Youth Troupe, Events, Membership, Contact). */
+  .nycos-hero-outer{padding-top:108px !important}
   .nycos-hero-card{padding:40px 22px !important}
   /* Membership hero: the fan-cutout figure is sized as a % of the card's own
      height, which itself grows with the text content (eyebrow, title, lede,
@@ -329,6 +365,59 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
      underneath it. Pinned to a small fixed height here so it reads as a
      corner accent instead of competing with the text for space. */
   .nycos-hero-bleed-fig{height:130px !important;max-width:40% !important}
+  /* Membership hero figure: the "at a glance" facts row's border-top
+     dividers (drawn on the stacked, mobile-only fact rows above) were
+     reading as if they crossed in front of the fan-cutout figure in the
+     corner. The figure is already the higher z-index of the two, but at
+     130px it barely reaches into that row's corner to begin with — scaled
+     up and pushed further above the shared stacking order removes any
+     ambiguity and matches the "bring it to the front" ask directly. */
+  .nycos-mb-hero-fig{z-index:200 !important;transform:scale(2) !important;transform-origin:bottom right !important}
+  /* Home hero CTAs: "See what's on" / "Take a class" side by side leaves so
+     little room per button on a phone that the labels wrap to two lines
+     each, reading as four cramped, uneven rows. Stack them into one button
+     per row instead — full-width and evenly sized. */
+  .nycos-hero-cta-row{flex-direction:column !important;align-items:stretch !important;width:100% !important}
+  .nycos-hero-cta-row > a, .nycos-hero-cta-row > button{text-align:center !important;width:100% !important;box-sizing:border-box !important}
+  /* Every other primary CTA button/link across the site (mailto buttons,
+     Eventbrite links, form submits) gets the same full-width mobile
+     treatment as the hero CTAs above, via a shared marker class — inline
+     style attribute values can't be targeted with [style*=] here (this
+     runtime re-serializes them with different spacing at render time), so
+     each candidate button gets the class added directly in the markup. */
+  .nycos-cta-btn{display:block !important;width:100% !important;box-sizing:border-box !important;text-align:center !important}
+  /* Donate button (DonationCTA) and the email+Subscribe row (Newsletter)
+     are compiled design-system components with no classes of their own —
+     data-reveal-text-only (a real attribute, not an inline style) is the
+     only stable hook. Structural depth (section > div > a for the Donate
+     button; form > div > input/button for Newsletter) keeps this scoped to
+     just those two components' own buttons, not every link inside them. */
+  [data-reveal-text-only] section > div{align-items:stretch !important}
+  [data-reveal-text-only] section > div > a{width:100% !important;box-sizing:border-box !important;text-align:center !important;justify-content:center !important}
+  [data-reveal-text-only] form > div{flex-direction:column !important}
+  [data-reveal-text-only] form input,
+  [data-reveal-text-only] form button{width:100% !important;box-sizing:border-box !important}
+  /* Events hero: same bare eyebrow+title+lede structure as Contact (no
+     facts row below to give the card extra height) — matches Contact's
+     treatment exactly: shared 130px corner figure scaled 2x, with the same
+     extra card padding-bottom to keep it clear of the lede text. */
+  .nycos-ev-hero-card{padding-bottom:300px !important}
+  .nycos-ev-hero-fig{transform:scale(3) !important;transform-origin:bottom right !important}
+  /* Contact hero: same bare eyebrow+title+lede structure as Events (no
+     facts row below to give the card extra height), and its lede runs to
+     five lines on a phone — the shared 130px corner figure overlaps the
+     last couple of lines by ~90px without this. */
+  .nycos-ct-hero-card{padding-bottom:276px !important}
+  /* Scale the waving-figure corner accent up 2x, anchored to the same
+     bottom-right corner it already sits in (matching the Membership hero's
+     treatment) — the extra card padding-bottom above makes room for the
+     doubled height so it still clears the lede text. */
+  .nycos-ct-hero-fig{transform:scale(2) !important;transform-origin:bottom right !important}
+  /* "Contact Us: nycosyouth@gmail.com" / "Dedicated addresses per topic":
+     baseline-aligned space-between row squeezes the caption into a cramped
+     3-line column on the right on a phone. Stack it below the heading and
+     left-align it instead. */
+  .nycos-ct-route-head{flex-direction:column !important;align-items:flex-start !important;gap:6px !important}
   /* Facts stack full-width instead of a 2-up wrap — the side-border divider
      only makes sense between items sharing a row. */
   .nycos-mb-facts-row{flex-direction:column !important;gap:14px !important}
@@ -402,7 +491,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 .nycos-stack-4{transform:translateX(202px) rotate(10deg);z-index:4}
 .nycos-stack-4:hover{transform:translateX(202px) translateY(-30px) scale(1.12) rotate(0deg);box-shadow:0 26px 52px rgba(1,1,32,0.34);z-index:10}
 @media (max-width:640px){
-  .nycos-stack-wrap{height:230px !important}
+  .nycos-stack-wrap{height:230px !important;margin-top:28px !important}
   .nycos-stack-card{width:132px !important}
   .nycos-stack-1{transform:translateX(-80px) rotate(-10deg) !important}
   .nycos-stack-1:hover{transform:translateX(-80px) translateY(-18px) scale(1.1) rotate(0deg) !important}
@@ -524,9 +613,9 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold)">{{ t.aEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.05;letter-spacing:-0.08em;color:#22328c;margin:0;text-wrap:pretty">{{ t.cTitle }}</h1>
 <p style="font-size:17px;line-height:1.7;color:#3b4aa8;margin:0;max-width:520px;text-wrap:pretty">{{ t.cSub }}</p>
-<div style="display:flex;gap:14px;margin-top:6px">
-<a href="#upcoming" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;letter-spacing:0.02em;padding:15px 30px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.cCta1 }}</a>
-<button type="button" onClick="{{ goPrograms }}" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;letter-spacing:0.02em;padding:15px 30px;margin:0;background:transparent;color:var(--text-primary);border:1px solid var(--border-strong);border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;transition:background 160ms var(--ease-out),border-color 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--surface-page-alt);border-color:var(--text-primary)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.cCta2 }}</button>
+<div class="nycos-hero-cta-row" style="display:flex;gap:14px;margin-top:6px">
+<a href="#upcoming" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;letter-spacing:0.02em;padding:15px 30px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.cCta1 }}</a>
+<button type="button" onClick="{{ goPrograms }}" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;letter-spacing:0.02em;padding:15px 30px;margin:0;background:transparent;color:var(--text-primary);border:1px solid var(--border-strong);border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;cursor:pointer;transition:background 160ms var(--ease-out),border-color 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--surface-page-alt);border-color:var(--text-primary)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.cCta2 }}</button>
 </div>
 </div>
 <div class="nycos-stack-wrap" style="position:relative;max-width:1200px;margin:76px auto 0;height:320px;display:flex;align-items:center;justify-content:center">
@@ -578,10 +667,10 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <section id="upcoming" style="max-width:1200px;margin:0 auto;padding:0 32px 88px">
-<div class="nycos-flex-collapse" style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--border-strong);padding-bottom:16px;margin-bottom:40px">
+<div class="nycos-flex-collapse" style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:1px solid var(--border-strong);padding-bottom:16px;margin-bottom:40px">
 <div style="display:flex;flex-direction:column;gap:10px">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-accent)">{{ t.upcomingLabel }}</span>
-<h2 style="font-family:var(--font-display);font-weight:400;font-size:38px;letter-spacing:-0.08em;color:var(--text-primary);margin:0;text-wrap:pretty">{{ t.upcomingTitle }}</h2>
+<h2 style="font-family:var(--font-display);font-weight:400;font-size:38px;line-height:1.12;letter-spacing:-0.08em;color:var(--text-primary);margin:0;text-wrap:pretty">{{ t.upcomingTitle }}</h2>
 </div>
 <button type="button" onClick="{{ goEvents }}" style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-accent);text-decoration:none;background:none;border:none;border-bottom:1px solid var(--border-strong);margin:0;padding:0 0 2px;cursor:pointer;transition:border-bottom-color 160ms var(--ease-out);" style-hover="border-bottom-color:var(--text-accent)">{{ t.viewAll }} →</button>
 </div>
@@ -629,7 +718,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </x-import>
 </div>
-<div style="max-width:1200px;margin:-72px auto 0;padding:0 var(--gutter);display:flex;justify-content:flex-end">
+<div class="nycos-youth-credit" style="max-width:1200px;margin:-72px auto 0;padding:0 var(--gutter);display:flex;justify-content:flex-end">
 <span style="width:46%;text-align:center;font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary)">Draw by Zhizhi Yu</span>
 </div>
 
@@ -658,7 +747,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <span style="font-size:13px;line-height:1.5;color:var(--text-secondary)">{{ ln }}</span>
 </sc-for>
 </div>
-<a href="#membership" style="margin-top:auto;font-family:var(--font-body);font-weight:500;font-size:13px;text-align:center;padding:12px 18px;background:var(--color-ink);color:var(--color-paper);border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.join }}</a>
+<a class="nycos-cta-btn" href="#membership" style="margin-top:auto;font-family:var(--font-body);font-weight:500;font-size:13px;text-align:center;padding:12px 18px;background:var(--color-ink);color:var(--color-paper);border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.join }}</a>
 </div>
 </sc-for>
 </div>
@@ -871,7 +960,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </sc-if>
 </div>
 <div style="display:flex;flex-direction:column;gap:10px;padding-top:22px">
-<a href="{{ eventbrite }}" target="_blank" rel="noopener" style="font-family:var(--font-body);font-weight:500;font-size:13.5px;text-align:center;padding:12px 20px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.pEnrolCta }}</a>
+<a class="nycos-cta-btn" href="{{ eventbrite }}" target="_blank" rel="noopener" style="font-family:var(--font-body);font-weight:500;font-size:13.5px;text-align:center;padding:12px 20px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.pEnrolCta }}</a>
 <a onClick="{{ c.register }}" href="#register" style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-accent);text-align:center;text-decoration:none;cursor:pointer;transition:color 160ms var(--ease-out);" style-hover="color:var(--accent-primary-hover)">{{ t.pFormCta }}</a>
 <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-tertiary);text-align:center">{{ t.tbcShort }}</span>
 </div>
@@ -901,7 +990,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </ul>
 <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;padding:24px;background:var(--surface-page-alt);border:1px solid var(--border-subtle)">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.opEnquireLabel }}</span>
-<a href="mailto:nycosyouth@gmail.com" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;padding:13px 24px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">nycosyouth@gmail.com</a>
+<a class="nycos-cta-btn" href="mailto:nycosyouth@gmail.com" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;padding:13px 24px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">nycosyouth@gmail.com</a>
 </div>
 </div>
 </section>
@@ -1023,7 +1112,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <div style="display:flex;flex-direction:column;gap:10px;padding:24px;background:var(--surface-inverse);align-items:flex-start;margin-bottom:56px">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.faqBrush.contactLabel }}</span>
-<a href="mailto:nycosyouth@gmail.com" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;padding:13px 24px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">nycosyouth@gmail.com</a>
+<a class="nycos-cta-btn" href="mailto:nycosyouth@gmail.com" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;padding:13px 24px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">nycosyouth@gmail.com</a>
 </div>
 </section>
 </sc-if>
@@ -1120,7 +1209,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.ebLabel }}</span>
 <p style="font-size:13.5px;line-height:1.65;color:rgba(247,244,238,0.72);margin:0;max-width:560px;text-wrap:pretty">{{ t.ebBody }}</p>
 </div>
-<a href="{{ eventbrite }}" target="_blank" rel="noopener" style="font-family:var(--font-body);font-weight:500;font-size:13.5px;padding:13px 22px;background:var(--color-paper);color:var(--color-ink);border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--color-gold-pale)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.ebCta }} →</a>
+<a class="nycos-cta-btn" href="{{ eventbrite }}" target="_blank" rel="noopener" style="font-family:var(--font-body);font-weight:500;font-size:13.5px;padding:13px 22px;background:var(--color-paper);color:var(--color-ink);border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--color-gold-pale)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.ebCta }} →</a>
 </div>
 
 <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
@@ -1161,7 +1250,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:22px;border-top:1px solid var(--border-subtle)">
 <span style="font-size:12.5px;line-height:1.6;color:var(--text-tertiary);max-width:420px">{{ t.regFootnote }}</span>
-<button type="submit" disabled="{{ regLoading }}" style="font-family:var(--font-body);font-weight:500;font-size:15px;letter-spacing:0.02em;background:var(--accent-primary);color:#fff;border:none;border-radius:var(--radius-sm);padding:15px 30px;cursor:pointer;white-space:nowrap;opacity:{{ submitOpacity }};transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)"><sc-if value="{{ regLoading }}" hint-placeholder-val="{{ false }}"><span class="nycos-spinner"></span></sc-if>{{ submitLabel }}</button>
+<button class="nycos-cta-btn" type="submit" disabled="{{ regLoading }}" style="font-family:var(--font-body);font-weight:500;font-size:15px;letter-spacing:0.02em;background:var(--accent-primary);color:#fff;border:none;border-radius:var(--radius-sm);padding:15px 30px;cursor:pointer;white-space:nowrap;opacity:{{ submitOpacity }};transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)"><sc-if value="{{ regLoading }}" hint-placeholder-val="{{ false }}"><span class="nycos-spinner"></span></sc-if>{{ submitLabel }}</button>
 </div>
 </form>
 </sc-if>
@@ -1212,12 +1301,12 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <section style="max-width:1200px;margin:0 auto;padding:80px 32px">
-<div class="nycos-grid-collapse" style="display:grid;grid-template-columns:340px 1fr;gap:64px;align-items:start">
+<div class="nycos-grid-collapse nycos-ab-who" style="display:grid;grid-template-columns:340px 1fr;gap:64px;align-items:start">
 <div style="display:flex;flex-direction:column;gap:12px">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-accent)">{{ t.abWhoLabel }}</span>
 <h2 style="font-family:var(--font-display);font-weight:400;font-size:34px;letter-spacing:-0.08em;color:var(--text-primary);margin:0;line-height:1.12;text-wrap:pretty">{{ t.abWhoTitle }}</h2>
 </div>
-<div style="display:flex;flex-direction:column;gap:22px;max-width:640px;padding-top:30px">
+<div class="nycos-ab-who-body" style="display:flex;flex-direction:column;gap:22px;max-width:640px;padding-top:30px">
 <p style="font-size:17px;line-height:1.75;color:var(--text-primary);margin:0;text-wrap:pretty">{{ t.abBody1 }}</p>
 <p style="font-size:17px;line-height:1.75;color:var(--text-secondary);margin:0;text-wrap:pretty">{{ t.abBody2 }}</p>
 </div>
@@ -1349,7 +1438,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <p style="font-size:15.5px;line-height:1.7;color:var(--text-secondary);margin:0;max-width:560px;text-wrap:pretty">{{ t.wkCtaBody }}</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-end">
-<a href="mailto:nycosyouth@gmail.com" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;padding:15px 28px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.wkCtaBtn }} →</a>
+<a class="nycos-cta-btn" href="mailto:nycosyouth@gmail.com" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;padding:15px 28px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.wkCtaBtn }} →</a>
 <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.06em;color:var(--text-secondary)">nycosyouth@gmail.com</span>
 <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.06em;color:var(--text-secondary)">(212) 227-2920</span>
 </div>
@@ -1372,7 +1461,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 40px;position:relative">
 <div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
-<img src="assets/volunteer-hero-figure.webp" alt="" style="position:absolute;right:4%;bottom:-40px;height:130%;width:auto;max-width:66%;object-fit:contain;object-position:bottom center">
+<img class="nycos-hero-bleed-fig" src="assets/volunteer-hero-figure.webp" alt="" style="position:absolute;right:4%;bottom:-40px;height:130%;width:auto;max-width:66%;object-fit:contain;object-position:bottom center">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.vlEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:640px;text-wrap:pretty">{{ t.vlTitle }}</h1>
@@ -1424,7 +1513,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <p style="font-size:15.5px;line-height:1.7;color:var(--text-secondary);margin:0;max-width:560px;text-wrap:pretty">{{ t.vlCtaBody }}</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
-<a href="mailto:nycosyouth@gmail.com" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;padding:15px 28px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.vlCtaBtn }} →</a>
+<a class="nycos-cta-btn" href="mailto:nycosyouth@gmail.com" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;padding:15px 28px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.vlCtaBtn }} →</a>
 <button type="button" onClick="{{ goContact }}" style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-secondary);text-decoration:none;background:none;border:none;cursor:pointer;border-bottom:1px solid var(--border-strong);margin:0;padding:0 0 2px;transition:color 160ms var(--ease-out),border-bottom-color 160ms var(--ease-out);" style-hover="color:var(--text-accent);border-bottom-color:var(--accent-primary)">{{ t.vlCtaAlt }}</button>
 </div>
 </div>
@@ -1509,8 +1598,8 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <h2 style="font-family:var(--font-display);font-weight:400;font-size:36px;letter-spacing:-0.08em;color:var(--text-primary);margin:0;line-height:1.1;max-width:520px;text-wrap:pretty">{{ t.ytJoinTitle }}</h2>
 <p style="font-size:15.5px;line-height:1.7;color:var(--text-secondary);margin:0;max-width:560px;text-wrap:pretty">{{ t.ytJoinBody }}</p>
 <div style="display:flex;gap:12px;align-items:center;margin-top:6px;flex-wrap:wrap">
-<a href="mailto:nycosyouth@gmail.com" style="font-family:var(--font-body);font-weight:500;font-size:14px;padding:14px 26px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.ytJoinBtn }}</a>
-<a href="https://instagram.com/nycosyouth" target="_blank" rel="noopener" style="font-family:var(--font-body);font-weight:500;font-size:14px;padding:14px 26px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);color:var(--text-primary);text-decoration:none;transition:border-color 160ms var(--ease-out),color 160ms var(--ease-out);" style-hover="border-color:var(--accent-primary);color:var(--text-accent)">{{ t.ytJoinIg }}</a>
+<a class="nycos-cta-btn" href="mailto:nycosyouth@gmail.com" style="font-family:var(--font-body);font-weight:500;font-size:14px;padding:14px 26px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.ytJoinBtn }}</a>
+<a class="nycos-cta-btn" href="https://instagram.com/nycosyouth" target="_blank" rel="noopener" style="font-family:var(--font-body);font-weight:500;font-size:14px;padding:14px 26px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);color:var(--text-primary);text-decoration:none;transition:border-color 160ms var(--ease-out),color 160ms var(--ease-out);" style-hover="border-color:var(--accent-primary);color:var(--text-accent)">{{ t.ytJoinIg }}</a>
 </div>
 </div>
 <div style="display:flex;flex-direction:column;gap:12px;border-left:1px solid var(--border-subtle);padding-left:28px">
@@ -1540,8 +1629,8 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <main data-screen-label="Events">
 
 <section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 40px;position:relative">
-<div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
-<img src="assets/events-hero-flag-dancer-cutout.webp" alt="" style="position:absolute;right:0%;bottom:0;height:130%;width:auto;max-width:65%;object-fit:contain;object-position:bottom center">
+<div class="nycos-hero-card nycos-ev-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
+<img class="nycos-hero-bleed-fig nycos-ev-hero-fig" src="assets/events-hero-flag-dancer-cutout.webp" alt="" style="position:absolute;right:0%;bottom:0;height:130%;width:auto;max-width:65%;object-fit:contain;object-position:bottom center">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.evEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:64px;line-height:1.04;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.evTitle }}</h1>
@@ -1587,7 +1676,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <p style="font-family:var(--font-display);font-weight:400;font-size:20px;letter-spacing:-0.03em;color:var(--text-primary);margin:0;text-wrap:pretty">{{ t.evEmptyTitle }}</p>
 <p style="font-size:14.5px;line-height:1.65;color:var(--text-secondary);margin:0">{{ t.evEmptyBody }}</p>
 </div>
-<a href="#ev-newsletter" style="flex:0 0 auto;font-family:var(--font-body);font-weight:500;font-size:13.5px;padding:12px 22px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap">{{ t.evEmptyCta }}</a>
+<a class="nycos-cta-btn" href="#ev-newsletter" style="flex:0 0 auto;font-family:var(--font-body);font-weight:500;font-size:13.5px;padding:12px 22px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap">{{ t.evEmptyCta }}</a>
 </div>
 </sc-if>
 </section>
@@ -1628,20 +1717,31 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </div>
 
-<div class="nycos-grid-collapse" style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
+<div class="nycos-grid-collapse nycos-past-masonry" style="display:grid;grid-template-columns:repeat(3,1fr);column-gap:22px;row-gap:0;grid-auto-rows:1px;align-items:start">
 <sc-for list="{{ past }}" as="p" hint-placeholder-count="6">
 <div>
 <div onClick="{{ p.open }}" onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" style="{{ p.cardStyle }}">
-<div style="aspect-ratio:3/4;background:var(--surface-page-alt);border-bottom:1px solid var(--border-subtle);display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:13px;position:relative;overflow:hidden">
 <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ false }}">
-<div style="{{ p.posterStyle }}"></div>
+<div style="background:var(--surface-page-alt);border-bottom:1px solid var(--border-subtle);position:relative;overflow:hidden">
+<img src="{{ p.img }}" alt="{{ p.title }}" style="display:block;width:100%;height:auto" onLoad="{{ p.imgLoaded }}" loading="lazy">
+<span style="{{ p.overlayStyle }}">{{ t.evGallery }}</span>
+<div style="position:absolute;top:13px;left:13px;display:flex;align-items:center;gap:7px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-pill);padding:4px 10px">
+<span style="{{ p.tagStyle }}">{{ p.tag }}</span>
+</div>
+<div style="position:absolute;bottom:13px;left:13px">
+<span style="{{ p.capStyle }}">{{ p.caption }}</span>
+</div>
+</div>
 </sc-if>
+<sc-if value="{{ p.noImg }}" hint-placeholder-val="{{ true }}">
+<div style="aspect-ratio:3/4;background:var(--surface-page-alt);border-bottom:1px solid var(--border-subtle);display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:13px;position:relative;overflow:hidden">
 <span style="{{ p.overlayStyle }}">{{ t.evGallery }}</span>
 <div style="position:relative;display:flex;align-items:center;gap:7px;align-self:flex-start;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-pill);padding:4px 10px">
 <span style="{{ p.tagStyle }}">{{ p.tag }}</span>
 </div>
 <span style="{{ p.capStyle }}">{{ p.caption }}</span>
 </div>
+</sc-if>
 <div style="display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px">
 <span style="font-family:var(--font-display);letter-spacing:-0.08em;font-size:20px;line-height:1.2;color:var(--text-primary)">{{ p.title }}</span>
 <span style="font-family:var(--font-cjk-serif);font-size:14px;color:var(--text-secondary)">{{ p.cn }}</span>
@@ -1697,7 +1797,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <h2 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:34px;color:var(--text-primary);margin:0;line-height:1.12;max-width:520px;text-wrap:pretty">{{ t.evHostTitle }}</h2>
 <p style="font-size:15.5px;line-height:1.7;color:var(--text-secondary);margin:0;max-width:560px;text-wrap:pretty">{{ t.evHostBody }}</p>
 </div>
-<button type="button" onClick="{{ goContact }}" style="justify-self:start;font-family:var(--font-body);font-weight:500;font-size:14px;padding:14px 26px;margin:0;background:var(--accent-primary);color:#fff;border:none;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.evHostBtn }}</button>
+<button class="nycos-cta-btn" type="button" onClick="{{ goContact }}" style="justify-self:start;font-family:var(--font-body);font-weight:500;font-size:14px;padding:14px 26px;margin:0;background:var(--accent-primary);color:#fff;border:none;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.evHostBtn }}</button>
 </div>
 </section>
 
@@ -1831,7 +1931,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 70px;position:relative">
 <div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
-<img class="nycos-hero-bleed-fig" src="assets/membership-hero-fan-cutout-2.webp" alt="" style="position:absolute;right:4%;bottom:0;height:116%;width:auto;max-width:58%;object-fit:contain;object-position:bottom center;z-index:45;pointer-events:none">
+<img class="nycos-hero-bleed-fig nycos-mb-hero-fig" src="assets/membership-hero-fan-cutout-2.webp" alt="" style="position:absolute;right:4%;bottom:0;height:116%;width:auto;max-width:58%;object-fit:contain;object-position:bottom center;z-index:45;pointer-events:none">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.mbEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:64px;line-height:1.04;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.mbTitle }}</h1>
@@ -1937,7 +2037,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <span style="font-family:var(--font-mono);font-size:13px;color:var(--text-primary)">{{ mMemoPreview }}</span>
 </div>
 </div>
-<a onClick="{{ joinNow }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;text-align:center;padding:14px 24px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;opacity:{{ mSubmitOpacity }};transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ mSubmitLabel }}</a>
+<a class="nycos-cta-btn" onClick="{{ joinNow }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;text-align:center;padding:14px 24px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;opacity:{{ mSubmitOpacity }};transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ mSubmitLabel }}</a>
 </sc-if>
 <sc-if value="{{ isMOnline }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:14px;padding:16px 18px;background:var(--surface-page-alt);border-left:2px solid var(--color-gold)">
@@ -1999,8 +2099,8 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <main data-screen-label="Contact">
 
 <section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 40px;position:relative">
-<div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
-<img class="nycos-hero-bleed-fig" src="assets/contact-hero-waving-figure-trim.webp" alt="" style="position:absolute;right:6%;bottom:0;height:112%;width:auto;object-fit:contain" loading="lazy">
+<div class="nycos-hero-card nycos-ct-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
+<img class="nycos-hero-bleed-fig nycos-ct-hero-fig" src="assets/contact-hero-waving-figure-trim.webp" alt="" style="position:absolute;right:6%;bottom:0;height:112%;width:auto;object-fit:contain" loading="lazy">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.ctEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty;white-space:pre-line">{{ t.ctTitle }}</h1>
@@ -2043,7 +2143,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </sc-if>
 <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-<a onClick="{{ sendMsg }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;padding:14px 30px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;opacity:{{ sendOpacity }};transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)"><sc-if value="{{ sendLoading }}" hint-placeholder-val="{{ false }}"><span class="nycos-spinner"></span></sc-if>{{ sendLabel }}</a>
+<a class="nycos-cta-btn" onClick="{{ sendMsg }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;padding:14px 30px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;opacity:{{ sendOpacity }};transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)"><sc-if value="{{ sendLoading }}" hint-placeholder-val="{{ false }}"><span class="nycos-spinner"></span></sc-if>{{ sendLabel }}</a>
 </div>
 </div>
 </sc-if>
@@ -2057,8 +2157,8 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </sc-if>
 
 <div style="display:flex;flex-direction:column;gap:2px;margin-top:14px">
-<div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-bottom:2px solid var(--color-ink);padding-bottom:12px;margin-bottom:4px">
-<h3 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:26px;color:var(--text-primary);margin:0;text-wrap:pretty">{{ t.ctRouteLabel }}</h3>
+<div class="nycos-ct-route-head" style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-bottom:2px solid var(--color-ink);padding-bottom:12px;margin-bottom:4px">
+<h3 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:26px;line-height:1.15;color:var(--text-primary);margin:0;text-wrap:pretty">{{ t.ctRouteLabel }}</h3>
 <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.ctRouteTbc }}</span>
 </div>
 <div style="display:flex;flex-direction:column;gap:10px;padding:16px 0">
@@ -2733,7 +2833,7 @@ const EN = {
       label: 'Kunqu 崑曲',
       tiers: [
         { title: 'Introduction', level: 'For absolute beginners with no prior exposure to Kunqu.', desc: 'A gentle, systematic entry point to Kunqu. Through classic arias, recitation and foundational movement, students experience Kunqu’s distinctive vocal rhythm and performance aesthetics — drawing, for example, on representative excerpts from Si Fan 《思凡》 — building a basic understanding of Kunqu performance through practice.' },
-        { title: 'Foundation', level: 'For students with some grounding in Kunqu — having completed the Introduction course, or through prior study, performance or related experience.', desc: 'Centred on classic scene excerpts and representative arias, this course builds integrated singing, recitation and movement technique while exploring Kunqu’s literary depth, characterisation and stage presence — working, for example, through long-term, systematic study of arias such as 《盒羅袍》 from The Peony Pavilion: Wandering in the Garden 《牡丹亭·遊園》.' },
+        { title: 'Foundation', level: 'For students with some grounding in Kunqu — having completed the Introduction course, or through prior study, performance or related experience.', desc: 'Centred on classic scene excerpts and representative arias, this course builds integrated singing, recitation and movement technique while exploring Kunqu’s literary depth, characterisation and stage presence — working, for example, through long-term, systematic study of arias such as 《皂羅袍》 from The Peony Pavilion: Wandering in the Garden 《牡丹亭·遊園》.' },
         { title: 'Excerpt One-on-One*', level: 'For accomplished students seeking to advance further.', desc: 'Open to students who have completed the Introduction and Foundation courses, or who pass an instructor interview. Built around a single classic Kunqu scene, this course develops singing, recitation, movement, characterisation and stage performance in depth.' }
       ],
       majorsLabel: 'Roles taught',
@@ -2933,6 +3033,23 @@ const EN = {
         { k: 'Presented by', v: 'Youth Troupe of NYCOS \u7d10\u7d04\u68a8\u5712\u793e\u9752\u5e74\u5718' },
         { k: 'Programme', v: 'Jingju \u4eac\u5287 \u00b7 Kunqu \u5d11\u66f2 \u00b7 Chinese traditional painting \u570b\u756b \u00b7 Calligraphy \u66f8\u6cd5' },
         { k: 'Supported by', v: 'CGCC Foundation \u00b7 NYC Department of Cultural Affairs \u00b7 New York State Council on the Arts \u00b7 Dr. Shuang Xin Tsao Private Fund' }
+      ]
+    },
+    {
+      ts: '2019-02-16', img: 'assets/poster-2019-02-16-spring-concert-youth-troupe.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Feb 2019', day: 'Sat 16 February 2019', time: '2:00 – 3:30 PM', place: 'Flushing Library Auditorium, Queens', tag: 'Concert', title: 'Spring Concert of Peking Opera by Youth Troupe',
+      cn: '2019年紐約梨園社青年團京劇專場', venue: 'Flushing Library Auditorium', shots: 0,
+      note: 'A NYCOS and NYCOS Youth Troupe production — arias by the female-role class, plus full scenes from The Marriage of Hezhu and Wu Jia Po. Free admission.',
+      facts: [
+        { k: 'Date', v: 'Saturday, 16 February 2019, 2:00 – 3:30 PM' },
+        { k: 'Venue', v: 'Flushing Library Auditorium' },
+        { k: 'Address', v: '41-17 Main Street, Flushing, NY 11354' },
+        { k: 'Excerpt arias', v: 'Arias by the female-role class' },
+        { k: 'The Marriage of Hezhu 荷珠配', v: 'Fu Die 傅蝶 as Zhao Wang · Xu Xiaowen 許曉雯 as Hezhu' },
+        { k: 'Wu Jia Po 武家坡', v: 'Li Zexin 李澤昕 as Xue Pingui · Meng Ruowen 孟若雯 as Wang Baochuan' },
+        { k: 'Musicians', v: 'Zhang Liping 張立平 (drum) · Wu Wan 吳浣 (jinghu)' },
+        { k: 'Presented by', v: 'New York Chinese Opera Society 紐約梨園社 · Youth Troupe of NYCOS 紐約梨園社青年團' },
+        { k: 'Supported by', v: 'Flushing Queens Library · NYC Department of Cultural Affairs · Dr. Shuang Xin Tsao Private Foundation' },
+        { k: 'Admission', v: 'Free' }
       ]
     },
     {
@@ -3366,7 +3483,7 @@ const ZH = {
   donate: '捐助',
   aEyebrow: '自二〇〇六年 · 紐約',
   aTitle: '六百年的舞台，在紐約繼續開唱。',
-  aDesc: '紐約梨園社是一個由義工組成的非營利藝術機構，把崑曲、京劇，以及與之並生的書法與國畫，帶給全紐約的觀眾與學員。毋須任何基礎，歡迎你來。',
+  aDesc: '紐約梨園社是一個由義工組成的非營利藝術機構，把崑曲、京劇，以及與之並生的書法與國畫，帶給全紐約的觀眾與學員。不需要任何基礎，歡迎你來。',
   aCta: '近期演出',
   cTitle: '跨越世紀的聲音',
   cSub: '崑曲、京劇、書法與國畫 —— 由下曼哈頓一群義工教學、排練、登台。',
@@ -3374,7 +3491,7 @@ const ZH = {
   cCta2: '報名上課',
   trust: ['創社於二〇〇六年', '501(c)(3) 非營利組織', '義工運作', '崑曲', '京劇', '書法', '國畫', '梨園社青年團'],
   missionLabel: '使命宣言',
-  mission: '紐約梨園社致力於促進中國文化與戲劇藝術的發展，耕耘提供園地，讓大眾能深入欣賞及體驗文化戲劇藝術之美。',
+  mission: '紐約梨園社致力於推廣中國戲曲與其相關文化藝術，為大眾提供欣賞、理解與體驗這門藝術之美的機會。',
   upcomingLabel: '精選',
   upcomingTitle: '精選活動與公演',
   viewAll: '全部活動',
@@ -3399,14 +3516,14 @@ const ZH = {
   youthCta: '認識青年團',
   memberLabel: '會員',
   memberTitle: '加入梨園社',
-  memberIntro: '會員是我們得以持續的原因，也最先收到我們的一切消息。',
+  memberIntro: '有會員，梨園社才能一直辦下去 —— 您也會是第一個收到消息的人。',
   tiers: [
     { name: '普通會員', amt: '50', per: '／年', tint: 'var(--surface-tint-blush)', lines: ['課程學費優惠', '公開排練邀請'] },
     { name: '學生會員', amt: '20', per: '／年', tint: 'var(--surface-tint-mint)', lines: ['享全部會員福利', '需出示學生證', '免費參加青年團活動'] },
     { name: '家庭會員', amt: '70', per: '／年', tint: 'var(--surface-tint-periwinkle)', lines: ['同戶最多四人', '全員學費優惠', '家庭日場專屬座位'] }
   ],
   join: '成為會員',
-  mbFootnote: '會員資料供辦公室存檔，並匯出為表格以便後續聯繫。我們不會分享您的個人資料。',
+  mbFootnote: '您的會員資料，我們會妥善保存，方便日後聯絡 —— 不會分享給任何第三方。',
   donateLabel: '支持梨園社',
   donateTitle: '讓活著的藝術繼續活著',
   donateDesc: '您的捐助用於青年團培訓、書法班的筆墨紙材，以及一場公演所需的劇場租金。',
@@ -3447,7 +3564,7 @@ const ZH = {
   ],
 
   pEyebrow: '課程',
-  pTitle: '十三門課程，多門對初學者開放。',
+  pTitle: '十三門課程，多門對初學者開放',
   pIntro: '九門戲曲（京劇與崑曲），四門書畫。戲曲一對一課程須經任課教師面試核准。',
   pFactsLabel: '課程概覽',
   pFacts: [{ k: '團體班', v: '十門' }, { k: '一對一', v: '三門' }, { k: '一期長度', v: '每學期' }, { k: '上課地點', v: '120 Broadway' }],
@@ -3502,7 +3619,7 @@ const ZH = {
   classList: ['身訓入門課', '唱腔入門課', '旦角一對一課程*', '身訓基礎課', '唱腔基礎課', '老生一對一課程*', '崑曲唱唸身段入門課程', '崑曲經典片段基礎課程', '崑曲折子戲一對一課程', '線上書法課 · 蘇藝', '線下書法課 · 虞文輝', '線下書法課 · 陳定佳', '國畫課 · 何山'],
   regLabel: '免費試聽',
   regTitle: '報名免費試聽課',
-  regIntro: '請於下方填寫學員資料，我們將以電子郵件與您確認免費試聽課時間 —— 無需付款。',
+  regIntro: '請在下方填寫學員資料，我們會用電子郵件跟您確認免費試聽課的時間 —— 不需要付款。',
   fName: '學員姓名', fNamePh: '請填寫全名',
   fClass: '選擇課程',
   fEmail: '電子郵件', fPhone: '聯絡電話',
@@ -3518,8 +3635,8 @@ const ZH = {
   zTitle: '以 Zelle 付款',
   zAcctLabel: 'Zelle 收款帳號', zAcct: '917-680-6118（Daniel Yu，紐約梨園社）',
   zMemoLabel: '請於備註填寫',
-  onlineNote: '送出表單後將轉往安全結帳頁面。在您於該頁確認之前，不會產生任何款項。',
-  regFootnote: '報名資料供辦公室存檔，並匯出為表格以便後續聯繫。我們不會分享您的個人資料。',
+  onlineNote: '送出表單後，會轉往安全的結帳頁面 —— 在您確認之前，不會產生任何費用。',
+  regFootnote: '您的報名資料，我們會妥善保存，方便日後聯絡 —— 不會分享給任何第三方。',
   submit: '送出報名',
   regSubmitting: '送出中…',
   regErrorMsg: '發生錯誤，請再試一次。',
@@ -3527,7 +3644,7 @@ const ZH = {
   thanksTitle: '報名已送出。',
   thanksBody: '確認信即將寄出，內含課程詳情、工作室地址，以及第一次上課需要攜帶的物品。',
   steps: [
-    '我們將確認您的免費試聽課時間，並以電子郵件通知您。',
+    '我們會確認您的免費試聽課時間，並用電子郵件通知您。',
     '留意確認信，內含工作室地址與上課時間。',
     '第一次上課請提早十分鐘到達，穿著舒適衣物與平底鞋。'
   ],
@@ -3557,21 +3674,21 @@ const ZH = {
     eyebrow: '系統化教學體系',
     title: 'Professional Training Pathway',
     subtitle: '由紐約地區京劇崑曲名家名票聯合執教',
-    intro: '紐約梨園社青年團課程采用循序漸進的系統化教學體系，為不同基礎的學員提供專業戲曲訓練。',
+    intro: '青年團的課程循序漸進，依學員的程度分階段教學，提供扎實的戲曲訓練。',
     peking: {
       label: '京劇課程 | Jingju',
       tiers: [
-        { title: '基礎唱念課程', level: '適合零基礎及初學者。', desc: '課程從經典戲曲片段入手，系統教授唱腔、念白、人物理解及舘台表現，幫助學員建立對中國戲曲藝術的整體認識，培養對京劇與崑曲的興趣與欣賞能力。' },
-        { title: '身訓課程', level: '適合零基礎以及具有舞蹈、戲劇或形體訓練背景的學員。', desc: '課程涵蓋傳統戲曲身段、程式動作、基本功及簡單把子功訓練，幫助學員建立規範的身體表達，提高舘台表現能力，並深入體驗中國戲曲獨特的身體語言。' },
-        { title: '一對一專業課程', level: '適合已具備一定戲曲基礎，希望進一步提高專業水平的學員。', desc: '課程內容由學員與主教老師共同制定，针對唱腔、念白、身段、角色塑造等方面進行個性化訓練。所有一對一課程均需經主教老師及項目負責人評估後安排。' }
+        { title: '基礎唱念課程', level: '適合零基礎及初學者。', desc: '從經典片段入手，教唱腔、念白、角色理解與舞台表現，讓學員對戲曲藝術有整體認識，也培養對京劇、崑曲的興趣與鑑賞力。' },
+        { title: '身訓課程', level: '適合零基礎以及具有舞蹈、戲劇或形體訓練背景的學員。', desc: '練傳統身段、程式動作、基本功，以及簡單的把子功，幫助學員打好身體表達的基礎，也親身體會戲曲獨特的肢體語言。' },
+        { title: '一對一專業課程', level: '適合已具備一定戲曲基礎，希望進一步提高專業水平的學員。', desc: '課程內容由學員與主教老師共同商定，針對唱腔、念白、身段、角色塑造等方面做個別訓練。所有一對一課程都需經主教老師與項目負責人評估後才會安排。' }
       ]
     },
     kunqu: {
       label: '崑曲課程 | Kunqu',
       tiers: [
-        { title: '入門課程', level: '適合零基礎及從未接觸過崑曲的學員。', desc: '本課程為初學者提供一個輕鬆、系統的崑曲入門平台。課程將通過經典唱段、念白及基礎身段訓練，帶領學員體驗崑曲獨特的唱腔韻律與表演美學。例如，課程將選取《思凡》等經典劇目中的代表性片段，引導學員在實踐中感受崑曲優雅細膩的藝術魅力，並建立對崑曲表演的基本認識。' },
-        { title: '基礎課程', level: '適合已具備一定崑曲基礎的學員，例如已完成入門課程，或曾參與崑曲學習、演出及相關體驗活動的學習者。', desc: '課程將以經典折子戲和代表性唱段為核心，系統學習唱、念、身段等綶合表演技巧，並深入探討崑曲藝術的文學內涵、人物塑造與舞台表現。例如，課程將圍繞《牡丹亭·遊園》中的【盒羅袍】等經典唱段，進行長期、系統的學習與實踐。' },
-        { title: '折子戲一對一課程*', level: '面向希望進一步提升專業水平的優秀學員。', desc: '報名學員須完成入門課程及基礎課程，或經任課教師面試評估後方可參加。課程將圍繞一折經典崑曲折子戲開展系統訓練，全面提升唱腔、念白、身段、人物塑造及舞台表演能力，為學員提供更加深入、專業的崑曲學習體驗。' }
+        { title: '入門課程', level: '適合零基礎及從未接觸過崑曲的學員。', desc: '專為初學者設計，用經典唱段、念白與基礎身段，帶學員輕鬆走進崑曲的世界，體會它獨特的唱腔韻律與表演美學。課程會選取《思凡》等經典劇目中的代表片段，讓學員在實作中感受崑曲優雅細膩的藝術魅力，建立對崑曲表演的基本認識。' },
+        { title: '基礎課程', level: '適合已具備一定崑曲基礎的學員，例如已完成入門課程，或曾參與崑曲學習、演出及相關體驗活動的學習者。', desc: '以經典折子戲與代表性唱段為核心，紮實地練唱、念、身段等綜合表演技巧，並深入探討崑曲的文學內涵、人物塑造與舞台表現。例如會圍繞《牡丹亭·遊園》中的【皂羅袍】等經典唱段，長期反覆學習與實踐。' },
+        { title: '折子戲一對一課程*', level: '面向希望進一步提升專業水平的優秀學員。', desc: '報名學員須完成入門課程及基礎課程，或經任課教師面試評估後方可參加。課程圍繞一折經典崑曲折子戲進行系統訓練，全面提升唱腔、念白、身段、人物塑造與舞台表演能力，讓學員獲得更深入、更專業的崑曲學習經驗。' }
       ],
       majorsLabel: '主修行當',
       majorsNote: '目前課程主要教授：',
@@ -3582,7 +3699,7 @@ const ZH = {
     title: '常見問題',
     titleAlt: 'Frequently Asked Questions',
     who: { q: '誰適合報名？', items: ['零基礎戲曲愛好者', '希望系統學習京劇、崑曲的青年學生', '具有舞蹈、音樂、戲劇等藝術背景者', '希望提升專業表演能力的戲曲學習者'] },
-    goals: { q: '教學目標', intro: '我們的課程致力於幫助學員：', items: ['建立系統的戲曲基礎訓練', '學習唱、念、做、表等綴合表演能力', '深入理解京劇與崑曲傳統藝術', '參與舞台實踐及青年團演出機會'] },
+    goals: { q: '教學目標', intro: '我們希望透過課程，幫助學員：', items: ['建立系統的戲曲基礎訓練', '學習唱、念、做、表等綜合表演能力', '深入理解京劇與崑曲傳統藝術', '參與舞台實踐及青年團演出機會'] },
     format: { q: '教學形式', items: ['小班授課', '一對一專業輔導', '線下課程（部分課程可根據需要安排線上輔導）', '學期末內部展示', '優秀學員可參與青年團年度演出'] },
     requirements: { q: '課程要求', items: ['課程面向紐約梨園社會員開放。', '基礎課程滿三人開班。', '一對一課程須經教師審核批准。'] },
     tuitionLabel: '會員與學費',
@@ -3603,7 +3720,7 @@ const ZH = {
     eyebrow: '紐約梨園社染毫書房 NYCOS Ranhao Calligraphy & Chinese Painting Studio',
     title: '國畫與書法課程（可中英雙語授課）',
     subtitle: 'Traditional Chinese Painting & Calligraphy Classes',
-    intro: '紐約梨園社染毫書房致力於推廣中華傳統書畫藝術，透過系統化教學，培養學員對中國書法與國畫的興趣，提高藝術修養，並體驗中華傳統文化的獨特魅力。'
+    intro: '染毫書房教的是中華傳統書畫，一步一步帶您認識書法與國畫，培養興趣、提升藝術修養，也親身感受中華文化裡筆墨的獨特魅力。'
   },
   faqBrush: {
     title: '報名對象與收費標準',
@@ -3620,7 +3737,7 @@ const ZH = {
     contactLabel: '報名諮詢'
   },
   wkEyebrow: '課程 · 文化工作坊',
-  wkTitle: '一個下午，一間屋子，一門藝術。',
+  wkTitle: '一個下午，一間屋子，一門藝術',
   wkIntro: '除了每週的課程，梨園社也把戲曲與書畫帶到城市各處 —— 示範講解、校園推廣與節慶演出。多數活動免費，歡迎所有人參加。',
   wkFactsLabel: '活動概覽',
   wkFacts: [{ k: '形式', v: '單場活動' }, { k: '費用', v: '多為免費' }, { k: '洽詢方式', v: '預約邀請' }],
@@ -3637,7 +3754,7 @@ const ZH = {
   wkDonateTitle: '工作坊之所以免費，是因為有人先付了',
   wkDonateDesc: '您的捐助用於隨行的戲服、樂器，以及老師在週末下午付出的時間。',
   vlEyebrow: '義工 · Volunteer',
-  vlTitle: '梨園社靠的是願意到場的人。',
+  vlTitle: '梨園社靠的是願意到場的人',
   vlLede: '這裡沒有人領薪。每一場演出、每一堂課、每一次節慶亮相，都由義工撐起 —— 在門口售票的、開演前一小時熨戲服的、深夜把鑼鼓搬回車上的，都是社員。無論您能付出多少，這裡都有一份可做的事。',
   vlRolesLabel: '我們需要幫手的地方',
   vlRolesNote: '告訴我們您想做哪一項',
@@ -3654,7 +3771,7 @@ const ZH = {
   vlHowLabel: '如何開始',
   vlHow: [
     { n: '01', title: '先來信', body: '寫一封信，說明您想做什麼、大致哪些時段方便。兩行字就夠。' },
-    { n: '02', title: '先來一場', body: '我們會安排有經驗的社員帶您。事前毋須具備任何知識。' },
+    { n: '02', title: '先來一場', body: '我們會安排有經驗的社員帶您。不需要先懂什麼。' },
     { n: '03', title: '喜歡就留下', body: '多數人都會再來。義工可優先獲知演出消息，也歡迎旁聽課程。' }
   ],
   vlCtaLabel: '加入義工',
@@ -3663,14 +3780,14 @@ const ZH = {
   vlCtaBtn: '寫信給義工聯絡人',
   vlCtaAlt: '或使用聯絡表單',
   ytEyebrow: '紐約梨園社青年團',
-  ytTitle: '成立於二〇一二年，為承接這門藝術的人而設。',
+  ytTitle: '成立於二〇一二年，為承接這門藝術的人而設',
   ytLede: '梨園社下屬青年組織，成員多為在美旅居或留學、熱愛以戲曲為代表的傳統文化的青年 —— 一個學習、排練，並真正站上舞台的平台。',
   ytFactsLabel: '青年團概況',
   ytFacts: [{ k: '成立', v: '2012' }, { k: '成員', v: '留學生與在美青年' }, { k: '講座系列', v: '藝苑卮言' }, { k: 'Instagram', v: '@nycosyouth' }],
   ytWhoLabel: '我們是誰',
   ytWhoTitle: '為青年提供交流與展示的平臺',
-  ytBody1: '紐約梨園社青年團成立於2012年，是紐約梨園社下屬青年組織，成員多為在美國旅居或留學的、熱愛以戲曲為代表的傳統文化的青年。',
-  ytBody2: '青年團的成立旨在為熱愛傳統文化的青年們提供交流與展示的平臺，以戲曲等傳統藝術為紐帶，增強華人、華裔青年的文化歸屬感。青年團通過觀摩戲曲演出、學習戲曲表演及文武場、登臺清唱彩唱、舉辦「藝苑卮言」系列講座等活動，培養青年對傳統文化的興趣，吸引青年人加入傳統文化的傳承隊伍，並在美國大學的校園中弘揚戲曲藝術，豐富紐約地區高校的藝術文化。',
+  ytBody1: '紐約梨園社青年團成立於2012年，是社裡的青年組織，成員多是在美國旅居或留學、喜愛戲曲與傳統文化的年輕人。',
+  ytBody2: '我們想給熱愛傳統文化的青年一個交流與展示的地方，讓戲曲成為連結彼此的線，也讓華人、華裔青年多一分文化歸屬感。平時，成員會一起觀摩戲曲演出、學習表演與文武場、登台清唱彩唱，也舉辦「藝苑卮言」系列講座 —— 把戲曲藝術帶進美國的大學校園，讓紐約地區的校園生活更添一分藝術色彩。',
   ytQuote: '以戲曲等傳統藝術為紐帶，增強華人、華裔青年的文化歸屬感。',
   ytQuoteBy: '紐約梨園社青年團 · 成立於二〇一二年',
   ytDoLabel: '青年團的活動',
@@ -3695,7 +3812,7 @@ const ZH = {
   ytDonateTitle: '青年團，是這門藝術活過下一代的方式',
   ytDonateDesc: '您的捐助用於排練場地、文武場的樂器，以及一位學生獨力買不起的行頭。',
   evEyebrow: '活動',
-  evTitle: '來看看這門藝術究竟是什麼。',
+  evTitle: '來看看這門藝術究竟是什麼',
   evLede: '整本大戲、清唱專場、校園講座與節慶演出。我們的活動多半免費或近乎免費 —— 從未看過戲曲，也完全不妨。',
   evFactsLabel: '本季概況',
   evFacts: [{ k: '近期活動', id: 'count' }, { k: '免費入場', id: 'free' }, { k: '地區', v: '皇后區 · 曼哈頓' }, { k: '購票', v: 'Eventbrite' }],
@@ -3771,6 +3888,23 @@ const ZH = {
         { k: '主辦', v: '紐約梨園社青年團 Youth Troupe of NYCOS' },
         { k: '內容', v: '京劇 · 崑曲 · 國畫 · 書法' },
         { k: '贊助', v: 'CGCC Foundation · NYC Department of Cultural Affairs · New York State Council on the Arts · Dr. Shuang Xin Tsao Private Fund' }
+      ]
+    },
+    {
+      ts: '2019-02-16', img: 'assets/poster-2019-02-16-spring-concert-youth-troupe.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2019年2月', day: '2019年2月16日（週六）', time: '下午2:00 – 3:30', place: '法拉盛圖書館劇場', tag: '展演', title: '2019年紐約梨園社青年團京劇專場',
+      cn: 'Spring Concert of Peking Opera by Youth Troupe', venue: '法拉盛圖書館劇場 Flushing Library Auditorium', shots: 0,
+      note: '紐約梨園社、紐約梨園社青年團舉辦 —— 京劇清唱：旦角班及青年團成員，並演出《荷珠配》《武家坡》摺子戲。免費入場。',
+      facts: [
+        { k: '日期', v: '2019年2月16日（週六）下午2:00 – 3:30' },
+        { k: '地點', v: '法拉盛圖書館劇場' },
+        { k: '地址', v: '41-17 Main Street, Flushing, NY 11354' },
+        { k: '演出劇目', v: '京劇清唱：旦角班及青年團成員' },
+        { k: '荷珠配', v: '傅蝶 飾 趙旺 · 許曉雯 飾 荷珠' },
+        { k: '武家坡', v: '李澤昕 飾 薛平貴 · 孟若雯 飾 王寶釧' },
+        { k: '司鼓／操琴', v: '張立平（司鼓）· 吳浣（操琴）' },
+        { k: '主辦', v: '紐約梨園社 · 紐約梨園社青年團' },
+        { k: '支持', v: 'Flushing Queens Library · NYC Department of Cultural Affairs · Dr. Shuang Xin Tsao Private Foundation' },
+        { k: '入場', v: '免費入場' }
       ]
     },
     {
@@ -3988,7 +4122,7 @@ const ZH = {
   evDonateTitle: '我們的部分演出，免費入場',
   evDonateDesc: '這只有在會員與捐助者預先支付場地、樂師與戲服的情況下才有可能。',
   mbEyebrow: '會員',
-  mbTitle: '梨園社，就是它的會員。',
+  mbTitle: '梨園社，就是它的會員',
   mbLede: '我們沒有任何基金支撐。會費與捐助，就是排練室得以續租、戲服得以修補、老師在週六早晨得以領到酬勞的原因。',
   mbFactsLabel: '概覽',
   mbFacts: [{ k: '等級', v: '三種' }, { k: '最低', v: '每年 $20' }, { k: '期限', v: '十二個月' }, { k: '付款', v: '信用卡 · PayPal · Zelle' }],
@@ -4035,13 +4169,13 @@ const ZH = {
   mbFaq: [
     { q: '我需要懂戲嗎？', a: '不需要。我們有一半的會員，第一次看戲時什麼都不懂，然後就留下來了。' },
     { q: '上課一定要入會嗎？', a: '不用 —— 課程對所有人開放，會員只是學費較低。' },
-    { q: '可以把會籍當禮物送人嗎？', a: '可以。來信告訴我們受贈人的姓名即可安排。' },
-    { q: '會費可以抵稅嗎？', a: '紐約梨園社為註冊的 501(c)(3) 非營利組織。會費中超出所獲福利價值的部分可以抵稅，收據上會註明金額。' }
+    { q: '可以把會籍當禮物送人嗎？', a: '可以。寫信告訴我們對方的名字，我們就能幫您安排。' },
+    { q: '會費可以抵稅嗎？', a: '紐約梨園社是註冊的 501(c)(3) 非營利組織。會費裡超出您所獲福利價值的部分可以抵稅，金額會清楚寫在收據上。' }
   ],
   mbDonateTitle: '已經是會員？您的捐助能走得更遠',
   mbDonateDesc: '會費維持的是尋常的一年。捐助讓我們得以排一齣新戲，或把工作坊帶進付不起費用的學校。',
   ctEyebrow: '聯絡',
-  ctTitle: '寫信給我們，真的有人會讀。',
+  ctTitle: '寫信給我們，真的有人會讀',
   ctLede: '這裡沒有客服中心 —— 訊息會送到義務理事手上，通常兩三天內回覆。課程、演出邀約，或您在閣樓翻出的一件戲服，都歡迎來信。',
   ctFactsLabel: '聯絡方式',
   ctFacts: [{ k: '電郵', v: 'nycosyouth@gmail.com' }, { k: '電話', v: '(212) 227-2920' }, { k: '辦公室', v: '120 Broadway STE 3650' }, { k: '回覆時間', v: '二至三天' }],
@@ -4085,23 +4219,23 @@ const ZH = {
   ebPreview: '預覽',
 
   abEyebrow: '關於梨園社',
-  abTitle: '成立於二〇〇六年，因這門藝術而生。',
+  abTitle: '成立於二〇〇六年，因這門藝術而生',
   abLede: '中國傳統戲曲集文學、音樂、舞蹈、美術等因素於一體，是屬於全人類的非物質文化遺產。',
   abFactsLabel: '本社概況',
   abFacts: [{ k: '創社', v: '2006' }, { k: '青年團', v: '2012' }, { k: '機構性質', v: '501(c)(3) 非營利' }],
   abWhoLabel: '我們是誰',
   abWhoTitle: '讓大眾領略戲曲之美',
-  abBody1: '紐約梨園社成立於2006年，是非盈利藝術機構，集結了一群熱愛戲曲與中華文化的人，旨在促進中國傳統戲曲在美國的發展，使大眾能夠領略戲曲之美。',
-  abBody2: '多年來我社堅持舉辦劇場公演、社區示範、社團聯誼、傳習研究等多項活動，希望為中美文化交流及社區文化的多元化發展盡綿薄之力。我社下設青年團、書法班等組織，以更好地傳播中國傳統文化。',
+  abBody1: '紐約梨園社成立於2006年，是一群熱愛戲曲與中華文化的人共同創立的非營利藝術機構，希望把中國傳統戲曲帶到美國，讓更多人領略戲曲之美。',
+  abBody2: '多年來，我們持續舉辦公演、社區示範、聯誼活動與傳習課程，希望促進中美文化交流，也讓在地社群的文化生活更加多元。青年團與書法班，都是社裡為此而設的兩個平台。',
   abTimeLabel: '一路走來',
   abTime: [
-    { year: '2006', label: '梨園社成立', body: '紐約梨園社於紐約成立，為致力於推廣中國戲曲及相關藝術的非營利機構。', tbc: false },
+    { year: '2006', label: '梨園社成立', body: '紐約梨園社在紐約成立，是一個致力於推廣中國戲曲及相關藝術的非營利機構。', tbc: false },
     { year: '2012', label: '青年團成立', body: '為在美青年與留學生設立的下屬組織 —— 一個學習、排練與登台的平台。', tbc: false },
     { year: '進行中', label: '我們仍在努力變得更好', body: '每一季，我們多排練一點、多教得好一點，也更用心聴見社群的聲音。', tbc: false }
   ],
   abYouthLabel: '梨園社青年團',
   abYouthTitle: '成立於二〇一二年，為承接這門藝術的人而設',
-  abYouthBody: '青年團是紐約梨園社下屬青年組織，成員多為在美旅居或留學、熱愛以戲曲為代表的傳統文化的青年。青年團為他們提供交流與展示的平台 —— 觀摩戲曲演出、學習戲曲表演及文武場、登台清唱彩唱，並舉辦「藝苑卮言」系列講座，在美國大學校園中弘揚戲曲藝術。',
+  abYouthBody: '青年團是紐約梨園社下屬的青年組織，成員多是在美旅居或留學、喜愛戲曲與傳統文化的年輕人。我們為他們提供一個交流與展示的平台 —— 一起觀摩戲曲演出、學表演與文武場、登台清唱彩唱，也舉辦「藝苑卮言」系列講座，把戲曲藝術帶進美國的大學校園。',
   abCalLabel: '書法班 · 染毫書房',
   abCalTitle: '筆、墨，與一筆一畫的功夫',
   abCalBody: '書法班以「染毫書房」為名開課。授課老師來自美洲中華書法學會與北美書法家協會，自2015年起在此教授書法技法。課程不限年齡與程度，歡迎初學者。',
@@ -4231,6 +4365,9 @@ class Component extends DCLogic {
       if (data && data.clientId) this.setState({ paypalClientId: data.clientId });
     }).catch(() => {});
     this.syncPaypalButtons();
+    this._onMasonryResize = () => this.scheduleMasonryLayout();
+    if (typeof window !== 'undefined') window.addEventListener('resize', this._onMasonryResize);
+    this.scheduleMasonryLayout();
   }
 
   pick(l) {
@@ -4240,6 +4377,7 @@ class Component extends DCLogic {
 
   componentWillUnmount() {
     if (this._mObs) { this._mObs.disconnect(); this._mObs = null; }
+    if (typeof window !== 'undefined' && this._onMasonryResize) window.removeEventListener('resize', this._onMasonryResize);
   }
 
   go(screen) {
@@ -4262,6 +4400,27 @@ class Component extends DCLogic {
 
   get mr() { return this.state.mReveal; }
   get mNo() { return this.state.mReduce; }
+
+  // Row-major CSS-grid masonry for the past-events gallery: grid-auto-rows
+  // is a 1px hairline track, and each card is given an explicit
+  // `grid-row-end: span N` sized to its own measured height (+gap), so
+  // columns pack tight with no dead space while items stay in strict
+  // source (chronological) order — unlike `column-count`, which fills one
+  // whole column before the next and scrambles the reading order.
+  layoutPastMasonry = () => {
+    const el = typeof document !== 'undefined' ? document.querySelector('.nycos-past-masonry') : null;
+    if (!el) return;
+    const gap = 22;
+    [...el.children].forEach((child) => {
+      const h = child.getBoundingClientRect().height;
+      child.style.gridRowEnd = 'span ' + Math.max(1, Math.ceil(h + gap));
+    });
+  };
+
+  scheduleMasonryLayout = () => {
+    if (typeof requestAnimationFrame === 'undefined') { this.layoutPastMasonry(); return; }
+    requestAnimationFrame(() => requestAnimationFrame(this.layoutPastMasonry));
+  };
 
   observeMission() {
     const el = this.missionRef.current;
@@ -4296,6 +4455,7 @@ class Component extends DCLogic {
     scanReveal();
 
     this.syncPaypalButtons();
+    this.scheduleMasonryLayout();
   }
 
   submitClassInfo(e) {
@@ -4644,12 +4804,8 @@ class Component extends DCLogic {
         return {
           ...p,
           hasImg: !!p.img,
-          posterStyle: {
-            position: 'absolute', inset: 0,
-            backgroundColor: p.posterBg || 'transparent',
-            backgroundImage: p.img ? 'url("' + p.img + '")' : 'none',
-            backgroundSize: p.posterSize || 'cover', backgroundPosition: p.posterPos || '50% 58%', backgroundRepeat: 'no-repeat'
-          },
+          noImg: !p.img,
+          imgLoaded: () => this.scheduleMasonryLayout(),
           caption: p.img ? p.date : (t.evPosterTbc + ' · ' + p.date),
           capStyle: {
             fontFamily: 'var(--font-mono)', fontSize: '8px', letterSpacing: '0.12em', textTransform: 'uppercase',
