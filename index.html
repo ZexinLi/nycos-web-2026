@@ -309,17 +309,25 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
     flex:1 1 auto !important;
     max-width:100% !important;
   }
+  /* Center the eyebrow/title/body/CTA text column to match the now-centered
+     image above it once the layout stacks to one column. */
+  .nycos-editorial-wrap section > div:last-child{
+    align-items:center !important;
+    text-align:center !important;
+  }
+  .nycos-editorial-wrap section > div:last-child button{
+    align-self:center !important;
+  }
   /* The "Draw by Zhizhi Yu" credit sits right-aligned under the Youth Troupe
      illustration's 46% column on desktop. Once EditorialBlock collapses to
-     one column above, that column no longer exists, so the right-aligned
-     credit just reads as randomly indented — move it to the left edge with
-     the rest of the stacked content. */
+     one column above, that column no longer exists and the image spans the
+     full width, so center the credit under it instead. */
   .nycos-youth-credit{
-    justify-content:flex-start !important;
+    justify-content:center !important;
   }
   .nycos-youth-credit span{
     width:auto !important;
-    text-align:left !important;
+    text-align:center !important;
   }
 }
 
@@ -413,6 +421,23 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
      treatment) — the extra card padding-bottom above makes room for the
      doubled height so it still clears the lede text. */
   .nycos-ct-hero-fig{transform:scale(2) !important;transform-origin:bottom right !important}
+  /* About hero: the figure's `height:115%` is a percentage of the card's
+     own box, and the card's height is auto (sized by its content plus
+     padding) — so adding card padding-bottom to make room for the figure
+     also grows the figure itself (115% of a taller card), which eats the
+     new room right back and, worse, extends the figure's top edge further
+     up into the text. Fix the figure at a constant pixel height first so
+     it stops feeding back into the card's own height, then give the card
+     just enough padding-bottom to clear the five-line ZH lede under it. */
+  .nycos-ab-hero-fig{height:280px !important;transform:scale(2) !important;transform-origin:bottom right !important}
+  /* The figure's box (233x560 once scaled) is narrower than the source
+     image's own aspect ratio, so `object-fit:contain` letterboxes it —
+     about 153px of transparent padding stacks up at the top of the box
+     (object-position:bottom keeps the actual figure pinned to the bottom).
+     That invisible padding was stacking on top of the real 30px CSS gap,
+     reading as a ~183px gap under the lede — pull padding-bottom back in
+     to compensate for the letterbox specifically, not the real gap. */
+  .nycos-ab-hero-card{padding-bottom:390px !important}
   /* "Contact Us: nycosyouth@gmail.com" / "Dedicated addresses per topic":
      baseline-aligned space-between row squeezes the caption into a cramped
      3-line column on the right on a phone. Stack it below the heading and
@@ -717,9 +742,9 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <button type="button" onClick="{{ goYouth }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;letter-spacing:0.02em;color:var(--text-accent);text-decoration:none;background:none;border:none;border-bottom:1px solid currentColor;align-self:flex-start;margin:0;padding:0;cursor:pointer;transition:color 160ms var(--ease-out);" style-hover="color:var(--accent-primary-hover)">{{ t.youthCta }} →</button>
 </div>
 </x-import>
-</div>
-<div class="nycos-youth-credit" style="max-width:1200px;margin:-72px auto 0;padding:0 var(--gutter);display:flex;justify-content:flex-end">
+<div class="nycos-youth-credit" style="position:absolute;left:0;right:0;top:0;max-width:1200px;margin:0 auto;padding:0 var(--gutter);display:flex;justify-content:flex-end;pointer-events:none">
 <span style="width:46%;text-align:center;font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary)">Draw by Zhizhi Yu</span>
+</div>
 </div>
 
 <section id="membership" style="max-width:1200px;margin:0 auto;padding:64px 32px 96px">
@@ -730,7 +755,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 <div class="nycos-grid-collapse" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
 <sc-for list="{{ tierList }}" as="tier" hint-placeholder-count="3">
-<div style="border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:28px 26px;display:flex;flex-direction:column;gap:18px;background:{{ tier.tint }}">
+<div style="border-radius:var(--radius-sm);padding:28px 26px;display:flex;flex-direction:column;gap:18px;background:{{ tier.tint }};box-shadow:var(--shadow-card);transition:transform 220ms var(--ease-out),box-shadow 220ms var(--ease-out)" style-hover="transform:translateY(-4px);box-shadow:var(--shadow-card-hover)">
 <div style="display:flex;align-items:baseline;justify-content:space-between">
 <span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-secondary)">{{ tier.name }}</span>
 <span style="display:flex;align-items:baseline;gap:1px;color:var(--text-primary)">
@@ -1291,11 +1316,12 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <main data-screen-label="About">
 
 <section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 40px;position:relative">
-<div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
-<img src="assets/about-hero-blue-card-figures.webp" alt="" style="position:absolute;right:7%;bottom:-40px;height:115%;width:auto;max-width:34%;object-fit:contain;object-position:bottom center">
+<div class="nycos-hero-card nycos-ab-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
+<img class="nycos-ab-hero-fig" src="assets/about-hero-blue-card-figures.webp" alt="" style="position:absolute;right:7%;bottom:-40px;height:115%;width:auto;max-width:34%;object-fit:contain;object-position:bottom center">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.abEyebrow }}</span>
-<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:640px;text-wrap:pretty">{{ t.abLede }}</h1>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:640px;text-wrap:pretty">{{ t.abTitle }}</h1>
+<p style="font-size:16.5px;line-height:1.7;color:rgba(247,244,238,0.78);margin:0;max-width:560px;text-wrap:pretty">{{ t.abLede }}</p>
 </div>
 </div>
 </section>
@@ -2647,7 +2673,7 @@ const EN = {
     { img: 'uploads/lingke-poster.webp', tag: 'Concert', date: 'Mar 2025', title: 'Youth Troupe Chinese Opera Concert', venue: 'Florence Gould Theater, Manhattan' }
   ],
   classesLabel: 'Classes',
-  classesTitle: 'Learn the art itself',
+  classesTitle: 'Learn it, not just clap.',
   classes: [
     { title: 'Jingju Dan Role Foundation', img: 'assets/dan-role-foundation-photo.webp', desc: 'Stance, posture, and the sung line of the dan (female) role.', meta: 'Foundation · Monthly' },
     { title: 'Kunqu Introduction', img: 'assets/kunqu-home-card-photo.webp', desc: 'Your first aria, your first steps. No Chinese reading required.', meta: 'Foundation · Weekly' },
@@ -2658,7 +2684,7 @@ const EN = {
   photoClass: 'one image per class',
   youthLabel: 'The Youth Troupe',
   youthTitle: 'Where the next fifty years come from',
-  youthBody: 'The NYCOS Youth Troupe trains young performers in movement, voice and stagecraft, then puts them in front of real audiences. Members receive priority placement and reduced tuition.',
+  youthBody: 'The NYCOS Youth Troupe is for young people who love Chinese opera and Chinese culture — we train members in movement, voice and stagecraft, then put them in front of real audiences. Members get priority placement and reduced tuition.',
   youthCta: 'About the Youth Troupe',
   memberLabel: 'Membership',
   memberTitle: 'Join the Society',
@@ -3486,13 +3512,13 @@ const ZH = {
   aDesc: '紐約梨園社是一個由義工組成的非營利藝術機構，把崑曲、京劇，以及與之並生的書法與國畫，帶給全紐約的觀眾與學員。不需要任何基礎，歡迎你來。',
   aCta: '近期演出',
   cTitle: '跨越世紀的聲音',
-  cSub: '崑曲、京劇、書法與國畫 —— 由下曼哈頓一群義工教學、排練、登台。',
+  cSub: '在曼哈頓下城，大家一起學崑曲、京劇、書法和國畫，從課堂到舞台。',
   cCta1: '近期演出',
   cCta2: '報名上課',
   trust: ['創社於二〇〇六年', '501(c)(3) 非營利組織', '義工運作', '崑曲', '京劇', '書法', '國畫', '梨園社青年團'],
   missionLabel: '使命宣言',
   mission: '紐約梨園社致力於推廣中國戲曲與其相關文化藝術，為大眾提供欣賞、理解與體驗這門藝術之美的機會。',
-  upcomingLabel: '精選',
+  upcomingLabel: '近期',
   upcomingTitle: '精選活動與公演',
   viewAll: '全部活動',
   tickets: '查看活動',
@@ -3501,34 +3527,34 @@ const ZH = {
     { img: 'uploads/lingke-poster.webp', tag: '公演', date: '2025年3月', title: '青年團京劇崑曲展演專場', venue: 'Florence Gould Theater · 曼哈頓' }
   ],
   classesLabel: '課程',
-  classesTitle: '親手學這門藝術',
+  classesTitle: '學藝術，別光鼓掌',
   classes: [
-    { title: '京劇旦角基礎課程', desc: '站相、身段，與旦角唱段的入門功夫。', meta: '基礎 · 每月' },
-    { title: '崑曲唱唸身段入門課程', desc: '從第一支曲牌、第一個身段開始，不需識讀中文。', meta: '基礎 · 每週' },
-    { title: '書法班', desc: '筆、墨，與一筆一畫的功夫。', meta: '不限年齡 · 週日' }
+    { title: '京劇旦角基礎', img: 'assets/dan-role-foundation-photo.webp', desc: '站相、身段，與旦角唱段的入門功夫。', meta: '基礎 · 每月' },
+    { title: '崑曲身段入門', img: 'assets/kunqu-home-card-photo.webp', desc: '從第一支曲牌開始，不需識讀中文。', meta: '基礎 · 每週' },
+    { title: '書法班', img: 'assets/calligraphy-home-card.webp', desc: '筆墨之間，是功夫。', meta: '不限年齡 · 週日' }
   ],
   allClasses: '全部十三門課程',
   photoTbc: '照片待提供',
   photoClass: '每門課程一張圖',
   youthLabel: '青年團',
   youthTitle: '下一個五十年從這裡開始',
-  youthBody: '梨園社青年團培訓年輕演員的身段、唱念與舞台功夫，並讓他們真正站上舞台面對觀眾。會員可優先入團，並享學費優惠。',
+  youthBody: '梨園社青年團，是為熱愛戲曲與中華文化的年輕人而設，教身段、唱念與舞台功夫，也讓他們真正站上舞台面對觀眾。會員可優先入團，學費也比較優惠。',
   youthCta: '認識青年團',
   memberLabel: '會員',
   memberTitle: '加入梨園社',
-  memberIntro: '有會員，梨園社才能一直辦下去 —— 您也會是第一個收到消息的人。',
+  memberIntro: '有會員，梨園社才能一直辦下去，您也會是第一個收到消息的人。',
   tiers: [
     { name: '普通會員', amt: '50', per: '／年', tint: 'var(--surface-tint-blush)', lines: ['課程學費優惠', '公開排練邀請'] },
     { name: '學生會員', amt: '20', per: '／年', tint: 'var(--surface-tint-mint)', lines: ['享全部會員福利', '需出示學生證', '免費參加青年團活動'] },
     { name: '家庭會員', amt: '70', per: '／年', tint: 'var(--surface-tint-periwinkle)', lines: ['同戶最多四人', '全員學費優惠', '家庭日場專屬座位'] }
   ],
   join: '成為會員',
-  mbFootnote: '您的會員資料，我們會妥善保存，方便日後聯絡 —— 不會分享給任何第三方。',
+  mbFootnote: '您的會員資料，我們會妥善保存，方便日後聯絡，不會分享給任何第三方。',
   donateLabel: '支持梨園社',
   donateTitle: '讓活著的藝術繼續活著',
   donateDesc: '您的捐助用於青年團培訓、書法班的筆墨紙材，以及一場公演所需的劇場租金。',
   donateCta: '點此捐助',
-  taxNote: '紐約梨園社為註冊 501(c)(3) 非營利組織，捐款可依法抵稅。',
+  taxNote: '紐約梨園社是註冊的501(c)(3)非營利組織，捐款可以抵稅。',
   nlLabel: '掌握最新消息',
   nlTitle: '最新活動，直接寄到您的信箱',
   nlDesc: '公演、開班與社區活動通知。\n可隨時退訂。',
@@ -3541,7 +3567,7 @@ const ZH = {
   footTagline: '紐約梨園社成立於二〇〇六年，是一所非營利藝術機構，致力於在美國推廣中國傳統戲曲。',
   addr1: '120 Broadway, STE 3650',
   addr2: 'New York, NY 10271',
-  legal: '© 2026 紐約梨園社 · 501(c)(3) 非營利組織',
+  legal: '© 2026 紐約梨園社·501(c)(3)非營利組織',
   fcols: [
     { title: '參與', items: [
       { label: '活動', to: 'events' },
@@ -3587,8 +3613,8 @@ const ZH = {
     {
       name: '京劇 · 老生基礎課程',
       items: [
-        { title: '身訓基礎課', desc: '站相、走步 —— 老生行當所依託的身體語法。', when: '每月第三週週六 · 2:00–5:00 PM', fee: '詳見會員與學費', level: '基礎', where: '梨園社工作室 · 120 Broadway', teacher: '待確認' },
-        { title: '唱腔基礎課', desc: '氣息、行腔 —— 老生唱段的基本功。', when: '每月第一週週日、第三週週六 · 2:00–5:00 PM', fee: '詳見會員與學費', level: '基礎', where: '梨園社工作室 · 120 Broadway', teacher: '待確認' },
+        { title: '身訓基礎課', desc: '站相、走步：老生行當所依託的身體語法。', when: '每月第三週週六 · 2:00–5:00 PM', fee: '詳見會員與學費', level: '基礎', where: '梨園社工作室 · 120 Broadway', teacher: '待確認' },
+        { title: '唱腔基礎課', desc: '氣息、行腔：老生唱段的基本功。', when: '每月第一週週日、第三週週六 · 2:00–5:00 PM', fee: '詳見會員與學費', level: '基礎', where: '梨園社工作室 · 120 Broadway', teacher: '待確認' },
         { title: '老生一對一課程*', desc: '就唱腔與角色功夫做個別指導。＊須經任課教師面試及批准。', when: '每月第一週週日、第三週週六 · 2:00–5:00 PM', fee: '詳見會員與學費', level: '需面試', where: '梨園社工作室 · 120 Broadway', teacher: '待確認' }
       ]
     },
@@ -3619,7 +3645,7 @@ const ZH = {
   classList: ['身訓入門課', '唱腔入門課', '旦角一對一課程*', '身訓基礎課', '唱腔基礎課', '老生一對一課程*', '崑曲唱唸身段入門課程', '崑曲經典片段基礎課程', '崑曲折子戲一對一課程', '線上書法課 · 蘇藝', '線下書法課 · 虞文輝', '線下書法課 · 陳定佳', '國畫課 · 何山'],
   regLabel: '免費試聽',
   regTitle: '報名免費試聽課',
-  regIntro: '請在下方填寫學員資料，我們會用電子郵件跟您確認免費試聽課的時間 —— 不需要付款。',
+  regIntro: '請在下方填寫學員資料，我們會用電子郵件跟您確認免費試聽課的時間，不需要付款。',
   fName: '學員姓名', fNamePh: '請填寫全名',
   fClass: '選擇課程',
   fEmail: '電子郵件', fPhone: '聯絡電話',
@@ -3635,8 +3661,8 @@ const ZH = {
   zTitle: '以 Zelle 付款',
   zAcctLabel: 'Zelle 收款帳號', zAcct: '917-680-6118（Daniel Yu，紐約梨園社）',
   zMemoLabel: '請於備註填寫',
-  onlineNote: '送出表單後，會轉往安全的結帳頁面 —— 在您確認之前，不會產生任何費用。',
-  regFootnote: '您的報名資料，我們會妥善保存，方便日後聯絡 —— 不會分享給任何第三方。',
+  onlineNote: '送出表單後，會轉往安全的結帳頁面，在您確認之前，不會產生任何費用。',
+  regFootnote: '您的報名資料，我們會妥善保存，方便日後聯絡，不會分享給任何第三方。',
   submit: '送出報名',
   regSubmitting: '送出中…',
   regErrorMsg: '發生錯誤，請再試一次。',
@@ -3650,12 +3676,12 @@ const ZH = {
   ],
   another: '再報名一位學員',
   pDonateTitle: '學費只能支撐一門課程三分之一的成本',
-  pDonateDesc: '其餘來自捐助 —— 工作室、老師的授課酬勞，以及讓無力負擔的學員得以入門的獎助。',
+  pDonateDesc: '其餘來自捐助：工作室、老師的授課酬勞，以及讓無力負擔的學員得以入門的獎助。',
 
   hub: [
-    { id: 'opera', label: '戲曲課程', img: 'assets/opera-class-instructor.jpg', count: '九門課程', body: '京劇老生與旦角基礎課程，以及崑曲唱腔、唸白與身段 —— 另有一對一個別指導，須經教師面試。', cta: '查看戲曲課程', tint: 'var(--surface-tint-blush)' },
+    { id: 'opera', label: '戲曲課程', img: 'assets/opera-class-instructor.jpg', count: '九門課程', body: '京劇老生與旦角基礎課程，以及崑曲唱腔、唸白與身段，另有一對一個別指導，須經教師面試。', cta: '查看戲曲課程', tint: 'var(--surface-tint-blush)' },
     { id: 'brush', label: '書法與國畫課程', img: 'assets/calligraphy-class-hub.jpg', count: '四門課程', body: '案前的筆墨功夫，以「染毫書房」為名開課，由四位參展書畫家親授。', cta: '查看書畫課程', tint: 'var(--surface-tint-mint)' },
-    { id: 'workshops', label: '文化工作坊', img: 'assets/workshops-tabling-outreach.webp', count: '預約邀請', body: '示範講解、校園推廣與節慶演出 —— 我們把這門藝術帶到您面前。', cta: '查看工作坊', tint: 'var(--surface-tint-periwinkle)' }
+    { id: 'workshops', label: '文化工作坊', img: 'assets/workshops-tabling-outreach.webp', count: '預約邀請', body: '示範講解、校園推廣與節慶演出，我們把這門藝術帶到您面前。', cta: '查看工作坊', tint: 'var(--surface-tint-periwinkle)' }
   ],
   opEyebrow: '課程 · 戲曲',
   opTitle: '京劇與崑曲：老生、旦角、經典折子',
@@ -3714,7 +3740,7 @@ const ZH = {
   brEyebrow: '課程 · 書法與國畫',
   brTitle: '傳承中華書畫藝術 · 感受筆墨之美',
   brTitleAlt: 'Discover the Beauty of Traditional Chinese Painting & Calligraphy',
-  brIntro: '四門案前的課程 —— 三門書法、一門國畫，其中一門全程線上授課。以「染毫書房」為名開課，授課老師皆為參展書畫家，並在美洲的中華書法學會中擔任職務。不限年齡與程度。',
+  brIntro: '四門案前的課程：三門書法、一門國畫，其中一門全程線上授課。以「染毫書房」為名開課，授課老師皆為參展書畫家，並在美洲的中華書法學會中擔任職務。不限年齡與程度。',
   brFacts: [{ k: '課程', v: '四門' }, { k: '授課老師', v: '四位' }, { k: '年齡', v: '不限' }],
   brStudio: {
     eyebrow: '紐約梨園社染毫書房 NYCOS Ranhao Calligraphy & Chinese Painting Studio',
@@ -3738,13 +3764,13 @@ const ZH = {
   },
   wkEyebrow: '課程 · 文化工作坊',
   wkTitle: '一個下午，一間屋子，一門藝術',
-  wkIntro: '除了每週的課程，梨園社也把戲曲與書畫帶到城市各處 —— 示範講解、校園推廣與節慶演出。多數活動免費，歡迎所有人參加。',
+  wkIntro: '除了每週的課程，梨園社也把戲曲與書畫帶到城市各處：示範講解、校園推廣與節慶演出。多數活動免費，歡迎所有人參加。',
   wkFactsLabel: '活動概覽',
   wkFacts: [{ k: '形式', v: '單場活動' }, { k: '費用', v: '多為免費' }, { k: '洽詢方式', v: '預約邀請' }],
   wkListLabel: '我們能帶來什麼',
   workshops: [
     { n: '01', cn: '示範講解', title: '文化示範講解', body: '一段彩唱折子、行當解說，並讓觀眾親手試一試水袖或握一次毛筆。適合圖書館、博物館與社區中心。', meta: '45–90分鐘 · 不限年齡', img: 'assets/workshop-demo-thumb.webp' },
-    { n: '02', cn: '校園推廣', title: '校園推廣活動', body: '為從未接觸戲曲的學生而設的入門介紹 —— 音樂、戲服、身段，以及劇目背後的故事。', meta: '一堂課 · K–12 與大學', img: 'assets/workshop-school-visit.jpg' },
+    { n: '02', cn: '校園推廣', title: '校園推廣活動', body: '為從未接觸戲曲的學生而設的入門介紹：音樂、戲服、身段，以及劇目背後的故事。', meta: '一堂課 · K–12 與大學', img: 'assets/workshop-school-visit.jpg' },
     { n: '03', cn: '小型演出', title: '節慶演出', body: '於中秋、春節及春季國際文化交流節的演出與書畫展台。', meta: '依節令 · 公開', img: 'assets/workshop-festival-performance.webp' }
   ],
   wkCtaLabel: '預約工作坊',
@@ -3755,7 +3781,7 @@ const ZH = {
   wkDonateDesc: '您的捐助用於隨行的戲服、樂器，以及老師在週末下午付出的時間。',
   vlEyebrow: '義工 · Volunteer',
   vlTitle: '梨園社靠的是願意到場的人',
-  vlLede: '這裡沒有人領薪。每一場演出、每一堂課、每一次節慶亮相，都由義工撐起 —— 在門口售票的、開演前一小時熨戲服的、深夜把鑼鼓搬回車上的，都是社員。無論您能付出多少，這裡都有一份可做的事。',
+  vlLede: '這裡沒有人領薪。每一場演出、每一堂課、每一次節慶亮相，都由義工撐起：在門口售票的、開演前一小時熨戲服的、深夜把鑼鼓搬回車上的，都是社員。無論您能付出多少，這裡都有一份可做的事。',
   vlRolesLabel: '我們需要幫手的地方',
   vlRolesNote: '告訴我們您想做哪一項',
   vlRoles: [
@@ -3765,7 +3791,7 @@ const ZH = {
     { n: '04', cn: '攝影錄影', title: '攝影與錄影', body: '拍攝演出與課堂，協助更新 Flickr 影像檔案。', meta: '演出日 · 自備器材' },
     { n: '05', cn: '字幕翻譯', title: '翻譯與字幕', body: '翻譯劇情簡介與場刊文字，並於演出時操作字幕。', meta: '遠端加演出日' },
     { n: '06', cn: '社群媒體', title: '社群與活動資訊', body: '發布活動、撰寫中英文貼文，維持資訊準確。', meta: '遠端 · 每週 1–2 小時' },
-    { n: '07', cn: '撰寫申請', title: '補助申請與行政', body: '協助草擬補助申請與結案報告 —— 最少人看見、卻最有用的工作。', meta: '遠端 · 依專案' },
+    { n: '07', cn: '撰寫申請', title: '補助申請與行政', body: '協助草擬補助申請與結案報告：最少人看見、卻最有用的工作。', meta: '遠端 · 依專案' },
     { n: '08', cn: '課堂助教', title: '課堂助教', body: '備妥筆墨、簽到點名，讓初學者不至於無所適從。', meta: '週六 · 依學期' }
   ],
   vlHowLabel: '如何開始',
@@ -3781,19 +3807,19 @@ const ZH = {
   vlCtaAlt: '或使用聯絡表單',
   ytEyebrow: '紐約梨園社青年團',
   ytTitle: '成立於二〇一二年，為承接這門藝術的人而設',
-  ytLede: '梨園社下屬青年組織，成員多為在美旅居或留學、熱愛以戲曲為代表的傳統文化的青年 —— 一個學習、排練，並真正站上舞台的平台。',
+  ytLede: '梨園社下屬青年組織，成員多為在美旅居或留學、熱愛以戲曲為代表的傳統文化的青年：一個學習、排練，並真正站上舞台的平台。',
   ytFactsLabel: '青年團概況',
   ytFacts: [{ k: '成立', v: '2012' }, { k: '成員', v: '留學生與在美青年' }, { k: '講座系列', v: '藝苑卮言' }, { k: 'Instagram', v: '@nycosyouth' }],
   ytWhoLabel: '我們是誰',
   ytWhoTitle: '為青年提供交流與展示的平臺',
   ytBody1: '紐約梨園社青年團成立於2012年，是社裡的青年組織，成員多是在美國旅居或留學、喜愛戲曲與傳統文化的年輕人。',
-  ytBody2: '我們想給熱愛傳統文化的青年一個交流與展示的地方，讓戲曲成為連結彼此的線，也讓華人、華裔青年多一分文化歸屬感。平時，成員會一起觀摩戲曲演出、學習表演與文武場、登台清唱彩唱，也舉辦「藝苑卮言」系列講座 —— 把戲曲藝術帶進美國的大學校園，讓紐約地區的校園生活更添一分藝術色彩。',
+  ytBody2: '我們想給熱愛傳統文化的青年一個交流與展示的地方，讓戲曲成為連結彼此的線，也讓華人、華裔青年多一分文化歸屬感。平時，成員會一起觀摩戲曲演出、學習表演與文武場、登台清唱彩唱，也舉辦「藝苑卮言」系列講座，把戲曲藝術帶進美國的大學校園，讓紐約地區的校園生活更添一分藝術色彩。',
   ytQuote: '以戲曲等傳統藝術為紐帶，增強華人、華裔青年的文化歸屬感。',
   ytQuoteBy: '紐約梨園社青年團 · 成立於二〇一二年',
   ytDoLabel: '青年團的活動',
   ytDo: [
-    { n: '01', cn: '觀摩演出', title: '觀摩戲曲演出', body: '成員結伴觀劇，散場後一同討論 —— 進入這門繁複藝術最快的一條路。', meta: '全年不定期' },
-    { n: '02', cn: '學戲 · 文武場', title: '學習戲曲表演及文武場', body: '學習戲曲表演技法，以及在台側撐起整場戲的文武場 —— 管弦與鑼鼓。', meta: '每週排練' },
+    { n: '01', cn: '觀摩演出', title: '觀摩戲曲演出', body: '成員結伴觀劇，散場後一同討論：進入這門繁複藝術最快的一條路。', meta: '全年不定期' },
+    { n: '02', cn: '學戲 · 文武場', title: '學習戲曲表演及文武場', body: '學習戲曲表演技法，以及在台側撐起整場戲的文武場：管弦與鑼鼓。', meta: '每週排練' },
     { n: '03', cn: '清唱 · 彩唱', title: '登臺清唱彩唱', body: '成員在本社公開演出中登台，既有清唱，也有全副行頭的彩唱。', meta: '依節令 · 公開' },
     { n: '04', cn: '藝苑卮言', title: '「藝苑卮言」系列講座', body: '在美國大學校園舉辦的戲曲講座，把劇目帶給從未接觸過的觀眾。', meta: '校園 · 邀約' }
   ],
@@ -3805,7 +3831,7 @@ const ZH = {
   ],
   ytJoinLabel: '加入青年團',
   ytJoinTitle: '你不需要有任何基礎',
-  ytJoinBody: '青年團歡迎紐約地區的學生與在職青年。來信簡單介紹自己，以及是什麼吸引你來 —— 不需要先錄一段試唱。',
+  ytJoinBody: '青年團歡迎紐約地區的學生與在職青年。來信簡單介紹自己，以及是什麼吸引你來，不需要先錄一段試唱。',
   ytJoinBtn: '寫信給青年團',
 
   ytJoinIg: '追蹤 @nycosyouth',
@@ -3813,7 +3839,7 @@ const ZH = {
   ytDonateDesc: '您的捐助用於排練場地、文武場的樂器，以及一位學生獨力買不起的行頭。',
   evEyebrow: '活動',
   evTitle: '來看看這門藝術究竟是什麼',
-  evLede: '整本大戲、清唱專場、校園講座與節慶演出。我們的活動多半免費或近乎免費 —— 從未看過戲曲，也完全不妨。',
+  evLede: '整本大戲、清唱專場、校園講座與節慶演出。我們的活動多半免費或近乎免費，從未看過戲曲，也完全不妨。',
   evFactsLabel: '本季概況',
   evFacts: [{ k: '近期活動', id: 'count' }, { k: '免費入場', id: 'free' }, { k: '地區', v: '皇后區 · 曼哈頓' }, { k: '購票', v: 'Eventbrite' }],
   evCountTpl: '{n}場',
@@ -3823,7 +3849,7 @@ const ZH = {
   evFeaturedLabel: '精選演出',
   evTickets: '購票',
   evFreeCta: '免費預約',
-  evEmptyTitle: '目前尚無排定的活動。', evEmptyBody: '我們正處於休季期間，暫無場次排定 —— 下一季的演出與工作坊確定日期後將公佈於此。歡迎訂閱下方電子報，第一時間收到通知。', evEmptyCta: '訂閱電子報',
+  evEmptyTitle: '目前尚無排定的活動。', evEmptyBody: '我們正處於休季期間，暫無場次排定，下一季的演出與工作坊確定日期後將公佈於此。歡迎訂閱下方電子報，第一時間收到通知。', evEmptyCta: '訂閱電子報',
   evUp: [
     ], evUpArchived: [
     { month: '十月', day: '18', year: '2026', tag: '京劇', title: '《四郎探母》', cn: 'The Fourth Son Visits His Mother', venue: '法拉盛市政廳', time: '晚上7:30 · 彩唱', price: '$25／會員 $15', free: false },
@@ -3867,7 +3893,7 @@ const ZH = {
     {
       ts: '2023-08-06', img: 'assets/poster-2023-08-06-dan-role-showcase.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2023年8月', day: '2023年8月6日（週日）', time: '下午1:00', place: '法拉盛市政廳', tag: '展演', title: '京劇旦角展演專場',
       cn: '紐約梨園社京劇旦角展演專場', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
-      note: '2023廿夏京劇展演 —— 紐約梨園社及其青年團主辦，演出廉錦極、鎖麟嚢、春秋配、拾玉鎸。',
+      note: '2023廿夏京劇展演：紐約梨園社及其青年團主辦，演出廉錦極、鎖麟嚢、春秋配、拾玉鎸。',
       facts: [
         { k: '日期', v: '2023年8月6日（週日）下午1時' },
         { k: '地點', v: '法拉盛市政廳 Flushing Town Hall' },
@@ -3880,7 +3906,7 @@ const ZH = {
     {
       ts: '2023-08-20', img: 'assets/poster-2023-08-20-summer-workshop.webp', kind: 'community', art: 'opera', fmt: 'inperson', date: '2023年8月', day: '2023年8月20日（週日）', time: '下午1:00', place: '法拉盛市政廳', tag: '工作坊', title: '消夏戲曲工作坊',
       cn: '2023 Summer Chinese Opera Workshop', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
-      note: '紐約梨園社青年團製作 —— 京劇、崑曲、國畫、書法消夏匯演。',
+      note: '紐約梨園社青年團製作：京劇、崑曲、國畫、書法消夏匯演。',
       facts: [
         { k: '日期', v: '2023年8月20日（週日）下午1:00' },
         { k: '場地', v: '法拉盛市政廳 Flushing Town Hall' },
@@ -3893,7 +3919,7 @@ const ZH = {
     {
       ts: '2019-02-16', img: 'assets/poster-2019-02-16-spring-concert-youth-troupe.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2019年2月', day: '2019年2月16日（週六）', time: '下午2:00 – 3:30', place: '法拉盛圖書館劇場', tag: '展演', title: '2019年紐約梨園社青年團京劇專場',
       cn: 'Spring Concert of Peking Opera by Youth Troupe', venue: '法拉盛圖書館劇場 Flushing Library Auditorium', shots: 0,
-      note: '紐約梨園社、紐約梨園社青年團舉辦 —— 京劇清唱：旦角班及青年團成員，並演出《荷珠配》《武家坡》摺子戲。免費入場。',
+      note: '紐約梨園社、紐約梨園社青年團舉辦，京劇清唱：旦角班及青年團成員，並演出《荷珠配》《武家坡》摺子戲。免費入場。',
       facts: [
         { k: '日期', v: '2019年2月16日（週六）下午2:00 – 3:30' },
         { k: '地點', v: '法拉盛圖書館劇場' },
@@ -3910,7 +3936,7 @@ const ZH = {
     {
       ts: '2009-12-04', img: 'assets/poster-2009-12-04-winter-festival-thumb.webp', program: 'assets/poster-2009-12-04-winter-festival.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2009年12月', day: '2009年12月4日（週五）至6日（週日）', time: '晚上7:30 · 下午2:00 · 下午1:30', place: 'Michael Schimmel Center for the Arts, Pace University', tag: '文化交流節', title: '紐約梨園社冬季文化交流節京劇專場',
       cn: 'Winter Cultural Exchange Festival: Jingju', venue: 'Michael Schimmel Center for the Arts', shots: 0,
-      note: '紐約梨園社製作 —— 三日京劇經典劇目匯演，特邀北京、天津名家。',
+      note: '紐約梨園社製作：三日京劇經典劇目匯演，特邀北京、天津名家。',
       facts: [
         { k: '日期', v: '2009年12月4日（週五）至6日（週日）' },
         { k: '場地', v: 'Michael Schimmel Center for the Arts, Pace University' },
@@ -3925,7 +3951,7 @@ const ZH = {
     {
       ts: '2011-12-02', img: 'assets/poster-2011-12-02-winter-festival.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2011年12月', day: '2011年12月2日（週五）至4日（週日）', time: '晚上7:30 · 下午2:00 · 下午1:30', place: 'Michael Schimmel Center for the Arts, Pace University', tag: '週年匯演', title: '紐約梨園社五週年公演',
       cn: '5th Annual Winter Cultural Exchange Festival', venue: 'Michael Schimmel Center for the Arts', shots: 0,
-      note: '紐約梨園社製作 —— 五週年紀念三日京劇經典劇目匯演，曼哈頓。',
+      note: '紐約梨園社製作：五週年紀念三日京劇經典劇目匯演，曼哈頓。',
       facts: [
         { k: '日期', v: '2011年12月2日（週五）至4日（週日）' },
         { k: '場地', v: 'Michael Schimmel Center for the Arts, Pace University' },
@@ -3945,7 +3971,7 @@ const ZH = {
     {
       ts: '2026-02-01', img: 'assets/poster-2026-spring-concert.webp', program: 'assets/program-2026-spring-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2026年2月', day: '2026年2月1日（週日）', time: '下午 1:00 – 4:00', place: '法拉盛市政廳', tag: '專場', title: '春季師生專場演出',
       cn: '2026 Spring Concert of Chinese Opera by Youth Troupe', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
-      note: '紐約梨園社製作 —— 青年團春季專場，師生同台。',
+      note: '紐約梨園社製作：青年團春季專場，師生同台。',
       facts: [
         { k: '日期', v: '2026年2月1日（週日）' },
         { k: '時間', v: '下午 1:00 – 4:00' },
@@ -3959,21 +3985,21 @@ const ZH = {
     {
       ts: '2023-11-19', img: 'assets/poster-2023-11-19-thanksgiving.webp', kind: 'community', art: 'opera', fmt: 'inperson', date: '2023年11月', day: '2023年11月19日（週日）', time: '下午 3:00 – 5:00', place: 'Superb Gallery of Art NYC · 曼哈頓', tag: '社區活動', title: '京劇與感恩：經典劇目《鎖麟囊》賞析',
       cn: 'When Chinese Opera Meets Thanksgiving', venue: 'Superb Gallery of Art NYC', shots: 0,
-      note: '紐約梨園社青年團舉辦 —— 與親友相聚，透過經典劇目《鎖麟囊》一同感恩懷德。',
+      note: '紐約梨園社青年團舉辦：與親友相聚，透過經典劇目《鎖麟囊》一同感恩懷德。',
       facts: [
         { k: '日期', v: '2023年11月19日（週日）' },
         { k: '時間', v: '下午 3:00 – 5:00' },
         { k: '場地', v: 'Superb Gallery of Art NYC' },
         { k: '地址', v: '36 W 44th St, 707A, New York, NY 10036' },
         { k: '主辦', v: '紐約梨園社青年團' },
-        { k: '形式', v: '劇目賞析、坐唱拍曲、圍讀劇本 —— 不扮戲、不著戲服，以曲會友' },
+        { k: '形式', v: '劇目賞析、坐唱拍曲、圍讀劇本：不扮戲、不著戲服，以曲會友' },
         { k: '賞析劇目', v: '《鎖麟囊》' }
       ]
     },
     {
       ts: '2024-02-03', img: 'assets/poster-2024-02-03-spring-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2024年2月', day: '2024年2月3日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '青年團', title: '2024紐約梨園社青年團京劇專場：張派《女起解》選段《三堂會審》',
       cn: 'Youth Troupe Jingju: Zhang-School "Woman Escorted Under Guard" & "The Trial"', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
-      note: '紐約梨園社製作 —— 青年團京劇經典選段春季演唱會。',
+      note: '紐約梨園社製作：青年團京劇經典選段春季演唱會。',
       facts: [
         { k: '日期', v: '2024年2月3日（週六）' },
         { k: '時間', v: '下午 1:00' },
@@ -3991,7 +4017,7 @@ const ZH = {
     {
       ts: '2024-06-23', img: 'assets/poster-2024-06-23-summer-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2024年6月', day: '2024年6月23日（週日）', time: '下午 1:00', place: '法拉盛市政廳', tag: '演唱會', title: '美東京劇名家名票海外專場演唱會',
       cn: 'East Coast Jingju Masters & Amateurs Overseas Concert', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
-      note: '紐約梨園社製作 —— 紀念梅蘭芳誕辰130週年暨梅葆玖誕辰90週年。',
+      note: '紐約梨園社製作：紀念梅蘭芳誕辰130週年暨梅葆玖誕辰90週年。',
       facts: [
         { k: '系列', v: '紀念梅蘭芳誕辰130週年 · 梅葆玖誕辰90週年' },
         { k: '日期', v: '2024年6月23日（週日）' },
@@ -4010,7 +4036,7 @@ const ZH = {
     {
       ts: '2024-10-20', img: 'assets/poster-2024-10-20-silang-tanmu.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2024年10月', day: '2024年10月20日（週日）', time: '下午 1:00', place: '法拉盛市政廳', tag: '全本大戲', title: '全本京劇《四郎探母》',
       cn: 'Jingju — General Yang Silang Visits His Mother', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
-      note: '紐約梨園社製作 —— 紀念梅蘭芳誕辰130週年系列演出之二，全本京劇演出。',
+      note: '紐約梨園社製作：紀念梅蘭芳誕辰130週年系列演出之二，全本京劇演出。',
       facts: [
         { k: '系列', v: '紀念梅蘭芳誕辰130週年系列演出之二' },
         { k: '日期', v: '2024年10月20日（週日）' },
@@ -4032,21 +4058,21 @@ const ZH = {
     {
       ts: '2026-03-26', img: 'assets/poster-2026-03-26-nyu-showcase.webp', youtube: 'https://www.youtube.com/watch?v=E07bBRHjqx8', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2026年3月', day: '2026年3月26日（週四）', time: '晚上 7:00 – 9:00', place: '紐約大學音樂與表演藝術系 · 303室', tag: '展演', title: '紐約大學京昆展演',
       cn: 'NYU Chinese Opera Showcase', venue: 'NYU Department of Music and Performing Arts Professions', shots: 0,
-      note: '於紐約大學呈現的中國表演藝術之夜 —— 京劇、崑曲，另有笛子獨奏。',
+      note: '於紐約大學呈現的中國表演藝術之夜：京劇、崑曲，另有笛子獨奏。',
       facts: [
         { k: '日期', v: '2026年3月26日（週四）' },
         { k: '時間', v: '晚上 7:00 – 9:00' },
         { k: '場地', v: '紐約大學音樂與表演藝術系 303室' },
-        { k: '節目', v: '京劇《霸王別姬》—— 劍舞' },
+        { k: '節目', v: '京劇《霸王別姬》： 劍舞' },
         { k: '節目', v: '笛子獨奏《喜相逢》' },
-        { k: '節目', v: '京劇《烏盆記》—— 選段' },
-        { k: '節目', v: '崑曲《白蛇傳》—— 選段' }
+        { k: '節目', v: '京劇《烏盆記》： 選段' },
+        { k: '節目', v: '崑曲《白蛇傳》： 選段' }
       ]
     },
     {
       ts: '2025-03-15', img: 'uploads/lingke-poster.webp', youtube: 'https://youtube.com/playlist?list=PLhdFj4mpkMuKwfstZjiOgN9gpy3X33Kq6&si=rLKqitv1-0qMbyB1', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2025年3月', day: '2025年3月15日（週六）', time: '下午 1:30 – 5:30', place: 'Florence Gould Theater · 曼哈頓', tag: '展演', title: '青年團京劇崑曲展演專場',
       cn: 'Youth Troupe Chinese Opera Concert', venue: 'L’Alliance New York · Florence Gould Theater', shots: 12,
-      note: '青年團在本社春季文化交流節中的專場演出 —— 四小時的午後，京劇與崑曲並陳。',
+      note: '青年團在本社春季文化交流節中的專場演出：四小時的午後，京劇與崑曲並陳。',
       facts: [
         { k: '所屬', v: '2025紐約梨園社春季文化交流節' },
         { k: '日期', v: '2025年3月15日（週六）' },
@@ -4054,7 +4080,7 @@ const ZH = {
         { k: '場地', v: 'Florence Gould Theater · L’Alliance New York' },
         { k: '地址', v: '55 East 59th Street, New York, NY 10022' },
         { k: '主辦', v: '紐約梨園社' },
-        { k: '入場', v: '捐助票 —— 隨喜樂捐' }
+        { k: '入場', v: '捐助票：隨喜樂捐' }
       ],
       guests: ['凌珂 · 大連京劇院', '朱柏澄 · 當代傳奇劇場'],
       guestLabel: '特邀名家',
@@ -4064,7 +4090,7 @@ const ZH = {
     {
       ts: '2022-08-20', img: 'assets/poster-2022-08-20-summer-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2022年8月', day: '2022年8月20日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '專場', title: '夏季京劇專場',
       cn: '2022 Summer Concert of Chinese Opera', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
-      note: '本社夏季專場 —— 兩齣京劇，於法拉盛市政廳實況演出。',
+      note: '本社夏季專場：兩齣京劇，於法拉盛市政廳實況演出。',
       facts: [
         { k: '日期', v: '2022年8月20日（週六）' },
         { k: '時間', v: '美東時間下午 1:00' },
@@ -4077,7 +4103,7 @@ const ZH = {
     {
       ts: '2022-06-18', img: 'assets/poster-2022-06-18-teachers-students.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2022年6月', day: '2022年6月18日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '專場', title: '夏季師生交流京劇專場',
       cn: 'Performance by Teachers and Students', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
-      note: '青年團師生同台 —— 經典名段與三齣折子戲。',
+      note: '青年團師生同台：經典名段與三齣折子戲。',
       facts: [
         { k: '日期', v: '2022年6月18日（週六）' },
         { k: '時間', v: '美東時間下午 1:00' },
@@ -4092,7 +4118,7 @@ const ZH = {
     {
       ts: '2022-03-19', img: 'assets/poster-2022-03-19-10th-anniversary.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2022年3月', day: '2022年3月19日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '週年專場', title: '青年團十週年京劇專場',
       cn: '10th Anniversary Jingju Concert', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
-      note: '青年團成立十週年 —— 三齣折子戲、四段名段，另有笛子獨奏與獨舞。',
+      note: '青年團成立十週年：三齣折子戲、四段名段，另有笛子獨奏與獨舞。',
       facts: [
         { k: '日期', v: '2022年3月19日（週六）' },
         { k: '時間', v: '美東時間下午 1:00' },
@@ -4114,7 +4140,7 @@ const ZH = {
   evLbClose: '關閉',
   evLbPrev: '上一則',
   evLbNext: '下一則',
-  evLbTbc: '海報與活動照片待提供 —— 此框顯示圖片將放置的位置',
+  evLbTbc: '海報與活動照片待提供：此框顯示圖片將放置的位置',
   evHostLabel: '邀請我們',
   evHostTitle: '我們會走進學校、圖書館與街區節慶',
   evHostBody: '若您負責學校、圖書館分館或社區節慶，想安排示範、工作坊或短演出，歡迎來信。這三種我們都做過，五個區都去過。',
@@ -4168,7 +4194,7 @@ const ZH = {
   mbFaqLabel: '入會之前',
   mbFaq: [
     { q: '我需要懂戲嗎？', a: '不需要。我們有一半的會員，第一次看戲時什麼都不懂，然後就留下來了。' },
-    { q: '上課一定要入會嗎？', a: '不用 —— 課程對所有人開放，會員只是學費較低。' },
+    { q: '上課一定要入會嗎？', a: '不用，課程對所有人開放，會員只是學費較低。' },
     { q: '可以把會籍當禮物送人嗎？', a: '可以。寫信告訴我們對方的名字，我們就能幫您安排。' },
     { q: '會費可以抵稅嗎？', a: '紐約梨園社是註冊的 501(c)(3) 非營利組織。會費裡超出您所獲福利價值的部分可以抵稅，金額會清楚寫在收據上。' }
   ],
@@ -4176,7 +4202,7 @@ const ZH = {
   mbDonateDesc: '會費維持的是尋常的一年。捐助讓我們得以排一齣新戲，或把工作坊帶進付不起費用的學校。',
   ctEyebrow: '聯絡',
   ctTitle: '寫信給我們，真的有人會讀',
-  ctLede: '這裡沒有客服中心 —— 訊息會送到義務理事手上，通常兩三天內回覆。課程、演出邀約，或您在閣樓翻出的一件戲服，都歡迎來信。',
+  ctLede: '這裡沒有客服中心，訊息會送到義務理事手上，通常兩三天內回覆。課程、演出邀約，或您在閣樓翻出的一件戲服，都歡迎來信。',
   ctFactsLabel: '聯絡方式',
   ctFacts: [{ k: '電郵', v: 'nycosyouth@gmail.com' }, { k: '電話', v: '(212) 227-2920' }, { k: '辦公室', v: '120 Broadway STE 3650' }, { k: '回覆時間', v: '二至三天' }],
   ctFormLabel: '傳送訊息',
@@ -4192,13 +4218,13 @@ const ZH = {
   ctSending: '傳送中…',
   ctErrorMsg: '發生錯誤，請再試一次。',
   ctSentTitle: '訊息已收到',
-  ctSentBody: '謝謝您 —— 我們已收到。理事會成員將直接回覆，通常在兩三天內。如有急事，請直接撥打上方電話。',
+  ctSentBody: '謝謝您，我們已收到。理事會成員將直接回覆，通常在兩三天內。如有急事，請直接撥打上方電話。',
   ctSentAgain: '再傳一則訊息',
   ctDetailLabel: '造訪與其他管道',
   ctVisitTitle: '辦公室',
   ctAddr1: '120 Broadway STE 3650',
   ctAddr2: 'New York, NY 10271',
-  ctVisitNote: '造訪請先預約 —— 工作室是實際使用中的排練場地，並非隨時有人。',
+  ctVisitNote: '造訪請先預約，工作室是實際使用中的排練場地，並非隨時有人。',
   ctHoursLabel: '辦公時間',
   ctHours: [{ k: '週一至週五', v: '10:00 – 18:00' }, { k: '週六', v: '僅課程時段' }, { k: '週日', v: '休息' }],
   ctMapNote: '下曼哈頓 · 地鐵 4/5 線 Wall St，R/W 線 Rector St',
@@ -4230,12 +4256,12 @@ const ZH = {
   abTimeLabel: '一路走來',
   abTime: [
     { year: '2006', label: '梨園社成立', body: '紐約梨園社在紐約成立，是一個致力於推廣中國戲曲及相關藝術的非營利機構。', tbc: false },
-    { year: '2012', label: '青年團成立', body: '為在美青年與留學生設立的下屬組織 —— 一個學習、排練與登台的平台。', tbc: false },
+    { year: '2012', label: '青年團成立', body: '為在美青年與留學生設立的下屬組織：一個學習、排練與登台的平台。', tbc: false },
     { year: '進行中', label: '我們仍在努力變得更好', body: '每一季，我們多排練一點、多教得好一點，也更用心聴見社群的聲音。', tbc: false }
   ],
   abYouthLabel: '梨園社青年團',
   abYouthTitle: '成立於二〇一二年，為承接這門藝術的人而設',
-  abYouthBody: '青年團是紐約梨園社下屬的青年組織，成員多是在美旅居或留學、喜愛戲曲與傳統文化的年輕人。我們為他們提供一個交流與展示的平台 —— 一起觀摩戲曲演出、學表演與文武場、登台清唱彩唱，也舉辦「藝苑卮言」系列講座，把戲曲藝術帶進美國的大學校園。',
+  abYouthBody: '青年團是紐約梨園社下屬的青年組織，成員多是在美旅居或留學、喜愛戲曲與傳統文化的年輕人。我們為他們提供一個交流與展示的平台：一起觀摩戲曲演出、學表演與文武場、登台清唱彩唱，也舉辦「藝苑卮言」系列講座，把戲曲藝術帶進美國的大學校園。',
   abCalLabel: '書法班 · 染毫書房',
   abCalTitle: '筆、墨，與一筆一畫的功夫',
   abCalBody: '書法班以「染毫書房」為名開課。授課老師來自美洲中華書法學會與北美書法家協會，自2015年起在此教授書法技法。課程不限年齡與程度，歡迎初學者。',
@@ -4259,7 +4285,7 @@ const ZH = {
 
   inEyebrow: '師資',
   inTitle: '將親自教你的人。',
-  inLede: '書畫班的授課老師皆為參展書法家與畫家，並在美洲的中華書法學會中擔任職務 —— 其中數位在此教學已逾十年。',
+  inLede: '書畫班的授課老師皆為參展書法家與畫家，並在美洲的中華書法學會中擔任職務，其中數位在此教學已逾十年。',
   inFactsLabel: '師資概況',
   inFacts: [{ k: '書畫班', v: '四位老師' }, { k: '最早自', v: '2003年起教學' }, { k: '戲曲授課老師', v: '待補列' }],
   inRosterLabel: '書畫班授課老師',
@@ -4289,7 +4315,7 @@ const ZH = {
       since: '本社幹部',
       bio: '紐約梨園社創始人之一及財務總監。美洲中華書法學會董事兼會長，北美書法家協會理事，華夏書法會會員，並任本社書法班導師。',
       cnBio: '虞文輝，紐約梨園社創始人之一及財務總監。美洲中華書法學會董事兼會長，北美書法家協會理事，華夏書法會會員。紐約梨園社書法班導師。',
-      affil: ['美洲中華書法學會 —— 董事、會長', '北美書法家協會 —— 董事', '華夏書法會會員']
+      affil: ['美洲中華書法學會：董事、會長', '北美書法家協會：董事', '華夏書法會會員']
     },
     {
       name: '陳定佳', cn: 'Charlie Chen', style: '生於香港', img: 'assets/instructor-charlie-chen.webp', own: true,
@@ -4298,7 +4324,7 @@ const ZH = {
       since: '二〇一二年個人展覽於法拉盛',
       bio: '出生於香港，曾於香港學習西洋繪畫，畢業於香港理工學院產品設計；來美後獲紐約服裝理工學院（FIT）室內設計學位。師事書法家丁兆麟先生多年，擅長多種書體，曾於二〇一二年在紐約法拉盛舉行個人書法展覽。',
       cnBio: '出生於香港，曾於香港學習西洋繪畫，畢業於香港理工學院產品設計。來美後獲得紐約服裝理工學院（FIT）室內設計學位。師事書法家丁兆麟先生多年，擅長多種書體，曾於二〇一二年在紐約法拉盛舉行個人書法展覽。目前為華夏書法會會員，美洲中華書法學會董事，副會長兼財務。',
-      affil: ['華夏書法會會員', '美洲中華書法學會 —— 董事、副會長兼財務']
+      affil: ['華夏書法會會員', '美洲中華書法學會：董事、副會長兼財務']
     },
     {
       name: '何山', cn: 'He Shan', style: '生於廣州', img: 'assets/instructor-he-shan.webp', own: true,
@@ -4307,7 +4333,7 @@ const ZH = {
       since: '自二〇〇三年起教學',
       bio: '生於廣州。現任紐約梨園社國畫指導老師，並為紐約美洲中華書法學會副會長兼秘書長。自二〇〇三年起在各大機構教授書畫至今，教學二十餘年，同時積極參與社區活動及本地畫家展覽。',
       cnBio: '何山，生於廣州。紐約梨園社國畫指導老師，紐約美洲中華書法學會副會長和秘書長。自二〇〇三年起在各大機構教授書畫至今，教學二十餘年，同時積極參與社區活動及本地畫家展覽。',
-      affil: ['美洲中華書法學會 —— 副會長兼秘書長']
+      affil: ['美洲中華書法學會：副會長兼秘書長']
     }
   ],
   inDonateTitle: '我們的老師領取的是授課酬勞，而非薪水',
@@ -4365,9 +4391,27 @@ class Component extends DCLogic {
       if (data && data.clientId) this.setState({ paypalClientId: data.clientId });
     }).catch(() => {});
     this.syncPaypalButtons();
-    this._onMasonryResize = () => this.scheduleMasonryLayout();
+    this._onMasonryResize = () => { this.scheduleMasonryLayout(); this.scheduleYouthCreditLayout(); };
     if (typeof window !== 'undefined') window.addEventListener('resize', this._onMasonryResize);
     this.scheduleMasonryLayout();
+    this.scheduleYouthCreditLayout();
+    // The two RAF frames above run long before images finish downloading, so
+    // the very first measurement is usually taken while everything above the
+    // Youth Troupe block is still shorter than its final height — watch for
+    // any such shift (images, web fonts) and recompute for real once it
+    // settles, rather than trusting a one-shot measurement.
+    // Content above this block (hero, event photos, class cards) keeps
+    // reflowing for a while after mount — images arriving over the network,
+    // web fonts swapping in — each of which shifts how far down the page
+    // the Youth Troupe image sits. Rather than chase every individual event
+    // that could cause that (resize/load/fonts.ready all proved too early
+    // or unreliable in practice), just recheck on a short poll until things
+    // settle; it's a few redundant reads, not a real cost.
+    if (typeof window !== 'undefined') {
+      [100, 300, 600, 1000, 1800, 3000].forEach((ms) => {
+        window.setTimeout(this.scheduleYouthCreditLayout, ms);
+      });
+    }
   }
 
   pick(l) {
@@ -4422,6 +4466,42 @@ class Component extends DCLogic {
     requestAnimationFrame(() => requestAnimationFrame(this.layoutPastMasonry));
   };
 
+  // The "Draw by Zhizhi Yu" credit sits just under the Youth Troupe image.
+  // It's positioned absolutely (out of normal flow) so it can't disturb the
+  // Membership section that follows — an earlier version used a negative
+  // margin instead, which also drags every sibling after it up by the same
+  // amount. A fixed top offset can't work either: the image box is
+  // `aspect-ratio:4/5`, not a fixed pixel height, so its rendered height
+  // changes with column width — different on the desktop side-by-side
+  // layout vs. the mobile stacked layout, and even across mobile widths.
+  // Measure the image's actual position each time instead.
+  layoutYouthCredit = () => {
+    const wrap = typeof document !== 'undefined' ? document.querySelector('.nycos-editorial-wrap') : null;
+    const credit = typeof document !== 'undefined' ? document.querySelector('.nycos-youth-credit') : null;
+    if (!wrap || !credit) return;
+    const img = wrap.querySelector('img');
+    if (!img) return;
+    const wrapRect = wrap.getBoundingClientRect();
+    const imgRect = img.getBoundingClientRect();
+    credit.style.top = (imgRect.bottom - wrapRect.top + 8) + 'px';
+    // Being out of flow, the credit doesn't push the eyebrow/title/body text
+    // that follows the image down to make room for itself — no-op on the
+    // desktop side-by-side layout, where that text sits beside the image
+    // rather than below it, but on the mobile stacked layout the text would
+    // otherwise start right where the credit now sits. Reserve real space
+    // for it there, sized to what it actually measures.
+    const textCol = [...wrap.querySelectorAll('section > div')].find((d) => !d.querySelector('img'));
+    if (textCol) {
+      const stacked = textCol.getBoundingClientRect().top >= imgRect.bottom - 2;
+      textCol.style.paddingTop = stacked ? (credit.getBoundingClientRect().height + 16) + 'px' : '';
+    }
+  };
+
+  scheduleYouthCreditLayout = () => {
+    if (typeof requestAnimationFrame === 'undefined') { this.layoutYouthCredit(); return; }
+    requestAnimationFrame(() => requestAnimationFrame(this.layoutYouthCredit));
+  };
+
   observeMission() {
     const el = this.missionRef.current;
     if (!el || this._mObs) return;
@@ -4456,6 +4536,7 @@ class Component extends DCLogic {
 
     this.syncPaypalButtons();
     this.scheduleMasonryLayout();
+    this.scheduleYouthCreditLayout();
   }
 
   submitClassInfo(e) {
