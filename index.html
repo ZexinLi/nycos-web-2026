@@ -448,6 +448,11 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
   .nycos-mb-facts-row{flex-direction:column !important;gap:14px !important}
   .nycos-mb-fact{padding:0 !important;border-left:none !important}
   .nycos-mb-fact + .nycos-mb-fact{border-left:none !important;padding-left:0 !important;border-top:1px solid rgba(247,244,238,0.2);padding-top:14px !important}
+  /* Donate amount picker: 5 tiles (4 presets + custom) at 1-per-row via
+     .nycos-grid-collapse would be five tall stacked rows — 3-per-row reads
+     much better and still leaves the custom-amount tile full width alone
+     on its own second row. */
+  .nycos-d-amounts{grid-template-columns:repeat(3,1fr) !important}
   /* Opera/Brush/Workshops hero: the side-figure image is sized as a % of
      the section's own height, which is itself a large fixed padding-bottom
      (144–280px, calibrated on desktop to let the figure bleed cleanly past
@@ -621,7 +626,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </sc-for>
 </nav>
-<a href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" target="_blank" rel="noopener" style="position:relative;display:inline-flex;align-items:center;font-family:var(--font-mono);font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;background:var(--accent-primary);color:#fff;padding:9px 18px;border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.donate }}</a>
+<button type="button" onClick="{{ goDonate }}" style="position:relative;display:inline-flex;align-items:center;font-family:var(--font-mono);font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;background:var(--accent-primary);color:#fff;padding:9px 18px;border:none;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.donate }}</button>
 <div style="position:relative;display:flex;align-items:center;gap:8px">
 <button onClick="{{ toEn }}" style="{{ enS }}">EN</button>
 <span style="color:var(--border-strong);font-size:11px">/</span>
@@ -772,14 +777,14 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <span style="font-size:13px;line-height:1.5;color:var(--text-secondary)">{{ ln }}</span>
 </sc-for>
 </div>
-<a class="nycos-cta-btn" href="#membership" style="margin-top:auto;font-family:var(--font-body);font-weight:500;font-size:13px;text-align:center;padding:12px 18px;background:var(--color-ink);color:var(--color-paper);border-radius:var(--radius-sm);text-decoration:none;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.join }}</a>
+<button type="button" class="nycos-cta-btn" onClick="{{ goMembership }}" style="margin-top:auto;font-family:var(--font-body);font-weight:500;font-size:13px;text-align:center;padding:12px 18px;background:var(--color-ink);color:var(--color-paper);border:none;border-radius:var(--radius-sm);cursor:pointer;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.join }}</button>
 </div>
 </sc-for>
 </div>
 </section>
 
 <div data-reveal-text-only>
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.donateTitle }}" description="{{ t.donateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.donateTitle }}" description="{{ t.donateDesc }}" cta="{{ t.donateCta }}" cta-href="#donate" hint-size="100%,420px"></x-import>
 </div>
 <div data-reveal-text-only style="background:var(--surface-accent-deep);padding:14px 32px;text-align:center">
 <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:rgba(255,255,255,0.72)">{{ t.taxNote }}</span>
@@ -825,7 +830,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <div data-reveal-text-only>
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.pDonateTitle }}" description="{{ t.pDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.pDonateTitle }}" description="{{ t.pDonateDesc }}" cta="{{ t.donateCta }}" cta-href="#donate" hint-size="100%,420px"></x-import>
 </div>
 
 <div data-reveal-text-only>
@@ -1302,7 +1307,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <div data-reveal-text-only>
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.pDonateTitle }}" description="{{ t.pDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.pDonateTitle }}" description="{{ t.pDonateDesc }}" cta="{{ t.donateCta }}" cta-href="#donate" hint-size="100%,420px"></x-import>
 </div>
 
 <div data-reveal-text-only>
@@ -1403,7 +1408,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <div data-reveal-text-only>
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.abDonateTitle }}" description="{{ t.abDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.abDonateTitle }}" description="{{ t.abDonateDesc }}" cta="{{ t.donateCta }}" cta-href="#donate" hint-size="100%,420px"></x-import>
 </div>
 
 <div data-reveal-text-only>
@@ -1472,7 +1477,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <div data-reveal-text-only>
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.wkDonateTitle }}" description="{{ t.wkDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.wkDonateTitle }}" description="{{ t.wkDonateDesc }}" cta="{{ t.donateCta }}" cta-href="#donate" hint-size="100%,420px"></x-import>
 </div>
 
 <div data-reveal-text-only>
@@ -1641,7 +1646,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <div data-reveal-text-only>
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.ytDonateTitle }}" description="{{ t.ytDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.ytDonateTitle }}" description="{{ t.ytDonateDesc }}" cta="{{ t.donateCta }}" cta-href="#donate" hint-size="100%,420px"></x-import>
 </div>
 
 <div data-reveal-text-only>
@@ -1829,7 +1834,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <div id="ev-newsletter"></div>
 <div data-reveal-text-only>
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.evDonateTitle }}" description="{{ t.evDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.evDonateTitle }}" description="{{ t.evDonateDesc }}" cta="{{ t.donateCta }}" cta-href="#donate" hint-size="100%,420px"></x-import>
 </div>
 
 <div data-reveal-text-only>
@@ -2111,8 +2116,119 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <div data-reveal-text-only>
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.mbDonateTitle }}" description="{{ t.mbDonateDesc }}" cta="{{ t.donateCta }}" cta-href="https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132" hint-size="100%,420px"></x-import>
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.DonationCTA" eyebrow="{{ t.donateLabel }}" title="{{ t.mbDonateTitle }}" description="{{ t.mbDonateDesc }}" cta="{{ t.donateCta }}" cta-href="#donate" hint-size="100%,420px"></x-import>
 </div>
+
+<div data-reveal-text-only>
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
+
+</main>
+</sc-if>
+
+<sc-if value="{{ isDonate }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="Donate">
+
+<section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 40px;position:relative">
+<div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
+<div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
+<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.dEyebrow }}</span>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:64px;line-height:1.04;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.dTitle }}</h1>
+<p style="font-size:16.5px;line-height:1.7;color:rgba(247,244,238,0.78);margin:0;max-width:560px;text-wrap:pretty">{{ t.dLede }}</p>
+</div>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:76px 32px">
+<div style="max-width:900px;margin:0 auto">
+
+<sc-if value="{{ notDonated }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:32px">
+<span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-accent)">{{ t.dPickLabel }}</span>
+<h2 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:32px;color:var(--text-primary);margin:0;line-height:1.1;text-wrap:pretty">{{ t.dFormTitle }}</h2>
+</div>
+
+<div class="nycos-d-amounts" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px">
+<sc-for list="{{ donateAmounts }}" as="a" hint-placeholder-count="4">
+<div onClick="{{ a.pick }}" style="{{ a.style }}" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">${{ a.amt }}</div>
+</sc-for>
+<div onClick="{{ pickCustom }}" style="{{ dCustomStyle }}">
+<span style="font-family:var(--font-body);font-size:16px;color:var(--text-tertiary)">$</span>
+<input type="text" inputmode="numeric" placeholder="{{ t.dCustomLabel }}" value="{{ dCustomVal }}" onFocus="{{ pickCustom }}" onChange="{{ setDCustom }}" style="border:none;outline:none;background:transparent;font-family:var(--font-display);letter-spacing:-0.06em;font-size:18px;width:100%;color:var(--text-primary)">
+</div>
+</div>
+
+<div class="nycos-grid-collapse" style="display:grid;grid-template-columns:1fr 380px;gap:52px;align-items:start">
+<div class="nycos-grid-collapse" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.Input" label="{{ t.mbFormName }}" value="{{ dform.name }}" on-change="{{ setDName }}" hint-size="100%,70px"></x-import>
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.Input" label="{{ t.mbFormEmail }}" value="{{ dform.email }}" on-change="{{ setDEmail }}" hint-size="100%,70px"></x-import>
+<div style="grid-column:1/-1;display:flex;flex-direction:column;gap:12px;margin-top:4px">
+<span style="font-family:var(--font-mono);font-size:9.5px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.mbPayLabel }}</span>
+<div class="nycos-grid-collapse" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+<sc-for list="{{ dPays }}" as="p" hint-placeholder-count="2">
+<div onClick="{{ p.pick }}" style="{{ p.style }}" style-active="transform:scale(0.985);transition:transform var(--press-in) var(--ease-press-in)">
+<span style="font-family:var(--font-body);font-weight:500;font-size:14px">{{ p.label }}</span>
+<span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;opacity:0.75">{{ p.note }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:18px;padding:28px 30px;background:var(--surface-page);border:1px solid var(--border-subtle);border-top:2px solid var(--accent-primary);border-radius:var(--radius-sm)">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px">
+<span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.mbTotal }}</span>
+<span style="display:inline-flex;align-items:baseline;white-space:nowrap">
+<span style="font-family:var(--font-body);font-size:20px;line-height:1;color:var(--text-accent)">$</span>
+<span style="font-family:var(--font-display);letter-spacing:-0.08em;font-size:34px;line-height:1;color:var(--text-accent)">{{ dAmountTotal }}</span>
+</span>
+</div>
+<sc-if value="{{ isDZelle }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px;padding:20px 22px;background:var(--surface-tint-blush);border-left:2px solid var(--accent-primary)">
+<span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-primary)">{{ t.zTitle }}</span>
+<p style="font-size:13.5px;line-height:1.65;color:var(--text-primary);margin:0">{{ t.dZBody }}</p>
+<div style="display:flex;flex-direction:column;gap:5px">
+<span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.zAcctLabel }}</span>
+<span style="font-family:var(--font-mono);font-size:13px;color:var(--text-primary)">{{ t.zAcct }}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.zMemoLabel }}</span>
+<span style="font-family:var(--font-mono);font-size:13px;color:var(--text-primary)">{{ dMemoPreview }}</span>
+</div>
+</div>
+<a class="nycos-cta-btn" onClick="{{ donateNow }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;text-align:center;padding:14px 24px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;cursor:pointer;opacity:{{ dSubmitOpacity }};transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ dSubmitLabel }}</a>
+</sc-if>
+<sc-if value="{{ isDOnline }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px;padding:16px 18px;background:var(--surface-page-alt);border-left:2px solid var(--color-gold)">
+<p style="font-size:13.5px;line-height:1.65;color:var(--text-secondary);margin:0">{{ t.onlineNote }}</p>
+<sc-if value="{{ paypalReady }}" hint-placeholder-val="{{ false }}">
+<div id="donate-paypal-buttons-container" style="max-width:320px;min-height:44px"></div>
+</sc-if>
+<sc-if value="{{ !paypalReady }}" hint-placeholder-val="{{ true }}">
+<span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;color:var(--text-tertiary)">{{ t.paypalLoading }}</span>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ dError }}" hint-placeholder-val="{{ false }}">
+<div style="padding:12px 16px;background:var(--surface-tint-blush);border-left:2px solid var(--accent-primary);border-radius:var(--radius-sm)">
+<span style="font-size:13px;color:var(--accent-primary)">{{ dError }}</span>
+</div>
+</sc-if>
+<span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-tertiary);line-height:1.7">{{ t.dFootnote }}</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ donated }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start;padding:40px 44px;background:var(--surface-page);border:1px solid var(--border-subtle);border-top:2px solid var(--accent-primary);border-radius:var(--radius-sm);max-width:640px;animation:nycos-fade-up 240ms var(--ease-out) both">
+<span style="font-family:var(--font-display);letter-spacing:-0.08em;font-size:34px;line-height:1.1;color:var(--text-primary)">{{ t.dThanksTitle }}</span>
+<p style="font-size:15.5px;line-height:1.7;color:var(--text-secondary);margin:0">{{ dThanksBody }}</p>
+<a onClick="{{ donateAgain }}" style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-accent);text-decoration:none;border-bottom:1px solid currentColor;cursor:pointer;margin-top:4px">{{ t.dThanksAgain }}</a>
+</div>
+</sc-if>
+
+</div>
+</section>
 
 <div data-reveal-text-only>
 <x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
@@ -2403,6 +2519,15 @@ if (typeof document !== 'undefined') {
     if (!a) return;
     const id = (a.getAttribute('href') || '').slice(1);
     if (!id) return;                       // bare href="#" placeholders: leave alone
+    // DonationCTA (a compiled design-system component) only accepts a plain
+    // href, with no onClick prop to hook our own SPA navigation into — every
+    // instance points its href at this one reserved hash instead, and we
+    // route it to the real Donate screen here rather than scrolling.
+    if (id === 'donate' && typeof window.__nycosGoDonate === 'function') {
+      e.preventDefault();
+      window.__nycosGoDonate();
+      return;
+    }
     const target = document.getElementById(id);
     if (!target) return;
     e.preventDefault();
@@ -2700,6 +2825,21 @@ const EN = {
   donateTitle: 'Keep a living art form living',
   donateDesc: 'Your gift pays for Youth Troupe training, brushes and ink for the calligraphy class, and the theatre rent that makes a public performance possible.',
   donateCta: 'Donate now',
+  donateAmounts: [25, 50, 100, 250],
+  dEyebrow: 'Support NYCOS',
+  dTitle: 'Keep a living art form living',
+  dLede: 'One-time or recurring, every gift goes straight to training, studio rent, and the teachers who show up every week.',
+  dPickLabel: 'Choose an amount',
+  dCustomLabel: 'Other',
+  dFormLabel: 'Your details',
+  dFormTitle: 'Almost there',
+  dZMemo: '· Donation',
+  dSubmit: 'Donate',
+  dThanksTitle: 'Thank you',
+  dThanksBodyOnline: 'Your donation is confirmed — a receipt is on its way to your inbox.',
+  dThanksBodyZelle: 'Thank you — once we see your Zelle transfer, we’ll send a receipt to your inbox.',
+  dThanksAgain: 'Make another gift',
+  dFootnote: 'Your donation record is kept for tax-receipt purposes only. We never share your information.',
   taxNote: 'NYCOS is a registered 501(c)(3) nonprofit. Gifts are tax-deductible to the extent allowed by law.',
   nlLabel: 'Stay in the loop',
   nlTitle: 'What’s on, straight to your inbox',
@@ -2729,7 +2869,7 @@ const EN = {
     ] },
     { title: 'Support', items: [
       { label: 'Membership', to: 'membership' },
-      { label: 'Donate', href: 'https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132' },
+      { label: 'Donate', to: 'donate' },
       { label: 'Volunteer', to: 'volunteer' },
       { label: 'Contact', to: 'contact' }
     ] }
@@ -3331,6 +3471,7 @@ const EN = {
   mbSubmit: 'Submit membership',
   mbTotal: 'Total due today',
   mZBody: 'Send your dues by Zelle after you submit this form, then leave the rest to us. Your membership is confirmed once we match the transfer by hand — you’ll get a confirmation email within two business days.',
+  dZBody: 'Send your gift by Zelle after you submit this form, then leave the rest to us. We’ll email you a receipt once we match the transfer by hand — usually within two business days.',
   mZMemo: 'Membership',
   mbThanksTitle: 'Welcome to the Society',
   mbThanksBodyOnline: 'Your payment is confirmed. A welcome email is on its way, and your first members-only invitation will follow shortly.',
@@ -3554,6 +3695,21 @@ const ZH = {
   donateTitle: '讓活著的藝術繼續活著',
   donateDesc: '您的捐助用於青年團培訓、書法班的筆墨紙材，以及一場公演所需的劇場租金。',
   donateCta: '點此捐助',
+  donateAmounts: [25, 50, 100, 250],
+  dEyebrow: '支持梨園社',
+  dTitle: '讓活著的藝術繼續活著',
+  dLede: '無論一次性或定期，您的每一筆捐助都直接用於訓練、場地租金，以及每週到場的老師。',
+  dPickLabel: '選擇金額',
+  dCustomLabel: '其他金額',
+  dFormLabel: '您的資料',
+  dFormTitle: '只差最後一步',
+  dZMemo: '· 捐助',
+  dSubmit: '捐助',
+  dThanksTitle: '謝謝您',
+  dThanksBodyOnline: '您的捐助已確認，收據將寄至您的信箱。',
+  dThanksBodyZelle: '謝謝您，我們確認收到 Zelle 轉帳後，會將收據寄至您的信箱。',
+  dThanksAgain: '再次捐助',
+  dFootnote: '您的捐助紀錄僅用於開立收據，我們不會分享您的個人資料。',
   taxNote: '紐約梨園社是註冊的501(c)(3)非營利組織，捐款可以抵稅。',
   nlLabel: '掌握最新消息',
   nlTitle: '最新活動，直接寄到您的信箱',
@@ -3583,7 +3739,7 @@ const ZH = {
     ] },
     { title: '支持我們', items: [
       { label: '會員', to: 'membership' },
-      { label: '捐助', href: 'https://www.nycos.org/checkout/donate?donatePageId=634581f2180a736025af6132' },
+      { label: '捐助', to: 'donate' },
       { label: '義工', to: 'volunteer' },
       { label: '聯絡我們', to: 'contact' }
     ] }
@@ -4179,6 +4335,7 @@ const ZH = {
   mbSubmit: '送出入會申請',
   mbTotal: '應付金額',
   mZBody: '送出表單後，請透過 Zelle 轉帳會費，其餘交給我們。我們人工核對轉帳後即完成入會確認，並於兩個工作日內以電子郵件通知您。',
+  dZBody: '送出表單後，請透過 Zelle 轉帳您的捐款，其餘交給我們。我們人工核對轉帳後，通常會於兩個工作日內以電子郵件寄送收據。',
   mZMemo: '會員',
   mbThanksTitle: '歡迎加入梨園社',
   mbThanksBodyOnline: '款項已確認，歡迎信即將寄出，第一份會員專屬邀請也會隨後送到。',
@@ -4376,7 +4533,14 @@ class Component extends DCLogic {
     mform: { name: '', email: '', phone: '', sid: '', renew: false },
     form: { name: '', klass: '', email: '', phone: '', minor: false, emerg: '', emergPhone: '' },
     paypalStatus: 'idle',
-    paypalResult: null
+    paypalResult: null,
+    dAmountIdx: 1,
+    dCustom: '',
+    dpay: 0,
+    donated: false,
+    dLoading: false,
+    dError: null,
+    dform: { name: '', email: '' }
   };
 
   componentDidMount() {
@@ -4391,6 +4555,8 @@ class Component extends DCLogic {
       if (data && data.clientId) this.setState({ paypalClientId: data.clientId });
     }).catch(() => {});
     this.syncPaypalButtons();
+    this.syncDonatePaypalButtons();
+    if (typeof window !== 'undefined') window.__nycosGoDonate = () => this.go('donate');
     this._onMasonryResize = () => { this.scheduleMasonryLayout(); this.scheduleYouthCreditLayout(); };
     if (typeof window !== 'undefined') window.addEventListener('resize', this._onMasonryResize);
     this.scheduleMasonryLayout();
@@ -4422,10 +4588,11 @@ class Component extends DCLogic {
   componentWillUnmount() {
     if (this._mObs) { this._mObs.disconnect(); this._mObs = null; }
     if (typeof window !== 'undefined' && this._onMasonryResize) window.removeEventListener('resize', this._onMasonryResize);
+    if (typeof window !== 'undefined' && window.__nycosGoDonate) window.__nycosGoDonate = null;
   }
 
   go(screen) {
-    const ok = ['home', 'about', 'programs', 'opera', 'brush', 'workshops', 'youth', 'events', 'membership', 'volunteer', 'contact'];
+    const ok = ['home', 'about', 'programs', 'opera', 'brush', 'workshops', 'youth', 'events', 'membership', 'volunteer', 'contact', 'donate'];
     this.setState({ screen: ok.indexOf(screen) >= 0 ? screen : 'home', menu: null, submitted: false, lb: null, pastN: 6, dd: null, joined: false, sent: false, mReveal: false, mobileNavOpen: false });
     if (this._mObs) { this._mObs.disconnect(); this._mObs = null; }
     // Land at the top instantly — an eased scroll here would fight the
@@ -4535,6 +4702,7 @@ class Component extends DCLogic {
     scanReveal();
 
     this.syncPaypalButtons();
+    this.syncDonatePaypalButtons();
     this.scheduleMasonryLayout();
     this.scheduleYouthCreditLayout();
   }
@@ -4611,9 +4779,61 @@ class Component extends DCLogic {
     window.NYCOSPaypal.mount(container, this.state.paypalClientId, amount, (result) => this.onMPaypalSuccess(result), () => this.onMPaypalError());
   }
 
+  donateAmount() {
+    const lang = this.state.lang || this.props.lang || 'en';
+    const t = CONTENT[lang] || EN;
+    if (this.state.dAmountIdx === -1) return Number(this.state.dCustom) || 0;
+    return (t.donateAmounts || [])[this.state.dAmountIdx] || 0;
+  }
+
+  submitDonation(paymentExtra) {
+    const lang = this.state.lang || this.props.lang || 'en';
+    const t = CONTENT[lang] || EN;
+    const { name, email } = this.state.dform;
+    const amount = this.donateAmount();
+    const pay = (t.pays[this.state.dpay] || t.pays[0]).id;
+    this.setState({ dLoading: true, dError: null });
+    return fetch('/api/donate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, amount, pay, ...paymentExtra })
+    }).then((r) => {
+      if (!r.ok) throw new Error('donate failed');
+      this.setState({ donated: true, dLoading: false });
+    }).catch(() => {
+      this.setState({ dError: t.regErrorMsg, dLoading: false });
+    });
+  }
+
+  onDonatePaypalSuccess(result) {
+    this.submitDonation({ paypalOrderId: result.orderID || result.id || '', paypalCaptureId: result.captureId || '' });
+  }
+
+  onDonatePaypalError() {
+    const lang = this.state.lang || this.props.lang || 'en';
+    const t = CONTENT[lang] || EN;
+    this.setState({ dError: t.paypalErrorMsg });
+  }
+
+  syncDonatePaypalButtons() {
+    const screen = this.state.screen || this.props.startScreen || 'home';
+    const amount = this.donateAmount();
+    const shouldShow = screen === 'donate' && this.state.dpay === 0 && !this.state.donated && !!this.state.paypalClientId && amount > 0;
+    const key = shouldShow ? [screen, this.state.paypalClientId, amount].join('|') : null;
+    if (key === this._donatePaypalMountKey) return;
+    this._donatePaypalMountKey = key;
+    const container = document.getElementById('donate-paypal-buttons-container');
+    if (!container) return;
+    container.innerHTML = '';
+    if (!shouldShow || !window.NYCOSPaypal) return;
+    window.NYCOSPaypal.mount(container, this.state.paypalClientId, amount, (result) => this.onDonatePaypalSuccess(result), () => this.onDonatePaypalError());
+  }
+
   set(k, v) { this.setState(s => ({ form: { ...s.form, [k]: v } })); }
 
   mset(k, v) { this.setState(s => ({ mform: { ...s.mform, [k]: v } })); }
+
+  dset(k, v) { this.setState(s => ({ dform: { ...s.dform, [k]: v } })); }
 
   cset(k, v) { this.setState(s => ({ cform: { ...s.cform, [k]: v } })); }
 
@@ -4858,6 +5078,9 @@ class Component extends DCLogic {
       goYouth: () => this.go('youth'),
       isEvents: screen === 'events',
       goContact: () => this.go('contact'),
+      isDonate: screen === 'donate',
+      goDonate: () => this.go('donate'),
+      goMembership: () => this.go('membership'),
       evFactRows: (t.evFacts || []).map(f => {
         if (f.id === 'count') return { k: f.k, v: t.evCountTpl.replace('{n}', upNow.length) };
         if (f.id === 'free') return { k: f.k, v: t.evFreeTpl.replace('{free}', upNow.filter(e => e.free).length).replace('{total}', upNow.length) };
@@ -5035,6 +5258,45 @@ class Component extends DCLogic {
       mbThanksBody: this.state.mpay === 1 ? t.mbThanksBodyZelle : t.mbThanksBodyOnline,
       joined: this.state.joined,
       notJoined: !this.state.joined,
+      dform: this.state.dform,
+      setDName: (e) => this.dset('name', e.target.value),
+      setDEmail: (e) => this.dset('email', e.target.value),
+      donateAmounts: (t.donateAmounts || []).map((amt, i) => ({
+        amt,
+        pick: () => this.setState({ dAmountIdx: i }),
+        style: {
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', padding: '14px 8px', cursor: 'pointer',
+          borderRadius: 'var(--radius-sm)', border: '1px solid ' + (this.state.dAmountIdx === i ? 'var(--accent-primary)' : 'var(--border-subtle)'),
+          background: this.state.dAmountIdx === i ? 'var(--accent-primary)' : 'var(--surface-card)',
+          color: this.state.dAmountIdx === i ? '#fff' : 'var(--text-primary)',
+          fontFamily: 'var(--font-display)', letterSpacing: '-0.06em', fontSize: '20px',
+          transition: 'background 150ms var(--ease-out), border-color 150ms var(--ease-out), transform var(--press-out) var(--ease-press-out)'
+        }
+      })),
+      isDCustom: this.state.dAmountIdx === -1,
+      dCustomStyle: {
+        display: 'flex', alignItems: 'center', gap: '2px', padding: '14px 12px',
+        borderRadius: 'var(--radius-sm)', border: '1px solid ' + (this.state.dAmountIdx === -1 ? 'var(--accent-primary)' : 'var(--border-subtle)'),
+        background: this.state.dAmountIdx === -1 ? 'var(--surface-tint-blush)' : 'var(--surface-card)',
+        transition: 'background 150ms var(--ease-out), border-color 150ms var(--ease-out)'
+      },
+      pickCustom: () => this.setState({ dAmountIdx: -1 }),
+      dCustomVal: this.state.dCustom,
+      setDCustom: (e) => this.setState({ dAmountIdx: -1, dCustom: e.target.value.replace(/[^0-9]/g, '') }),
+      dAmountTotal: this.donateAmount(),
+      dPays: t.pays.map((p, i) => ({ ...p, pick: () => this.setState({ dpay: i, dError: null }), style: payStyle(this.state.dpay === i) })),
+      isDZelle: this.state.dpay === 1,
+      isDOnline: this.state.dpay === 0,
+      dMemoPreview: (this.state.dform.name || t.mbFormName) + ' ' + t.dZMemo,
+      dSubmitLabel: this.state.dLoading ? t.regSubmitting : t.dSubmit,
+      dSubmitOpacity: (this.state.dLoading || this.donateAmount() <= 0) ? 0.7 : 1,
+      dSubmitDisabled: this.donateAmount() <= 0,
+      dError: this.state.dError,
+      donateNow: () => { if (this.donateAmount() > 0) this.submitDonation({}); },
+      donateAgain: () => this.setState({ donated: false, dError: null, dform: { name: '', email: '' } }),
+      dThanksBody: this.state.dpay === 1 ? t.dThanksBodyZelle : t.dThanksBodyOnline,
+      donated: this.state.donated,
+      notDonated: !this.state.donated,
       missionRef: this.missionRef,
       mRevealed: this.mr,
       mMarkRevealClass: this.mr ? 'mMark-revealed' : '',
