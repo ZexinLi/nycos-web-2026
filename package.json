@@ -1,0 +1,14 @@
+{
+  "name": "nycos-web-2026",
+  "version": "1.0.0",
+  "description": "NYCOS Website 2026",
+  "scripts": {
+    "postinstall": "echo 'Analytics package installed successfully'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^1.4.1"
+  }
+}
