@@ -24,7 +24,22 @@
 <link rel="icon" type="image/png" href="/assets/favicon-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <script src="/support.js"></script>
-<script defer src="/_vercel/insights/script.js"></script>
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  if (params.has('notrack')) {
+    try { localStorage.setItem('nycos_notrack', params.get('notrack') === '0' ? '' : '1'); } catch (e) {}
+  }
+  var skip = false;
+  try { skip = localStorage.getItem('nycos_notrack') === '1'; } catch (e) {}
+  if (!skip) {
+    var s = document.createElement('script');
+    s.defer = true;
+    s.src = '/_vercel/insights/script.js';
+    document.head.appendChild(s);
+  }
+})();
+</script>
 </head>
 <body>
 <x-dc>
