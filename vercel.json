@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "redirects": [
+    { "source": "/652", "destination": "/donate", "permanent": true },
+    { "source": "/checkout/donate", "destination": "/donate", "permanent": true }
+  ]
+}

@@ -3,25 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New York Chinese Opera Society | Jingju, Kunqu &amp; Calligraphy in NYC</title>
+<meta name="description" content="A volunteer-run nonprofit bringing Chinese opera, calligraphy, and brush painting to New York since 2006. No experience needed — classes, performances, and community events in Lower Manhattan.">
+<link rel="canonical" href="https://www.nycos.org/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="New York Chinese Opera Society">
+<meta property="og:url" content="https://www.nycos.org/">
+<meta property="og:title" content="New York Chinese Opera Society | Jingju, Kunqu &amp; Calligraphy in NYC">
+<meta property="og:description" content="A volunteer-run nonprofit bringing Chinese opera, calligraphy, and brush painting to New York since 2006. No experience needed — classes, performances, and community events in Lower Manhattan.">
+<meta property="og:image" content="https://www.nycos.org/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="New York Chinese Opera Society | Jingju, Kunqu &amp; Calligraphy in NYC">
+<meta name="twitter:description" content="A volunteer-run nonprofit bringing Chinese opera, calligraphy, and brush painting to New York since 2006. No experience needed — classes, performances, and community events in Lower Manhattan.">
+<meta name="twitter:image" content="https://www.nycos.org/assets/og-image.jpg">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="/assets/favicon-16.png" sizes="16x16">
 <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
 <link rel="icon" type="image/png" href="/assets/favicon-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<script src="./support.js"></script>
+<script src="/support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet data-dc-atomics="">
-<link rel="stylesheet" href="_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/tokens/fonts.css">
-<link rel="stylesheet" href="_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/tokens/colors.css">
-<link rel="stylesheet" href="_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/tokens/typography.css">
-<link rel="stylesheet" href="_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/tokens/spacing.css">
-<link rel="stylesheet" href="_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/tokens/effects.css">
-<link rel="stylesheet" href="_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/styles.css">
-<script src="_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/_ds_bundle.js"></script>
-<script src="./image-slot.js"></script>
-<script src="./paypal-integration.js"></script>
+<link rel="stylesheet" href="/_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/tokens/fonts.css">
+<link rel="stylesheet" href="/_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/tokens/colors.css">
+<link rel="stylesheet" href="/_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/tokens/typography.css">
+<link rel="stylesheet" href="/_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/tokens/spacing.css">
+<link rel="stylesheet" href="/_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/tokens/effects.css">
+<link rel="stylesheet" href="/_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/styles.css">
+<script src="/_ds/nycos-design-system-c356deb3-13b6-4bf4-932c-607c9e50ef75/_ds_bundle.js"></script>
+<script src="/image-slot.js"></script>
+<script src="/paypal-integration.js"></script>
 <style>
 /* Spectral (--font-display) draws the dollar sign with TWO vertical strokes.
    Scope only U+0024 to Noto Serif TC — the site's companion serif, already
@@ -477,6 +492,23 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
      trimmed to 40px above for mobile, so the same fixed pull-up now drags
      the dark card up over the hero's own text instead of just closing a gap. */
   .nycos-pathway-pullup{margin-top:0 !important}
+  /* Opera hero specifically: unlike Brush/Workshops, bring the figure back
+     on mobile instead of hiding it, matching the treatment already given to
+     the Events/Contact/About/Membership hero figures — shrink it to a fixed
+     height, anchor it bottom-right of the (now shorter) card, and reserve
+     enough padding-bottom to clear the text above it. Selectors are
+     doubled-up (both classes) so they out-specificity the general
+     .nycos-cream-hero / .nycos-hero-side-fig rules above regardless of
+     source order. */
+  .nycos-cream-hero.nycos-op-hero-card{padding-bottom:260px !important}
+  .nycos-hero-side-fig.nycos-op-hero-fig{
+    display:block !important;
+    top:auto !important;
+    bottom:0 !important;
+    right:5% !important;
+    height:240px !important;
+    max-width:65% !important;
+  }
 }
 
 
@@ -579,8 +611,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </sc-if>
 <sc-if value="{{ k.isWork }}" hint-placeholder-val="{{ false }}">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.1"></circle><path d="M3.6 19a5.4 5.4 0 0 1 10.8 0"></path><path d="M16.1 5.9a3.1 3.1 0 0 1 0 6.2"></path><path d="M17.4 19a5.4 5.4 0 0 0-1.9-4.1"></path></svg>
-</sc-if>
-</span>
+</sc-if></span>
 <span style="display:flex;flex-direction:column;gap:3px;min-width:0">
 <span style="font-family:var(--font-mono);font-weight:500;font-size:14px;letter-spacing:-0.01em;line-height:1.3">{{ k.label }}</span>
 <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary)">{{ k.meta }}</span>
@@ -594,8 +625,8 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </sc-for>
 </nav>
 <button type="button" onClick="{{ goHome }}" class="nycos-logo" style="position:relative;display:flex;align-items:center;cursor:pointer;text-decoration:none;flex:0 0 auto;background:none;border:none;padding:0;margin:0;font:inherit">
-<img src="assets/logo-lockup-horizontal.png" alt="{{ t.org }}" style="height:38px;width:auto">
-<img src="assets/logo-lockup-horizontal.png" alt="" aria-hidden="true" style="position:absolute;left:0;top:0;height:38px;width:auto;filter:brightness(0) invert(1);opacity:var(--nav-logo-w,1);transition:opacity 60ms linear">
+<img src="/assets/logo-lockup-horizontal.png" alt="{{ t.org }}" style="height:38px;width:auto">
+<img src="/assets/logo-lockup-horizontal.png" alt="" aria-hidden="true" style="position:absolute;left:0;top:0;height:38px;width:auto;filter:brightness(0) invert(1);opacity:var(--nav-logo-w,1);transition:opacity 60ms linear">
 </button>
 <button onClick="{{ toggleMobileNav }}" class="nycos-hamburger" aria-label="Menu" style="font-family:var(--font-body);font-size:22px;line-height:1;background:none;border:none;cursor:pointer;color:var(--nav-text,var(--color-blue));padding:6px;margin:-6px">{{ hamburgerLabel }}</button>
 <div class="nycos-nav-right" style="display:flex;align-items:center;gap:24px;flex:1 1 0;justify-content:flex-end;min-width:0">
@@ -617,8 +648,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </sc-if>
 <sc-if value="{{ k.isWork }}" hint-placeholder-val="{{ false }}">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.1"></circle><path d="M3.6 19a5.4 5.4 0 0 1 10.8 0"></path><path d="M16.1 5.9a3.1 3.1 0 0 1 0 6.2"></path><path d="M17.4 19a5.4 5.4 0 0 0-1.9-4.1"></path></svg>
-</sc-if>
-</span>
+</sc-if></span>
 <span style="display:flex;flex-direction:column;gap:3px;min-width:0">
 <span style="font-family:var(--font-mono);font-weight:500;font-size:14px;letter-spacing:-0.01em;line-height:1.3">{{ k.label }}</span>
 <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary)">{{ k.meta }}</span>
@@ -654,10 +684,10 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </div>
 <div class="nycos-stack-wrap" style="position:relative;max-width:1200px;margin:76px auto 0;height:320px;display:flex;align-items:center;justify-content:center">
-<div class="nycos-stack-card nycos-stack-1"><img src="assets/stack-laosheng-beard.webp" alt="Lao sheng role — long white beard and blue hat"><span class="nycos-stack-label"><span class="nycos-stack-label-cn">生</span><span class="nycos-stack-label-en">Sheng</span></span></div>
-<div class="nycos-stack-card nycos-stack-2"><img src="assets/stack-dan-sleeve.webp" alt="Dan role — water-sleeve dance pose"><span class="nycos-stack-label"><span class="nycos-stack-label-cn">旦</span><span class="nycos-stack-label-en">Dan</span></span></div>
-<div class="nycos-stack-card nycos-stack-3"><img src="assets/stack-jing-role.webp" alt="Jing role — painted white face and black beard"><span class="nycos-stack-label"><span class="nycos-stack-label-cn">淨</span><span class="nycos-stack-label-en">Jing</span></span></div>
-<div class="nycos-stack-card nycos-stack-4"><img src="assets/stack-scholar-fan.webp" alt="Sheng role — blue robe with folding fan"><span class="nycos-stack-label"><span class="nycos-stack-label-cn">丑</span><span class="nycos-stack-label-en">Chou</span></span></div>
+<div class="nycos-stack-card nycos-stack-1"><img src="/assets/stack-laosheng-beard.webp" alt="Lao sheng role — long white beard and blue hat"><span class="nycos-stack-label"><span class="nycos-stack-label-cn">生</span><span class="nycos-stack-label-en">Sheng</span></span></div>
+<div class="nycos-stack-card nycos-stack-2"><img src="/assets/stack-dan-sleeve.webp" alt="Dan role — water-sleeve dance pose"><span class="nycos-stack-label"><span class="nycos-stack-label-cn">旦</span><span class="nycos-stack-label-en">Dan</span></span></div>
+<div class="nycos-stack-card nycos-stack-3"><img src="/assets/stack-jing-role.webp" alt="Jing role — painted white face and black beard"><span class="nycos-stack-label"><span class="nycos-stack-label-cn">淨</span><span class="nycos-stack-label-en">Jing</span></span></div>
+<div class="nycos-stack-card nycos-stack-4"><img src="/assets/stack-scholar-fan.webp" alt="Sheng role — blue robe with folding fan"><span class="nycos-stack-label"><span class="nycos-stack-label-cn">丑</span><span class="nycos-stack-label-en">Chou</span></span></div>
 </div>
 </section>
 
@@ -692,7 +722,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <rect class="mMarkSweep" x="-40" y="-40" width="0" height="230" fill="#fff" filter="url(#mMarkInkRough)"></rect>
 </mask>
 </defs>
-<image href="assets/logo-mark.png" alt="NYCOS" x="0" y="0" width="150" height="150" mask="url(#mMarkRevealMask)" class="mMarkImg"></image>
+<image href="/assets/logo-mark.png" alt="NYCOS" x="0" y="0" width="150" height="150" mask="url(#mMarkRevealMask)" class="mMarkImg"></image>
 </svg>
 </div>
 
@@ -747,7 +777,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <div class="nycos-editorial-wrap" style="position:relative">
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.EditorialBlock" eyebrow="{{ t.youthLabel }}" title="{{ t.youthTitle }}" body="{{ t.youthBody }}" image="assets/youth-fifty-years-2.webp" reverse="{{ true }}" hint-size="100%,560px">
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.EditorialBlock" eyebrow="{{ t.youthLabel }}" title="{{ t.youthTitle }}" body="{{ t.youthBody }}" image="/assets/youth-fifty-years-2.webp" reverse="{{ true }}" hint-size="100%,560px">
 <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px">
 <button type="button" onClick="{{ goYouth }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;letter-spacing:0.02em;color:var(--text-accent);text-decoration:none;background:none;border:none;border-bottom:1px solid currentColor;align-self:flex-start;margin:0;padding:0;cursor:pointer;transition:color 160ms var(--ease-out);" style-hover="color:var(--accent-primary-hover)">{{ t.youthCta }} →</button>
 </div>
@@ -807,7 +837,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 60px;position:relative">
 <div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:hidden">
-<img src="assets/programs-hero-figure.webp" alt="" style="position:absolute;right:0;top:0;height:100%;width:auto;object-fit:cover">
+<img src="/assets/programs-hero-figure.webp" alt="" style="position:absolute;right:0;top:0;height:100%;width:auto;object-fit:cover">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.pEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.pTitle }}</h1>
@@ -849,11 +879,11 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <main data-screen-label="Class page">
 
 <sc-if value="{{ isOpera }}" hint-placeholder-val="{{ false }}">
-<section class="nycos-cream-hero" style="margin-top:-88px;background:var(--surface-page);padding:184px 32px 280px;position:relative;overflow:hidden">
-<img class="nycos-hero-side-fig" src="assets/opera-class-hero-warrior-figure.webp" alt="" style="position:absolute;right:4%;top:104px;height:86%;width:auto;max-width:52%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 74%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 74%)">
+<section class="nycos-cream-hero nycos-op-hero-card" style="margin-top:-88px;background:var(--surface-page);padding:184px 32px 280px;position:relative;overflow:hidden">
+<img class="nycos-hero-side-fig nycos-op-hero-fig" src="/assets/opera-class-hero-warrior-figure.webp" alt="" style="position:absolute;right:4%;top:104px;height:86%;width:auto;max-width:52%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 74%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 74%)">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 32px;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--text-accent)">{{ page.eyebrow }}</span>
-<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-blue);margin:0;max-width:700px;text-wrap:pretty">{{ page.title }}</h1>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-blue);margin:0;max-width:700px;text-wrap:pretty;white-space:pre-line">{{ page.title }}</h1>
 <sc-if value="{{ page.titleAlt }}" hint-placeholder-val="{{ false }}">
 <span style="font-family:var(--font-cjk-serif);font-size:22px;color:rgba(0,51,160,0.72);line-height:1.3">{{ page.titleAlt }}</span>
 </sc-if>
@@ -863,7 +893,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </sc-if>
 <sc-if value="{{ isBrush }}" hint-placeholder-val="{{ false }}">
 <section class="nycos-cream-hero" style="margin-top:-88px;background:var(--surface-page);padding:184px 32px 80px;position:relative;overflow:hidden">
-<img class="nycos-hero-side-fig" src="assets/class-hero-brush-tip.webp" alt="" style="position:absolute;right:0%;top:110px;height:98%;width:auto;max-width:50%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 78%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 78%)">
+<img class="nycos-hero-side-fig" src="/assets/class-hero-brush-tip.webp" alt="" style="position:absolute;right:0%;top:110px;height:98%;width:auto;max-width:50%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 78%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 78%)">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 32px;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--text-accent)">{{ page.eyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-blue);margin:0;max-width:700px;text-wrap:pretty">{{ page.title }}</h1>
@@ -1327,7 +1357,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 40px;position:relative">
 <div class="nycos-hero-card nycos-ab-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
-<img class="nycos-ab-hero-fig" src="assets/about-hero-blue-card-figures.webp" alt="" style="position:absolute;right:7%;bottom:-40px;height:115%;width:auto;max-width:34%;object-fit:contain;object-position:bottom center">
+<img class="nycos-ab-hero-fig" src="/assets/about-hero-blue-card-figures.webp" alt="" style="position:absolute;right:7%;bottom:-40px;height:115%;width:auto;max-width:34%;object-fit:contain;object-position:bottom center">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.abEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:640px;text-wrap:pretty">{{ t.abTitle }}</h1>
@@ -1368,7 +1398,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </section>
 
 <div class="nycos-editorial-wrap">
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.EditorialBlock" eyebrow="{{ t.abYouthLabel }}" title="{{ t.abYouthTitle }}" body="{{ t.abYouthBody }}" image="assets/youth-troupe-portrait.webp" hint-size="100%,560px">
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.EditorialBlock" eyebrow="{{ t.abYouthLabel }}" title="{{ t.abYouthTitle }}" body="{{ t.abYouthBody }}" image="/assets/youth-troupe-portrait.webp" hint-size="100%,560px">
 <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px">
 <button type="button" onClick="{{ goYouth }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;letter-spacing:0.02em;color:var(--text-accent);text-decoration:none;background:none;border:none;border-bottom:1px solid currentColor;align-self:flex-start;margin:0;padding:0;cursor:pointer;transition:color 160ms var(--ease-out);" style-hover="color:var(--accent-primary-hover)">{{ t.youthCta }} →</button>
 </div>
@@ -1376,7 +1406,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 
 <div class="nycos-editorial-wrap">
-<x-import component-from-global-scope="NYCOSDesignSystem_c356de.EditorialBlock" eyebrow="{{ t.abCalLabel }}" title="{{ t.abCalTitle }}" body="{{ t.abCalBody }}" image="assets/calligraphy-brush-hand.webp" reverse="{{ true }}" hint-size="100%,560px">
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.EditorialBlock" eyebrow="{{ t.abCalLabel }}" title="{{ t.abCalTitle }}" body="{{ t.abCalBody }}" image="/assets/calligraphy-brush-hand.webp" reverse="{{ true }}" hint-size="100%,560px">
 <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px">
 <button type="button" onClick="{{ goInstructors }}" style="font-family:var(--font-body);font-weight:500;font-size:14px;letter-spacing:0.02em;color:var(--text-accent);text-decoration:none;background:none;border:none;border-bottom:1px solid currentColor;align-self:flex-start;margin:0;padding:0;cursor:pointer;transition:color 160ms var(--ease-out);" style-hover="color:var(--accent-primary-hover)">{{ t.abCalCta }} →</button>
 </div>
@@ -1427,7 +1457,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <main data-screen-label="Workshops">
 
 <section class="nycos-cream-hero" style="margin-top:-88px;background:var(--surface-page);padding:184px 32px 144px;position:relative;overflow:hidden">
-<img class="nycos-hero-side-fig" src="assets/workshops-hero-side-figure.webp" alt="" style="position:absolute;right:4%;top:90px;height:127%;width:auto;max-width:100%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0) 62%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0) 62%)">
+<img class="nycos-hero-side-fig" src="/assets/workshops-hero-side-figure.webp" alt="" style="position:absolute;right:4%;top:90px;height:127%;width:auto;max-width:100%;object-fit:cover;object-position:top center;-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0) 62%);mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,0) 62%)">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 32px;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--text-accent)">{{ t.wkEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-blue);margin:0;max-width:620px;text-wrap:pretty">{{ t.wkTitle }}</h1>
@@ -1497,7 +1527,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 40px;position:relative">
 <div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
-<img class="nycos-hero-bleed-fig" src="assets/volunteer-hero-figure.webp" alt="" style="position:absolute;right:4%;bottom:-40px;height:130%;width:auto;max-width:66%;object-fit:contain;object-position:bottom center">
+<img class="nycos-hero-bleed-fig" src="/assets/volunteer-hero-figure.webp" alt="" style="position:absolute;right:4%;bottom:-40px;height:130%;width:auto;max-width:66%;object-fit:contain;object-position:bottom center">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.vlEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:640px;text-wrap:pretty">{{ t.vlTitle }}</h1>
@@ -1573,7 +1603,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:640px;text-wrap:pretty">{{ t.ytTitle }}</h1>
 <p style="font-size:16.5px;line-height:1.7;color:rgba(247,244,238,0.78);margin:0;max-width:560px;text-wrap:pretty">{{ t.ytLede }}</p>
 </div>
-<img src="assets/youth-hero-ensemble.webp" alt="" style="flex:0 0 auto;display:block;width:52%;height:auto;margin:0 -86px 0 0;object-fit:contain">
+<img src="/assets/youth-hero-ensemble.webp" alt="" style="flex:0 0 auto;display:block;width:52%;height:auto;margin:0 -86px 0 0;object-fit:contain">
 </div>
 </div>
 </section>
@@ -1666,7 +1696,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 40px;position:relative">
 <div class="nycos-hero-card nycos-ev-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
-<img class="nycos-hero-bleed-fig nycos-ev-hero-fig" src="assets/events-hero-flag-dancer-cutout.webp" alt="" style="position:absolute;right:0%;bottom:0;height:130%;width:auto;max-width:65%;object-fit:contain;object-position:bottom center">
+<img class="nycos-hero-bleed-fig nycos-ev-hero-fig" src="/assets/events-hero-flag-dancer-cutout.webp" alt="" style="position:absolute;right:0%;bottom:0;height:130%;width:auto;max-width:65%;object-fit:contain;object-position:bottom center">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.evEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:64px;line-height:1.04;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.evTitle }}</h1>
@@ -1967,7 +1997,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 70px;position:relative">
 <div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
-<img class="nycos-hero-bleed-fig nycos-mb-hero-fig" src="assets/membership-hero-fan-cutout-2.webp" alt="" style="position:absolute;right:4%;bottom:0;height:116%;width:auto;max-width:58%;object-fit:contain;object-position:bottom center;z-index:45;pointer-events:none">
+<img class="nycos-hero-bleed-fig nycos-mb-hero-fig" src="/assets/membership-hero-fan-cutout-2.webp" alt="" style="position:absolute;right:4%;bottom:0;height:116%;width:auto;max-width:58%;object-fit:contain;object-position:bottom center;z-index:45;pointer-events:none">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.mbEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:64px;line-height:1.04;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty">{{ t.mbTitle }}</h1>
@@ -2242,12 +2272,78 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </main>
 </sc-if>
 
+<sc-if value="{{ isGuide }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="The Art Form">
+
+<section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 40px;position:relative">
+<div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
+<div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
+<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.gEyebrow }}</span>
+<h1 class="nycos-hero-h1" style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:64px;line-height:1.04;color:var(--color-paper);margin:0;max-width:680px;text-wrap:pretty">{{ t.gTitle }}</h1>
+<p style="font-size:16.5px;line-height:1.7;color:rgba(247,244,238,0.78);margin:0;max-width:600px;text-wrap:pretty">{{ t.gLede }}</p>
+</div>
+</div>
+</section>
+
+<section style="max-width:900px;margin:0 auto;padding:72px 32px 24px">
+<h2 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:30px;color:var(--text-primary);margin:0 0 16px;text-wrap:pretty">{{ t.gIntroTitle }}</h2>
+<p style="font-size:16.5px;line-height:1.75;color:var(--text-secondary);margin:0;text-wrap:pretty">{{ t.gIntroBody }}</p>
+</section>
+
+<section style="max-width:900px;margin:0 auto;padding:24px 32px 56px">
+<div class="nycos-grid-collapse" style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+<div style="background:var(--surface-tint-blush);border-radius:var(--radius-sm);padding:30px 28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:var(--font-display);letter-spacing:-0.06em;font-weight:400;font-size:23px;color:var(--text-primary);margin:0">{{ t.gJingjuTitle }}</h3>
+<p style="font-size:14.5px;line-height:1.75;color:var(--text-secondary);margin:0;text-wrap:pretty">{{ t.gJingjuBody }}</p>
+</div>
+<div style="background:var(--surface-tint-periwinkle);border-radius:var(--radius-sm);padding:30px 28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:var(--font-display);letter-spacing:-0.06em;font-weight:400;font-size:23px;color:var(--text-primary);margin:0">{{ t.gKunquTitle }}</h3>
+<p style="font-size:14.5px;line-height:1.75;color:var(--text-secondary);margin:0;text-wrap:pretty">{{ t.gKunquBody }}</p>
+</div>
+</div>
+</section>
+
+<section style="background:var(--surface-card);padding:64px 32px">
+<div style="max-width:900px;margin:0 auto">
+<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:32px;max-width:640px">
+<span style="font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-accent)">{{ t.gRolesLabel }}</span>
+<h2 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:28px;color:var(--text-primary);margin:0;text-wrap:pretty">{{ t.gRolesTitle }}</h2>
+<p style="font-size:14.5px;line-height:1.7;color:var(--text-secondary);margin:4px 0 0;text-wrap:pretty">{{ t.gRolesIntro }}</p>
+</div>
+<div class="nycos-grid-collapse" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
+<sc-for list="{{ t.gRoles }}" as="r" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;gap:10px;padding:22px 18px;background:var(--surface-page);border:1px solid var(--border-subtle);border-radius:var(--radius-sm)">
+<span style="font-family:var(--font-cjk-serif);font-size:34px;line-height:1;color:var(--color-gold)">{{ r.ch }}</span>
+<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-primary)">{{ r.name }}</span>
+<p style="font-size:12.5px;line-height:1.6;color:var(--text-secondary);margin:0;text-wrap:pretty">{{ r.body }}</p>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="background:var(--surface-accent);color:var(--text-on-accent);padding:var(--space-24) var(--gutter);text-align:center;font-family:var(--font-body)">
+<div style="max-width:680px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:var(--space-4)">
+<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.75)">{{ t.gCtaEyebrow }}</span>
+<h2 style="font-family:var(--font-display);font-weight:400;font-size:clamp(32px,4vw,48px);margin:0;line-height:var(--leading-tight);letter-spacing:var(--tracking-tight);text-wrap:pretty">{{ t.gCtaTitle }}</h2>
+<p style="font-size:16px;line-height:var(--leading-relaxed);color:rgba(255,255,255,0.85);margin:0">{{ t.gCtaBody }}</p>
+<button type="button" onClick="{{ goOpera }}" style="margin-top:var(--space-4);display:inline-flex;padding:15px 32px;background:var(--color-ivory);color:var(--color-ink);border:none;font-family:var(--font-body);font-weight:500;font-size:14px;letter-spacing:var(--tracking-wide);border-radius:var(--radius-sm);cursor:pointer;transition:transform var(--press-out) var(--ease-press-out);" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.gCtaBtn }}</button>
+</div>
+</section>
+
+<div data-reveal-text-only>
+<x-import component-from-global-scope="NYCOSDesignSystem_c356de.Newsletter" eyebrow="{{ t.nlLabel }}" title="{{ t.nlTitle }}" description="{{ t.nlDesc }}" cta="{{ t.nlCta }}" placeholder="{{ t.nlPh }}" lang="{{ lang }}" on-submit="{{ nlSubmit }}" success-text="{{ t.nlSuccess }}" error-text="{{ t.nlError }}" hint-size="100%,340px"></x-import>
+</div>
+
+</main>
+</sc-if>
+
 <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
 <main data-screen-label="Contact">
 
 <section class="nycos-hero-outer" style="margin-top:-88px;background:var(--surface-page);padding:145px 40px 40px;position:relative">
 <div class="nycos-hero-card nycos-ct-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:visible">
-<img class="nycos-hero-bleed-fig nycos-ct-hero-fig" src="assets/contact-hero-waving-figure-trim.webp" alt="" style="position:absolute;right:6%;bottom:0;height:112%;width:auto;object-fit:contain" loading="lazy">
+<img class="nycos-hero-bleed-fig nycos-ct-hero-fig" src="/assets/contact-hero-waving-figure-trim.webp" alt="" style="position:absolute;right:6%;bottom:0;height:112%;width:auto;object-fit:contain" loading="lazy">
 <div style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:18px">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.ctEyebrow }}</span>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-0.08em;color:var(--color-paper);margin:0;max-width:620px;text-wrap:pretty;white-space:pre-line">{{ t.ctTitle }}</h1>
@@ -2356,11 +2452,11 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <span style="font-family:var(--font-mono);font-size:9.5px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.ctSocialLabel }}</span>
 <div class="nycos-grid-collapse" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
 <div style="display:flex;flex-direction:column;gap:8px;align-items:center;padding:16px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm)">
-<img src="uploads/CleanShot.jpg" alt="Instagram QR" style="width:74px;height:74px;object-fit:cover;border:1px solid var(--border-subtle)" loading="lazy">
+<img src="/uploads/CleanShot.jpg" alt="Instagram QR" style="width:74px;height:74px;object-fit:cover;border:1px solid var(--border-subtle)" loading="lazy">
 <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.ctInstagramTag }}</span>
 </div>
 <div style="display:flex;flex-direction:column;gap:8px;align-items:center;padding:16px;background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:var(--radius-sm)">
-<img src="uploads/小红书qr.jpg" alt="小紅書 QR" style="width:74px;height:74px;object-fit:cover;border:1px solid var(--border-subtle)" loading="lazy">
+<img src="/uploads/小红书qr.jpg" alt="小紅書 QR" style="width:74px;height:74px;object-fit:cover;border:1px solid var(--border-subtle)" loading="lazy">
 <span style="font-family:var(--font-cjk-serif);font-size:12px;color:var(--text-tertiary)">{{ t.ctXhsTag }}</span>
 </div>
 </div>
@@ -2381,7 +2477,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <footer style="background:var(--surface-inverse);color:var(--text-on-inverse);font-family:var(--font-body);padding:72px 32px 28px">
 <div class="nycos-grid-collapse" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px">
 <div style="display:flex;flex-direction:column;gap:14px">
-<img src="assets/logo-lockup-horizontal.png" alt="{{ t.org }}" style="height:34px;width:auto;filter:brightness(0) invert(1);opacity:0.92;align-self:flex-start" loading="lazy">
+<img src="/assets/logo-lockup-horizontal.png" alt="{{ t.org }}" style="height:34px;width:auto;filter:brightness(0) invert(1);opacity:0.92;align-self:flex-start" loading="lazy">
 <p style="font-size:13px;line-height:1.65;color:rgba(247,244,238,0.6);max-width:290px;margin:0">{{ t.footTagline }}</p>
 <div style="display:flex;flex-direction:column;gap:5px;margin-top:6px;font-size:13px;color:rgba(247,244,238,0.82)">
 <span>{{ t.addr1 }}</span><span>{{ t.addr2 }}</span>
@@ -2415,14 +2511,14 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <div class="nycos-qr-wrap">
 <a href="#" style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,244,238,0.75);text-decoration:none;border:1px solid var(--border-inverse);border-radius:var(--radius-pill);padding:4px 10px;transition:color 160ms var(--ease-out);" style-hover="color:#fff">{{ t.wechat }}</a>
 <div class="nycos-qr-pop">
-<img src="uploads/wechat-qr.jpg" alt="WeChat QR code" style="width:120px;height:120px;object-fit:cover;border-radius:2px" loading="lazy">
+<img src="/uploads/wechat-qr.jpg" alt="WeChat QR code" style="width:120px;height:120px;object-fit:cover;border-radius:2px" loading="lazy">
 <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-tertiary);white-space:nowrap">Scan to follow</span>
 </div>
 </div>
 <div class="nycos-qr-wrap">
 <a href="#" style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.12em;color:rgba(247,244,238,0.75);text-decoration:none;border:1px solid var(--border-inverse);border-radius:var(--radius-pill);padding:4px 10px;transition:color 160ms var(--ease-out);" style-hover="color:#fff">小紅書</a>
 <div class="nycos-qr-pop">
-<img src="uploads/小红书qr.jpg" alt="小紅書 QR code" style="width:120px;height:120px;object-fit:cover;border-radius:2px" loading="lazy">
+<img src="/uploads/小红书qr.jpg" alt="小紅書 QR code" style="width:120px;height:120px;object-fit:cover;border-radius:2px" loading="lazy">
 <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-tertiary);white-space:nowrap">Scan to follow</span>
 </div>
 </div>
@@ -2771,6 +2867,21 @@ function resetReveal() {
 const EN = {
   mark: 'NYCOS',
   org: 'New York Chinese Opera Society',
+  seo: {
+    home: { title: 'New York Chinese Opera Society | Jingju, Kunqu & Calligraphy in NYC', description: 'A volunteer-run nonprofit bringing Chinese opera, calligraphy, and brush painting to New York since 2006. No experience needed — classes, performances, and community events in Lower Manhattan.' },
+    about: { title: 'About Us | New York Chinese Opera Society', description: 'Founded in 2006, NYCOS is a 501(c)(3) nonprofit dedicated to Chinese opera and traditional arts in New York City. Meet the people and story behind the Society.' },
+    programs: { title: 'Classes & Programs | New York Chinese Opera Society', description: 'Thirteen classes in Jingju, Kunqu, calligraphy, and brush painting for all levels. No experience required — join a class in Lower Manhattan.' },
+    opera: { title: 'Beijing & Kunqu Opera Classes NYC | New York Chinese Opera Society', description: 'Learn Jingju and Kunqu opera technique — movement, voice, and stagecraft — from experienced instructors in Lower Manhattan. Beginners welcome.' },
+    brush: { title: 'Chinese Calligraphy & Painting Classes NYC | New York Chinese Opera Society', description: 'Study traditional Chinese calligraphy and brush painting at Ranhao Studio, taught by exhibiting artists. Classes for all ages and skill levels.' },
+    workshops: { title: 'Cultural Workshops & School Visits | New York Chinese Opera Society', description: 'Book a Chinese opera or calligraphy workshop for your school, library, or festival. Live demonstrations and hands-on introductions to the art form.' },
+    youth: { title: 'NYCOS Youth Troupe | New York Chinese Opera Society', description: 'Founded in 2012 for young people who love Chinese opera and culture. Training, performance opportunities, and community for the next generation.' },
+    events: { title: 'Events & Performances | New York Chinese Opera Society', description: 'Upcoming Chinese opera performances, concerts, and lectures in New York City. Most events are free or low-cost — no experience needed to attend.' },
+    membership: { title: 'Become a Member | New York Chinese Opera Society', description: 'Join NYCOS for discounted classes, rehearsal invitations, and first access to performances. Memberships start at $20/year.' },
+    volunteer: { title: 'Volunteer With Us | New York Chinese Opera Society', description: 'NYCOS runs entirely on volunteers. Help with front-of-house, stagecraft, costumes, translation, and more — no experience necessary.' },
+    contact: { title: 'Contact Us | New York Chinese Opera Society', description: 'Get in touch with New York Chinese Opera Society for classes, performance bookings, membership, or media inquiries.' },
+    donate: { title: 'Donate | New York Chinese Opera Society', description: 'Support Chinese opera in New York. Your gift funds Youth Troupe training, studio rent, and teachers who keep this art form alive. NYCOS is a 501(c)(3) nonprofit.' },
+    guide: { title: 'What Is Chinese Opera? Jingju vs Kunqu Explained | New York Chinese Opera Society', description: 'New to Chinese opera? Learn the real difference between Jingju (Beijing Opera) and Kunqu, plus the four traditional role types — sheng, dan, jing, and chou.' }
+  },
   nav: [
     { id: 'about', label: 'About' },
     { id: 'programs', label: 'Programs & Classes', kids: [
@@ -2799,15 +2910,15 @@ const EN = {
   viewAll: 'All events',
   tickets: 'View event',
   events: [
-    { img: 'assets/poster-2026-spring-concert.webp', tag: 'Concert', date: 'Feb 2026', title: '2026 Spring Concert of Chinese Opera', venue: 'Flushing Town Hall, Queens' },
-    { img: 'uploads/lingke-poster.webp', tag: 'Concert', date: 'Mar 2025', title: 'Youth Troupe Chinese Opera Concert', venue: 'Florence Gould Theater, Manhattan' }
+    { img: '/assets/poster-2026-spring-concert.webp', tag: 'Concert', date: 'Feb 2026', title: '2026 Spring Concert of Chinese Opera', venue: 'Flushing Town Hall, Queens' },
+    { img: '/uploads/lingke-poster.webp', tag: 'Concert', date: 'Mar 2025', title: 'Youth Troupe Chinese Opera Concert', venue: 'Florence Gould Theater, Manhattan' }
   ],
   classesLabel: 'Classes',
   classesTitle: 'Learn it, not just clap.',
   classes: [
-    { title: 'Jingju Dan Role Foundation', img: 'assets/dan-role-foundation-photo.webp', desc: 'Stance, posture, and the sung line of the dan (female) role.', meta: 'Foundation · Monthly' },
-    { title: 'Kunqu Introduction', img: 'assets/kunqu-home-card-photo.webp', desc: 'Your first aria, your first steps. No Chinese reading required.', meta: 'Foundation · Weekly' },
-    { title: 'Calligraphy', img: 'assets/calligraphy-home-card.webp', desc: 'Brush, ink, and the discipline of a single stroke.', meta: 'All ages · Sundays' }
+    { title: 'Jingju Dan Role Foundation', img: '/assets/dan-role-foundation-photo.webp', desc: 'Stance, posture, and the sung line of the dan (female) role.', meta: 'Foundation · Monthly' },
+    { title: 'Kunqu Introduction', img: '/assets/kunqu-home-card-photo.webp', desc: 'Your first aria, your first steps. No Chinese reading required.', meta: 'Foundation · Weekly' },
+    { title: 'Calligraphy', img: '/assets/calligraphy-home-card.webp', desc: 'Brush, ink, and the discipline of a single stroke.', meta: 'All ages · Sundays' }
   ],
   allClasses: 'All thirteen classes',
   photoTbc: 'Photo to supply',
@@ -2845,6 +2956,28 @@ const EN = {
   dThanksBodyZelle: 'Thank you — once we see your Zelle transfer, we’ll send a receipt to your inbox.',
   dThanksAgain: 'Make another gift',
   dFootnote: 'Your donation record is kept for tax-receipt purposes only. We never share your information.',
+  gEyebrow: 'The Art Form',
+  gTitle: 'Where Chinese opera actually comes from',
+  gLede: 'Two names get used almost interchangeably — Jingju and Kunqu — and they’re not the same thing. Here’s what separates them, and the vocabulary you’ll actually use once you’re in a room learning either one.',
+  gIntroTitle: 'One name, many traditions',
+  gIntroBody: '"Chinese opera" is the term most people reach for, but it’s really an umbrella over dozens of regional theatrical traditions built from the same ingredients: sung and spoken dialogue, stylized movement, elaborate costume, and music performed live. NYCOS teaches two of the most significant — Kunqu, the older of the two, and Jingju, the one most people picture when they hear "Chinese opera" at all.',
+  gJingjuTitle: 'Jingju 京劇 — Beijing Opera',
+  gJingjuBody: 'The younger and louder of the two, Jingju took shape in Beijing in the late 1700s and early 1800s, as opera troupes from Anhui and Hubei blended their styles into something new for the imperial capital. It’s built for a big room: bold percussion, painted faces, acrobatic combat, and a vocal style meant to carry. Most of what shows up in Western pop culture as "Chinese opera" — the face paint, the flips — is Jingju.',
+  gKunquTitle: 'Kunqu 崑曲 — Kunqu Opera',
+  gKunquBody: 'Kunqu is older by about two centuries, refined in the Suzhou region starting in the 1500s, and it’s the quieter, more literary of the two — closer to sung poetry than spectacle. Its melodies and language draw directly from classical Chinese literature; its best-known work, The Peony Pavilion, is still performed today. In 2001, UNESCO recognized Kunqu as one of the first Masterpieces of the Oral and Intangible Heritage of Humanity.',
+  gRolesLabel: 'The Vocabulary',
+  gRolesTitle: 'The four role types you’ll hear about',
+  gRolesIntro: 'Every character in Jingju and Kunqu falls into one of four broad role types (行當), each with its own vocal style, movement vocabulary, and costume conventions. Once you can spot them, a scene reads completely differently.',
+  gRoles: [
+    { ch: '生', name: 'Sheng', body: 'The male leads — refined scholars, generals, and young romantic leads, sung in natural voice.' },
+    { ch: '旦', name: 'Dan', body: 'Female roles, from elegant court ladies to warrior women, traditionally performed with a distinct falsetto singing style.' },
+    { ch: '淨', name: 'Jing', body: '"Painted face" roles — warriors, generals, and gods, immediately recognizable by bold, symbolic facial makeup, where every color and pattern means something specific.' },
+    { ch: '丑', name: 'Chou', body: 'The clown — comic relief, often marked by a small patch of white around the nose, playing servants, matchmakers, and tricksters.' }
+  ],
+  gCtaEyebrow: 'Next Step',
+  gCtaTitle: 'None of this requires reading Chinese, or knowing anything going in.',
+  gCtaBody: 'The fastest way to actually understand the difference is to sit in on a class.',
+  gCtaBtn: 'See our opera classes',
   taxNote: 'NYCOS is a registered 501(c)(3) nonprofit. Gifts are tax-deductible to the extent allowed by law.',
   nlLabel: 'Stay in the loop',
   nlTitle: 'What’s on, straight to your inbox',
@@ -2868,6 +3001,7 @@ const EN = {
       { label: 'Workshops', to: 'workshops' }
     ] },
     { title: 'About', items: [
+      { label: 'The Art Form', to: 'guide' },
       { label: 'Our Story', to: 'about' },
       { label: 'Instructors', to: 'brush' },
       { label: 'Youth Troupe', to: 'youth' }
@@ -2920,15 +3054,15 @@ const EN = {
     {
       name: 'Calligraphy 書法',
       items: [
-        { title: 'Calligraphy Onsite — Charlie Chen', mode: 'onsite', img: 'assets/calligraphy-charlie-chen-brush.webp', desc: 'Four scripts taught against the classical models, each with a stated goal.', when: '1st & 3rd Sun monthly · 3:00–5:00 PM', fee: 'See Membership & Tuition', level: 'All levels', where: 'NYCOS Office, 120 Broadway STE 3650', teacher: 'Charlie Chen 陳定佳', dur: '2 hours per session', curriculum: ['Experience the character and technique of different script styles', 'Learn traditional calligraphy fundamentals', 'Explore how traditional calligraphy applies in contemporary art'] },
-        { title: 'Calligraphy Onsite — Daniel Yu', mode: 'onsite', img: 'assets/calligraphy-daniel-yu-wei-stele.webp', desc: 'History, appreciation and foundational brushwork, weighted towards Wei stele 魏碑 and clerical script 隸書.', when: '3rd Sun monthly · 1:00–3:00 PM', fee: 'See Membership & Tuition', level: 'All levels', where: 'NYCOS Office, 120 Broadway STE 3650', teacher: 'Daniel Yu 虞文輝', dur: '2 hours per session', curriculum: ['History of Chinese calligraphy', 'Aesthetics and appreciation of calligraphy', 'Foundational brushwork and model-copying practice'] },
-        { title: 'Calligraphy Online — Eva Su', mode: 'online', img: 'assets/calligraphy-eva-su-brush.webp', desc: 'One-on-one advanced coaching for students with an existing foundation, built around a plan set to the individual.', when: 'By arrangement · Online', fee: 'See Membership & Tuition', level: 'By interview', where: 'Online · one-on-one', teacher: 'Eva Su 蘇藝', dur: 'Per session', curriculum: ['One-on-one personalised coaching', 'A study plan tailored to the student', 'Advancing brush technique and artistic expression'], requirements: ['Some grounding in calligraphy', 'Completion of a foundation course', 'Instructor interview and approval before enrolling'] }
+        { title: 'Calligraphy Onsite — Charlie Chen', mode: 'onsite', img: '/assets/calligraphy-charlie-chen-brush.webp', desc: 'Four scripts taught against the classical models, each with a stated goal.', when: '1st & 3rd Sun monthly · 3:00–5:00 PM', fee: 'See Membership & Tuition', level: 'All levels', where: 'NYCOS Office, 120 Broadway STE 3650', teacher: 'Charlie Chen 陳定佳', dur: '2 hours per session', curriculum: ['Experience the character and technique of different script styles', 'Learn traditional calligraphy fundamentals', 'Explore how traditional calligraphy applies in contemporary art'] },
+        { title: 'Calligraphy Onsite — Daniel Yu', mode: 'onsite', img: '/assets/calligraphy-daniel-yu-wei-stele.webp', desc: 'History, appreciation and foundational brushwork, weighted towards Wei stele 魏碑 and clerical script 隸書.', when: '3rd Sun monthly · 1:00–3:00 PM', fee: 'See Membership & Tuition', level: 'All levels', where: 'NYCOS Office, 120 Broadway STE 3650', teacher: 'Daniel Yu 虞文輝', dur: '2 hours per session', curriculum: ['History of Chinese calligraphy', 'Aesthetics and appreciation of calligraphy', 'Foundational brushwork and model-copying practice'] },
+        { title: 'Calligraphy Online — Eva Su', mode: 'online', img: '/assets/calligraphy-eva-su-brush.webp', desc: 'One-on-one advanced coaching for students with an existing foundation, built around a plan set to the individual.', when: 'By arrangement · Online', fee: 'See Membership & Tuition', level: 'By interview', where: 'Online · one-on-one', teacher: 'Eva Su 蘇藝', dur: 'Per session', curriculum: ['One-on-one personalised coaching', 'A study plan tailored to the student', 'Advancing brush technique and artistic expression'], requirements: ['Some grounding in calligraphy', 'Completion of a foundation course', 'Instructor interview and approval before enrolling'] }
       ]
     },
     {
       name: 'Chinese painting 國畫',
       items: [
-        { title: 'Chinese Painting — He Shan', mode: 'onsite', img: 'assets/painting-he-shan-landscape.webp', desc: 'Ink landscape and bird-and-flower painting, from first wash to finished scroll.', when: '1st & 3rd Sun monthly · 1:00–3:00 PM', fee: 'See Membership & Tuition', level: 'All ages, all levels', where: 'NYCOS Office, 120 Broadway STE 3650', teacher: 'He Shan 何山', dur: '2 hours per session', curriculum: ['Traditional Chinese painting technique', 'Appreciation and history of Chinese painting', 'Copying master works and practising original composition'] }
+        { title: 'Chinese Painting — He Shan', mode: 'onsite', img: '/assets/painting-he-shan-landscape.webp', desc: 'Ink landscape and bird-and-flower painting, from first wash to finished scroll.', when: '1st & 3rd Sun monthly · 1:00–3:00 PM', fee: 'See Membership & Tuition', level: 'All ages, all levels', where: 'NYCOS Office, 120 Broadway STE 3650', teacher: 'He Shan 何山', dur: '2 hours per session', curriculum: ['Traditional Chinese painting technique', 'Appreciation and history of Chinese painting', 'Copying master works and practising original composition'] }
       ]
     }
   ],
@@ -2970,12 +3104,12 @@ const EN = {
   pDonateDesc: 'Gifts cover the rest — the studio, the teachers’ honoraria, and scholarships for students who could not otherwise enroll.',
 
   hub: [
-    { id: 'opera', label: 'Chinese Opera Class', img: 'assets/opera-class-instructor.jpg', count: 'Nine classes', body: 'Jingju lao sheng and dan role foundations, plus Kunqu voice, recitation and movement — with one-on-one coaching by instructor interview.', cta: 'See the opera classes', tint: 'var(--surface-tint-blush)' },
-    { id: 'brush', label: 'Calligraphy & Painting Class', img: 'assets/calligraphy-class-hub.jpg', count: 'Four classes', body: 'Brush technique and ink painting at the desk, taught under the studio name 染毫書房 by four exhibiting artists.', cta: 'See the brush classes', tint: 'var(--surface-tint-mint)' },
-    { id: 'workshops', label: 'Workshops', img: 'assets/workshops-tabling-outreach.webp', count: 'By request', body: 'One-off demonstrations, school visits and festival appearances — we bring the art form to you.', cta: 'See the workshops', tint: 'var(--surface-tint-periwinkle)' }
+    { id: 'opera', label: 'Chinese Opera Class', img: '/assets/opera-class-instructor.jpg', count: 'Nine classes', body: 'Jingju lao sheng and dan role foundations, plus Kunqu voice, recitation and movement — with one-on-one coaching by instructor interview.', cta: 'See the opera classes', tint: 'var(--surface-tint-blush)' },
+    { id: 'brush', label: 'Calligraphy & Painting Class', img: '/assets/calligraphy-class-hub.jpg', count: 'Four classes', body: 'Brush technique and ink painting at the desk, taught under the studio name 染毫書房 by four exhibiting artists.', cta: 'See the brush classes', tint: 'var(--surface-tint-mint)' },
+    { id: 'workshops', label: 'Workshops', img: '/assets/workshops-tabling-outreach.webp', count: 'By request', body: 'One-off demonstrations, school visits and festival appearances — we bring the art form to you.', cta: 'See the workshops', tint: 'var(--surface-tint-periwinkle)' }
   ],
   opEyebrow: 'Programs · Chinese Opera',
-  opTitle: 'Jingju and Kunqu: lao sheng, dan role, repertoire',
+  opTitle: 'Jingju and Kunqu:\nlao sheng, dan role, repertoire',
   opIntro: 'Foundation courses in Jingju lao sheng and dan roles, plus Kunqu voice, recitation and movement — with one-on-one coaching by instructor interview. New students audit free; strong students may join the Youth Troupe’s annual concert.',
   opFacts: [{ k: 'Group classes', v: '6' }, { k: 'One-on-one', v: '3' }, { k: 'Term length', v: 'Per semester schedule' }, { k: 'Studio', v: '120 Broadway' }],
   opNotesLabel: 'Course notes',
@@ -3060,9 +3194,9 @@ const EN = {
   wkFacts: [{ k: 'Format', v: 'One-off events' }, { k: 'Cost', v: 'Usually free' }, { k: 'Booking', v: 'By request' }],
   wkListLabel: 'What we bring',
   workshops: [
-    { n: '01', img: 'assets/workshop-demo-thumb.webp', cn: '示範講解', title: 'Cultural demonstrations', body: 'A costumed excerpt, an explanation of the role types, and a chance to try a sleeve movement or hold a brush. Built for libraries, museums and community centres.', meta: '45–90 minutes · Any age' },
-    { n: '02', cn: '校園推廣', title: 'School visits', body: 'An introduction for students who have never encountered Chinese opera — music, costume, movement, and the stories behind the repertoire.', meta: 'One class period · K–12 and university', img: 'assets/workshop-school-visit.jpg' },
-    { n: '03', cn: '節慶演出', title: 'Performance', body: 'Performances and brush-art tables at Mid-Autumn Festival, Spring Festival and the Spring International Cultural Exchange Festival.', meta: 'Seasonal · Public', img: 'assets/workshop-festival-performance.webp' }
+    { n: '01', img: '/assets/workshop-demo-thumb.webp', cn: '示範講解', title: 'Cultural demonstrations', body: 'A costumed excerpt, an explanation of the role types, and a chance to try a sleeve movement or hold a brush. Built for libraries, museums and community centres.', meta: '45–90 minutes · Any age' },
+    { n: '02', cn: '校園推廣', title: 'School visits', body: 'An introduction for students who have never encountered Chinese opera — music, costume, movement, and the stories behind the repertoire.', meta: 'One class period · K–12 and university', img: '/assets/workshop-school-visit.jpg' },
+    { n: '03', cn: '節慶演出', title: 'Performance', body: 'Performances and brush-art tables at Mid-Autumn Festival, Spring Festival and the Spring International Cultural Exchange Festival.', meta: 'Seasonal · Public', img: '/assets/workshop-festival-performance.webp' }
   ],
   wkCtaLabel: 'Book a workshop',
   wkCtaTitle: 'Invite us to your school, library or festival',
@@ -3181,7 +3315,7 @@ const EN = {
   evGallery: 'View event',
   evPast: [
     {
-      ts: '2023-08-06', img: 'assets/poster-2023-08-06-dan-role-showcase.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Aug 2023', day: 'Sun 6 August 2023', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Concert', title: 'Jingju Dan-Role Showcase',
+      ts: '2023-08-06', img: '/assets/poster-2023-08-06-dan-role-showcase.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Aug 2023', day: 'Sun 6 August 2023', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Concert', title: 'Jingju Dan-Role Showcase',
       cn: '紐約梨園社京劇旦角展演專場', venue: 'Flushing Town Hall', shots: 0,
       note: '2023 Summer Concert of Chinese Opera — a NYCOS and NYCOS Youth Troupe production featuring Lian Jinfeng, Suo Lin Nang, Chun Qiu Pei and Shi Yu Zhuo.',
       facts: [
@@ -3194,7 +3328,7 @@ const EN = {
       ]
     },
     {
-      ts: '2023-08-20', img: 'assets/poster-2023-08-20-summer-workshop.webp', kind: 'community', art: 'opera', fmt: 'inperson', date: 'Aug 2023', day: 'Sun 20 August 2023', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Workshop', title: 'Summer Chinese Opera Workshop',
+      ts: '2023-08-20', img: '/assets/poster-2023-08-20-summer-workshop.webp', kind: 'community', art: 'opera', fmt: 'inperson', date: 'Aug 2023', day: 'Sun 20 August 2023', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Workshop', title: 'Summer Chinese Opera Workshop',
       cn: '2023\u5eff\u590f\u6232\u66f2\u5de5\u4f5c\u574a', venue: 'Flushing Town Hall', shots: 0,
       note: 'A NYCOS Youth Troupe production \u2014 a summer concert spanning Jingju, Kunqu, Chinese traditional painting and calligraphy.',
       facts: [
@@ -3207,7 +3341,7 @@ const EN = {
       ]
     },
     {
-      ts: '2019-02-16', img: 'assets/poster-2019-02-16-spring-concert-youth-troupe.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Feb 2019', day: 'Sat 16 February 2019', time: '2:00 – 3:30 PM', place: 'Flushing Library Auditorium, Queens', tag: 'Concert', title: 'Spring Concert of Peking Opera by Youth Troupe',
+      ts: '2019-02-16', img: '/assets/poster-2019-02-16-spring-concert-youth-troupe.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Feb 2019', day: 'Sat 16 February 2019', time: '2:00 – 3:30 PM', place: 'Flushing Library Auditorium, Queens', tag: 'Concert', title: 'Spring Concert of Beijing Opera by Youth Troupe',
       cn: '2019年紐約梨園社青年團京劇專場', venue: 'Flushing Library Auditorium', shots: 0,
       note: 'A NYCOS and NYCOS Youth Troupe production — arias by the female-role class, plus full scenes from The Marriage of Hezhu and Wu Jia Po. Free admission.',
       facts: [
@@ -3224,7 +3358,7 @@ const EN = {
       ]
     },
     {
-      ts: '2009-12-04', img: 'assets/poster-2009-12-04-winter-festival-thumb.webp', program: 'assets/poster-2009-12-04-winter-festival.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: 'Dec 2009', day: 'Fri 4 – Sun 6 December 2009', time: '7:30 PM · 2:00 PM · 1:30 PM', place: 'Michael Schimmel Center for the Arts, Pace University', tag: 'Festival', title: 'Winter Cultural Exchange Festival: Jingju',
+      ts: '2009-12-04', img: '/assets/poster-2009-12-04-winter-festival-thumb.webp', program: '/assets/poster-2009-12-04-winter-festival.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: 'Dec 2009', day: 'Fri 4 – Sun 6 December 2009', time: '7:30 PM · 2:00 PM · 1:30 PM', place: 'Michael Schimmel Center for the Arts, Pace University', tag: 'Festival', title: 'Winter Cultural Exchange Festival: Jingju',
       cn: '紐約梨園社冒季文化交流節京劇專場', venue: 'Michael Schimmel Center for the Arts', shots: 0,
       note: 'A NYCOS production — a three-day winter festival of Jingju classics, with guest artists from Beijing and Tianjin.',
       facts: [
@@ -3239,7 +3373,7 @@ const EN = {
       ]
     },
     {
-      ts: '2011-12-02', img: 'assets/poster-2011-12-02-winter-festival.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: 'Dec 2011', day: 'Fri 2 – Sun 4 December 2011', time: '7:30 PM \u00b7 2:00 PM \u00b7 1:30 PM', place: 'Michael Schimmel Center for the Arts, Pace University', tag: 'Festival', title: '5th Annual Winter Cultural Exchange Festival',
+      ts: '2011-12-02', img: '/assets/poster-2011-12-02-winter-festival.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: 'Dec 2011', day: 'Fri 2 – Sun 4 December 2011', time: '7:30 PM \u00b7 2:00 PM \u00b7 1:30 PM', place: 'Michael Schimmel Center for the Arts, Pace University', tag: 'Festival', title: '5th Annual Winter Cultural Exchange Festival',
       cn: '\u7d10\u7d04\u68a8\u5712\u793e\u4e94\u9031\u5e74\u516c\u6f14', venue: 'Michael Schimmel Center for the Arts', shots: 0,
       note: 'A NYCOS production \u2014 a three-day 5th anniversary festival of Jingju classics, Manhattan.',
       facts: [
@@ -3259,7 +3393,7 @@ const EN = {
       ]
     },
     {
-      ts: '2026-02-01', img: 'assets/poster-2026-spring-concert.webp', program: 'assets/program-2026-spring-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: 'Feb 2026', day: 'Sun 1 February 2026', time: '1:00 – 4:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Concert', title: '2026 Spring Concert of Chinese Opera',
+      ts: '2026-02-01', img: '/assets/poster-2026-spring-concert.webp', program: '/assets/program-2026-spring-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: 'Feb 2026', day: 'Sun 1 February 2026', time: '1:00 – 4:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Concert', title: '2026 Spring Concert of Chinese Opera',
       cn: '青年團春季師生專場演出', venue: 'Flushing Town Hall', shots: 0,
       note: 'A NYCOS production — the Youth Troupe’s spring concert, teachers and students on the same stage.',
       facts: [
@@ -3273,7 +3407,7 @@ const EN = {
       ]
     },
     {
-      ts: '2023-11-19', img: 'assets/poster-2023-11-19-thanksgiving.webp', kind: 'community', art: 'opera', fmt: 'inperson', date: 'Nov 2023', day: 'Sun 19 November 2023', time: '3:00 – 5:00 PM', place: 'Superb Gallery of Art NYC, Manhattan', tag: 'Community', title: 'When Chinese Opera Meets Thanksgiving',
+      ts: '2023-11-19', img: '/assets/poster-2023-11-19-thanksgiving.webp', kind: 'community', art: 'opera', fmt: 'inperson', date: 'Nov 2023', day: 'Sun 19 November 2023', time: '3:00 – 5:00 PM', place: 'Superb Gallery of Art NYC, Manhattan', tag: 'Community', title: 'When Chinese Opera Meets Thanksgiving',
       cn: '京劇與感恩：經典劇目《鎖麟囊》賞析', venue: 'Superb Gallery of Art NYC', shots: 0,
       note: 'A Youth Troupe of NYCOS gathering — come together and express gratitude with friends and family through the classic opera Suo Lin Nang.',
       facts: [
@@ -3287,7 +3421,7 @@ const EN = {
       ]
     },
     {
-      ts: '2024-02-03', img: 'assets/poster-2024-02-03-spring-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Feb 2024', day: 'Sat 3 February 2024', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Youth Troupe', title: 'Youth Troupe Jingju: Zhang-School \u201cWoman Escorted Under Guard\u201d & \u201cThe Trial\u201d',
+      ts: '2024-02-03', img: '/assets/poster-2024-02-03-spring-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Feb 2024', day: 'Sat 3 February 2024', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Youth Troupe', title: 'Youth Troupe Jingju: Zhang-School \u201cWoman Escorted Under Guard\u201d & \u201cThe Trial\u201d',
       cn: '2024紐約梨園社青年團京劇專場：張派《女起解》選段《三堂會審》', venue: 'Flushing Town Hall', shots: 0,
       note: 'A NYCOS production — the Youth Troupe\u2019s spring concert of Jingju classics.',
       facts: [
@@ -3305,7 +3439,7 @@ const EN = {
       ]
     },
     {
-      ts: '2024-06-23', img: 'assets/poster-2024-06-23-summer-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Jun 2024', day: 'Sun 23 June 2024', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Concert', title: 'East Coast Jingju Masters & Amateurs Overseas Concert',
+      ts: '2024-06-23', img: '/assets/poster-2024-06-23-summer-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Jun 2024', day: 'Sun 23 June 2024', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Concert', title: 'East Coast Jingju Masters & Amateurs Overseas Concert',
       cn: '美東京劇名家名票海外專場演唱會', venue: 'Flushing Town Hall', shots: 0,
       note: 'A NYCOS production — marking the 130th anniversary of Mei Lanfang’s birth and the 90th anniversary of Mei Baojiu’s birth.',
       facts: [
@@ -3331,7 +3465,7 @@ const EN = {
       ]
     },
     {
-      ts: '2024-10-20', img: 'assets/poster-2024-10-20-silang-tanmu.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Oct 2024', day: 'Sun 20 October 2024', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Full-length Opera', title: 'General Yang Silang Visits His Mother',
+      ts: '2024-10-20', img: '/assets/poster-2024-10-20-silang-tanmu.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Oct 2024', day: 'Sun 20 October 2024', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Full-length Opera', title: 'General Yang Silang Visits His Mother',
       cn: '全本京劇《四郎探母》', venue: 'Flushing Town Hall', shots: 0,
       note: 'A NYCOS production — the second in a series marking the 130th anniversary of Mei Lanfang\u2019s birth. A full-length Jingju performance.',
       facts: [
@@ -3353,7 +3487,7 @@ const EN = {
       ]
     },
     {
-      ts: '2026-03-26', img: 'assets/poster-2026-03-26-nyu-showcase.webp', youtube: 'https://www.youtube.com/watch?v=E07bBRHjqx8', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Mar 2026', day: 'Thu 26 March 2026', time: '7:00 – 9:00 PM', place: 'NYU Department of Music and Performing Arts Professions, Room 303', tag: 'Showcase', title: 'NYU Chinese Opera Showcase',
+      ts: '2026-03-26', img: '/assets/poster-2026-03-26-nyu-showcase.webp', youtube: 'https://www.youtube.com/watch?v=E07bBRHjqx8', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Mar 2026', day: 'Thu 26 March 2026', time: '7:00 – 9:00 PM', place: 'NYU Department of Music and Performing Arts Professions, Room 303', tag: 'Showcase', title: 'NYU Chinese Opera Showcase',
       cn: '紐約大學京昆展演', venue: 'NYU Department of Music and Performing Arts Professions', shots: 0,
       note: 'An enchanting evening of traditional Chinese performing arts and music at NYU — Jingju, Kunqu and a bamboo flute solo.',
       facts: [
@@ -3367,7 +3501,7 @@ const EN = {
       ]
     },
     {
-      ts: '2025-03-15', img: 'uploads/lingke-poster.webp', youtube: 'https://youtube.com/playlist?list=PLhdFj4mpkMuKwfstZjiOgN9gpy3X33Kq6&si=rLKqitv1-0qMbyB1', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: 'Mar 2025', day: 'Sat 15 March 2025', time: '1:30 – 5:30 PM', place: 'Florence Gould Theater, Manhattan', tag: 'Concert', title: 'Youth Troupe Chinese Opera Concert',
+      ts: '2025-03-15', img: '/uploads/lingke-poster.webp', youtube: 'https://youtube.com/playlist?list=PLhdFj4mpkMuKwfstZjiOgN9gpy3X33Kq6&si=rLKqitv1-0qMbyB1', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: 'Mar 2025', day: 'Sat 15 March 2025', time: '1:30 – 5:30 PM', place: 'Florence Gould Theater, Manhattan', tag: 'Concert', title: 'Youth Troupe Chinese Opera Concert',
       cn: '青年團京劇崑曲展演專場', venue: 'L’Alliance New York · Florence Gould Theater', shots: 12,
       note: 'The Youth Troupe’s programme within the Society’s spring festival — a four-hour afternoon of Jingju and Kunqu.',
       facts: [
@@ -3385,7 +3519,7 @@ const EN = {
       linkLabel: 'Original event listing'
     },
     {
-      ts: '2022-08-20', img: 'assets/poster-2022-08-20-summer-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Aug 2022', day: 'Sat 20 August 2022', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Concert', title: '2022 Summer Concert of Chinese Opera',
+      ts: '2022-08-20', img: '/assets/poster-2022-08-20-summer-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Aug 2022', day: 'Sat 20 August 2022', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Concert', title: '2022 Summer Concert of Chinese Opera',
       cn: '夏季京劇專場', venue: 'Flushing Town Hall', shots: 0,
       note: 'The Society’s summer concert — two Jingju pieces, live at Flushing Town Hall.',
       facts: [
@@ -3398,7 +3532,7 @@ const EN = {
       ]
     },
     {
-      ts: '2022-06-18', img: 'assets/poster-2022-06-18-teachers-students.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Jun 2022', day: 'Sat 18 June 2022', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Concert', title: '2022 Performance by Teachers and Students',
+      ts: '2022-06-18', img: '/assets/poster-2022-06-18-teachers-students.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: 'Jun 2022', day: 'Sat 18 June 2022', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Concert', title: '2022 Performance by Teachers and Students',
       cn: '夏季師生交流京劇專場', venue: 'Flushing Town Hall', shots: 0,
       note: 'Teachers and students of the Youth Troupe on the same stage — classic arias and three full excerpts.',
       facts: [
@@ -3413,7 +3547,7 @@ const EN = {
       ]
     },
     {
-      ts: '2022-03-19', img: 'assets/poster-2022-03-19-10th-anniversary.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: 'Mar 2022', day: 'Sat 19 March 2022', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Anniversary', title: 'Youth Troupe 10th Anniversary Jingju Concert',
+      ts: '2022-03-19', img: '/assets/poster-2022-03-19-10th-anniversary.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: 'Mar 2022', day: 'Sat 19 March 2022', time: '1:00 PM', place: 'Flushing Town Hall, Queens', tag: 'Anniversary', title: 'Youth Troupe 10th Anniversary Jingju Concert',
       cn: '青年團十週年京劇專場', venue: 'Flushing Town Hall', shots: 0,
       note: 'Ten years of the Youth Troupe, marked with three full excerpts, four famous arias, a flute solo and a solo dance.',
       facts: [
@@ -3607,7 +3741,7 @@ const EN = {
       affil: ['China Calligraphers Association 中國書法家協會', 'North American Chinese Calligraphers Association 北美書法家協會']
     },
     {
-      name: 'Daniel Yu', cn: '虞文輝', style: 'Co-founder · Treasurer', img: 'assets/daniel-yu.webp',
+      name: 'Daniel Yu', cn: '虞文輝', style: 'Co-founder · Treasurer', img: '/assets/daniel-yu.webp',
       role: 'Calligraphy Instructor',
       teaches: 'Calligraphy 書法班',
       since: 'Officer of the Society',
@@ -3616,7 +3750,7 @@ const EN = {
       affil: ['Association of Chinese Calligraphy in America 美洲中華書法學會 — Director & President', 'North American Chinese Calligraphers Association 北美書法家協會 — Director', 'Huaxia Chinese Calligraphy Association 華夏書法會']
     },
     {
-      name: 'Charlie Chen', cn: '陳定佳', style: 'Born in Hong Kong', img: 'assets/instructor-charlie-chen.webp', own: true,
+      name: 'Charlie Chen', cn: '陳定佳', style: 'Born in Hong Kong', img: '/assets/instructor-charlie-chen.webp', own: true,
       role: 'Calligraphy Instructor',
       teaches: 'Calligraphy 書法班',
       since: 'Solo exhibition, Flushing 2012',
@@ -3625,7 +3759,7 @@ const EN = {
       affil: ['Huaxia Chinese Calligraphy Association 華夏書法會', 'Association of Chinese Calligraphy in America 美洲中華書法學會 — Board, Vice President & Treasurer']
     },
     {
-      name: 'He Shan', cn: '何山', style: 'Born in Guangzhou', img: 'assets/instructor-he-shan.webp', own: true,
+      name: 'He Shan', cn: '何山', style: 'Born in Guangzhou', img: '/assets/instructor-he-shan.webp', own: true,
       role: 'Chinese Painting Instructor',
       teaches: 'Chinese Painting 國畫班',
       since: 'Teaching since 2003',
@@ -3641,6 +3775,21 @@ const EN = {
 const ZH = {
   mark: '紐約梨園社',
   org: '紐約梨園社',
+  seo: {
+    home: { title: '紐約梨園社｜崑曲、京劇與書法教學', description: '紐約梨園社成立於二〇〇六年，是義工運作的非營利藝術機構，把崑曲、京劇、書法與國畫帶給全紐約。不需要任何基礎，歡迎你來。' },
+    about: { title: '關於我們｜紐約梨園社', description: '紐約梨園社成立於二〇〇六年，是致力於推廣中國戲曲及相關藝術的非營利機構。認識我們的故事與團隊。' },
+    programs: { title: '課程與教學｜紐約梨園社', description: '十三門課程，涵蓋京劇、崑曲、書法與國畫，適合各程度學員。不需要任何基礎，歡迎加入。' },
+    opera: { title: '京劇與崑曲課程｜紐約梨園社', description: '在下曼哈頓學習京劇與崑曲的唱腔、身段與舞台功夫，資深老師任教，初學者歡迎。' },
+    brush: { title: '書法與國畫課程｜紐約梨園社', description: '染毫書房開設書法與國畫課程，授課老師皆為參展書畫家，不限年齡與程度。' },
+    workshops: { title: '文化工作坊｜紐約梨園社', description: '為學校、圖書館與社區活動安排戲曲或書畫工作坊，現場示範與體驗，讓更多人認識這門藝術。' },
+    youth: { title: '青年團｜紐約梨園社', description: '成立於二〇一二年，為熱愛戲曲與中華文化的青年而設，提供訓練與登台機會。' },
+    events: { title: '活動與演出｜紐約梨園社', description: '紐約梨園社近期演出與活動資訊，多數免費或低價，從未看過戲曲也歡迎參加。' },
+    membership: { title: '會員｜紐約梨園社', description: '加入紐約梨園社，享課程優惠、公開排練邀請與演出優先資訊。會費每年二十美元起。' },
+    volunteer: { title: '義工｜紐約梨園社', description: '紐約梨園社完全由義工運作，歡迎協助前台、舞台、戲服、翻譯等工作，不需要經驗。' },
+    contact: { title: '聯絡我們｜紐約梨園社', description: '有關課程、演出邀約、會員或媒體採訪，歡迎聯絡紐約梨園社。' },
+    donate: { title: '捐助｜紐約梨園社', description: '支持紐約梨園社，您的捐助用於青年團訓練、工作室租金與老師酬勞。本社為501(c)(3)非營利組織。' },
+    guide: { title: '京劇與崑曲有什麼不同？中國戲曲入門｜紐約梨園社', description: '第一次接觸中國戲曲？認識京劇與崑曲的真正差別，以及生、旦、淨、丑四大行當——不需要任何基礎。' }
+  },
   nav: [
     { id: 'about', label: '關於我們' },
     { id: 'programs', label: '課程與教學', kids: [
@@ -3669,15 +3818,15 @@ const ZH = {
   viewAll: '全部活動',
   tickets: '查看活動',
   events: [
-    { img: 'assets/poster-2026-spring-concert.webp', tag: '公演', date: '2026年2月', title: '春季師生專場演出', venue: '法拉盛市政廳' },
-    { img: 'uploads/lingke-poster.webp', tag: '公演', date: '2025年3月', title: '青年團京劇崑曲展演專場', venue: 'Florence Gould Theater · 曼哈頓' }
+    { img: '/assets/poster-2026-spring-concert.webp', tag: '公演', date: '2026年2月', title: '春季師生專場演出', venue: '法拉盛市政廳' },
+    { img: '/uploads/lingke-poster.webp', tag: '公演', date: '2025年3月', title: '青年團京劇崑曲展演專場', venue: 'Florence Gould Theater · 曼哈頓' }
   ],
   classesLabel: '課程',
   classesTitle: '學藝術，別光鼓掌',
   classes: [
-    { title: '京劇旦角基礎', img: 'assets/dan-role-foundation-photo.webp', desc: '站相、身段，與旦角唱段的入門功夫。', meta: '基礎 · 每月' },
-    { title: '崑曲身段入門', img: 'assets/kunqu-home-card-photo.webp', desc: '從第一支曲牌開始，不需識讀中文。', meta: '基礎 · 每週' },
-    { title: '書法班', img: 'assets/calligraphy-home-card.webp', desc: '筆墨之間，是功夫。', meta: '不限年齡 · 週日' }
+    { title: '京劇旦角基礎', img: '/assets/dan-role-foundation-photo.webp', desc: '站相、身段，與旦角唱段的入門功夫。', meta: '基礎 · 每月' },
+    { title: '崑曲身段入門', img: '/assets/kunqu-home-card-photo.webp', desc: '從第一支曲牌開始，不需識讀中文。', meta: '基礎 · 每週' },
+    { title: '書法班', img: '/assets/calligraphy-home-card.webp', desc: '筆墨之間，是功夫。', meta: '不限年齡 · 週日' }
   ],
   allClasses: '全部十三門課程',
   photoTbc: '照片待提供',
@@ -3715,6 +3864,28 @@ const ZH = {
   dThanksBodyZelle: '謝謝您，我們確認收到 Zelle 轉帳後，會將收據寄至您的信箱。',
   dThanksAgain: '再次捐助',
   dFootnote: '您的捐助紀錄僅用於開立收據，我們不會分享您的個人資料。',
+  gEyebrow: '這門藝術',
+  gTitle: '京劇和崑曲，到底差在哪',
+  gLede: '「中國戲曲」常被當成一個詞用，但京劇和崑曲其實是兩種很不一樣的藝術。這裡整理了兩者的差別，以及你進教室學戲時會真正用到的詞彙。',
+  gIntroTitle: '一個名字，多種傳統',
+  gIntroBody: '「中國戲曲」是個籠統的說法，底下其實是幾十種地方戲曲傳統，共用著相近的元素：唱唸做打、程式化的身段、講究的戲服，以及現場伴奏的音樂。紐約梨園社教授其中最具代表性的兩種——歷史較早的崑曲，以及大眾一想到「中國戲曲」最先聯想到的京劇。',
+  gJingjuTitle: '京劇',
+  gJingjuBody: '兩者中較年輕、也較熱鬧的一種。京劇成形於十八世紀末、十九世紀初的北京，由安徽、湖北等地的戲班融合各自唱腔而成，專為宮廷與大場面設計：鑼鼓鏗鏘、臉譜分明、武打身段講究，唱腔要求能穿透全場。西方流行文化裡常見的「中國戲曲」印象——臉譜、翻跟斗——多半指的正是京劇。',
+  gKunquTitle: '崑曲',
+  gKunquBody: '崑曲比京劇早了約兩百年，起源於十六世紀的蘇州一帶，是兩者中較內斂、也更貼近文學的一種——與其說是戲，不如說更像被唱出來的詩。崑腔與唱詞直接取材自古典文學，最著名的《牡丹亭》至今仍常被搬演。二〇〇一年，崑曲獲聯合國教科文組織列為首批「人類口述和非物質遺產代表作」。',
+  gRolesLabel: '常用詞彙',
+  gRolesTitle: '四個你會常聽到的行當',
+  gRolesIntro: '京劇與崑曲裡的每個角色，都能歸入四大行當之一，各有各的唱腔、身段與扮相。認得出這四種，看戲的方式會完全不一樣。',
+  gRoles: [
+    { ch: '生', name: '生', body: '男性主角。書生、將軍、青年才俊，用本嗓演唱。' },
+    { ch: '旦', name: '旦', body: '女性角色。從端莊的閨秀到女將，傳統上以特有的假嗓唱法演出。' },
+    { ch: '淨', name: '淨', body: '「花臉」，多演武將、神將，臉上濃墨重彩的臉譜一眼就能認出——每種顏色與圖案都各有含意。' },
+    { ch: '丑', name: '丑', body: '丑角。插科打諢，鼻樑上常有一小塊白粉，多演僕人、媒婆與機靈人物。' }
+  ],
+  gCtaEyebrow: '下一步',
+  gCtaTitle: '這些都不需要先懂中文，也不需要任何基礎。',
+  gCtaBody: '想真正搞懂兩者的差別，最快的方法就是直接來教室坐坐。',
+  gCtaBtn: '查看戲曲課程',
   taxNote: '紐約梨園社是註冊的501(c)(3)非營利組織，捐款可以抵稅。',
   nlLabel: '掌握最新消息',
   nlTitle: '最新活動，直接寄到您的信箱',
@@ -3738,6 +3909,7 @@ const ZH = {
       { label: '工作坊', to: 'workshops' }
     ] },
     { title: '關於', items: [
+      { label: '認識這門藝術', to: 'guide' },
       { label: '本社簡介', to: 'about' },
       { label: '師資', to: 'brush' },
       { label: '青年團', to: 'youth' }
@@ -3790,15 +3962,15 @@ const ZH = {
     {
       name: '書法',
       items: [
-        { title: '線下書法課（一）· 陳定佳', mode: 'onsite', img: 'assets/calligraphy-charlie-chen-brush.webp', desc: '依經典書體範本教學，各有明確學習目標。', when: '每月第一、第三週週日 · 下午 3:00–5:00', fee: '詳見會員與學費', level: '不限程度', where: '梨園社辦公室 · 120 Broadway STE 3650', teacher: '陳定佳', dur: '每次 2 小時', curriculum: ['體驗不同書體的特點與書寫方法', '學習傳統書法基本技法', '探索傳統書法在當代藝術中的應用'] },
-        { title: '線下書法課（二）· 虞文輝', mode: 'onsite', img: 'assets/calligraphy-daniel-yu-wei-stele.webp', desc: '書法史、審美賞析與基礎筆法，偏重魏碑與隸書。', when: '每月第三週週日 · 下午 1:00–3:00', fee: '詳見會員與學費', level: '不限程度', where: '梨園社辦公室 · 120 Broadway STE 3650', teacher: '虞文輝', dur: '每次 2 小時', curriculum: ['中國書法發展史', '書法審美與藝術欣賞', '基礎筆法與臨摹練習'] },
-        { title: '線上書法提高課程 · 蘇藝', mode: 'online', img: 'assets/calligraphy-eva-su-brush.webp', desc: '針對已具備一定基礎的學員，安排一對一個性化輔導。', when: '預約安排 · 線上', fee: '詳見會員與學費', level: '需面試', where: '線上 · 一對一', teacher: '蘇藝', dur: '每次課程', curriculum: ['一對一個性化輔導', '針對學員特點制定學習計劃', '提升書寫技巧與藝術表現'], requirements: ['具有一定書法基礎', '須完成基礎課程學習', '經任課老師面試同意後方可報名'] }
+        { title: '線下書法課（一）· 陳定佳', mode: 'onsite', img: '/assets/calligraphy-charlie-chen-brush.webp', desc: '依經典書體範本教學，各有明確學習目標。', when: '每月第一、第三週週日 · 下午 3:00–5:00', fee: '詳見會員與學費', level: '不限程度', where: '梨園社辦公室 · 120 Broadway STE 3650', teacher: '陳定佳', dur: '每次 2 小時', curriculum: ['體驗不同書體的特點與書寫方法', '學習傳統書法基本技法', '探索傳統書法在當代藝術中的應用'] },
+        { title: '線下書法課（二）· 虞文輝', mode: 'onsite', img: '/assets/calligraphy-daniel-yu-wei-stele.webp', desc: '書法史、審美賞析與基礎筆法，偏重魏碑與隸書。', when: '每月第三週週日 · 下午 1:00–3:00', fee: '詳見會員與學費', level: '不限程度', where: '梨園社辦公室 · 120 Broadway STE 3650', teacher: '虞文輝', dur: '每次 2 小時', curriculum: ['中國書法發展史', '書法審美與藝術欣賞', '基礎筆法與臨摹練習'] },
+        { title: '線上書法提高課程 · 蘇藝', mode: 'online', img: '/assets/calligraphy-eva-su-brush.webp', desc: '針對已具備一定基礎的學員，安排一對一個性化輔導。', when: '預約安排 · 線上', fee: '詳見會員與學費', level: '需面試', where: '線上 · 一對一', teacher: '蘇藝', dur: '每次課程', curriculum: ['一對一個性化輔導', '針對學員特點制定學習計劃', '提升書寫技巧與藝術表現'], requirements: ['具有一定書法基礎', '須完成基礎課程學習', '經任課老師面試同意後方可報名'] }
       ]
     },
     {
       name: '國畫',
       items: [
-        { title: '國畫課 · 何山', mode: 'onsite', img: 'assets/painting-he-shan-landscape.webp', desc: '水墨山水與花鳥，從第一筆渲染到完成一幅卷軸。', when: '每月第一、第三週週日 · 下午 1:00–3:00', fee: '詳見會員與學費', level: '不限年齡與程度', where: '梨園社辦公室 · 120 Broadway STE 3650', teacher: '何山', dur: '每次 2 小時', curriculum: ['中國傳統國畫技法', '國畫藝術賞析與歷史', '名家作品臨摹與創作實踐'] }
+        { title: '國畫課 · 何山', mode: 'onsite', img: '/assets/painting-he-shan-landscape.webp', desc: '水墨山水與花鳥，從第一筆渲染到完成一幅卷軸。', when: '每月第一、第三週週日 · 下午 1:00–3:00', fee: '詳見會員與學費', level: '不限年齡與程度', where: '梨園社辦公室 · 120 Broadway STE 3650', teacher: '何山', dur: '每次 2 小時', curriculum: ['中國傳統國畫技法', '國畫藝術賞析與歷史', '名家作品臨摹與創作實踐'] }
       ]
     }
   ],
@@ -3840,9 +4012,9 @@ const ZH = {
   pDonateDesc: '其餘來自捐助：工作室、老師的授課酬勞，以及讓無力負擔的學員得以入門的獎助。',
 
   hub: [
-    { id: 'opera', label: '戲曲課程', img: 'assets/opera-class-instructor.jpg', count: '九門課程', body: '京劇老生與旦角基礎課程，以及崑曲唱腔、唸白與身段，另有一對一個別指導，須經教師面試。', cta: '查看戲曲課程', tint: 'var(--surface-tint-blush)' },
-    { id: 'brush', label: '書法與國畫課程', img: 'assets/calligraphy-class-hub.jpg', count: '四門課程', body: '案前的筆墨功夫，以「染毫書房」為名開課，由四位參展書畫家親授。', cta: '查看書畫課程', tint: 'var(--surface-tint-mint)' },
-    { id: 'workshops', label: '文化工作坊', img: 'assets/workshops-tabling-outreach.webp', count: '預約邀請', body: '示範講解、校園推廣與節慶演出，我們把這門藝術帶到您面前。', cta: '查看工作坊', tint: 'var(--surface-tint-periwinkle)' }
+    { id: 'opera', label: '戲曲課程', img: '/assets/opera-class-instructor.jpg', count: '九門課程', body: '京劇老生與旦角基礎課程，以及崑曲唱腔、唸白與身段，另有一對一個別指導，須經教師面試。', cta: '查看戲曲課程', tint: 'var(--surface-tint-blush)' },
+    { id: 'brush', label: '書法與國畫課程', img: '/assets/calligraphy-class-hub.jpg', count: '四門課程', body: '案前的筆墨功夫，以「染毫書房」為名開課，由四位參展書畫家親授。', cta: '查看書畫課程', tint: 'var(--surface-tint-mint)' },
+    { id: 'workshops', label: '文化工作坊', img: '/assets/workshops-tabling-outreach.webp', count: '預約邀請', body: '示範講解、校園推廣與節慶演出，我們把這門藝術帶到您面前。', cta: '查看工作坊', tint: 'var(--surface-tint-periwinkle)' }
   ],
   opEyebrow: '課程 · 戲曲',
   opTitle: '京劇與崑曲：老生、旦角、經典折子',
@@ -3930,9 +4102,9 @@ const ZH = {
   wkFacts: [{ k: '形式', v: '單場活動' }, { k: '費用', v: '多為免費' }, { k: '洽詢方式', v: '預約邀請' }],
   wkListLabel: '我們能帶來什麼',
   workshops: [
-    { n: '01', cn: '示範講解', title: '文化示範講解', body: '一段彩唱折子、行當解說，並讓觀眾親手試一試水袖或握一次毛筆。適合圖書館、博物館與社區中心。', meta: '45–90分鐘 · 不限年齡', img: 'assets/workshop-demo-thumb.webp' },
-    { n: '02', cn: '校園推廣', title: '校園推廣活動', body: '為從未接觸戲曲的學生而設的入門介紹：音樂、戲服、身段，以及劇目背後的故事。', meta: '一堂課 · K–12 與大學', img: 'assets/workshop-school-visit.jpg' },
-    { n: '03', cn: '小型演出', title: '節慶演出', body: '於中秋、春節及春季國際文化交流節的演出與書畫展台。', meta: '依節令 · 公開', img: 'assets/workshop-festival-performance.webp' }
+    { n: '01', cn: '示範講解', title: '文化示範講解', body: '一段彩唱折子、行當解說，並讓觀眾親手試一試水袖或握一次毛筆。適合圖書館、博物館與社區中心。', meta: '45–90分鐘 · 不限年齡', img: '/assets/workshop-demo-thumb.webp' },
+    { n: '02', cn: '校園推廣', title: '校園推廣活動', body: '為從未接觸戲曲的學生而設的入門介紹：音樂、戲服、身段，以及劇目背後的故事。', meta: '一堂課 · K–12 與大學', img: '/assets/workshop-school-visit.jpg' },
+    { n: '03', cn: '小型演出', title: '節慶演出', body: '於中秋、春節及春季國際文化交流節的演出與書畫展台。', meta: '依節令 · 公開', img: '/assets/workshop-festival-performance.webp' }
   ],
   wkCtaLabel: '預約工作坊',
   wkCtaTitle: '邀請我們到您的學校、圖書館或節慶活動',
@@ -4052,7 +4224,7 @@ const ZH = {
   evGallery: '查看活動',
   evPast: [
     {
-      ts: '2023-08-06', img: 'assets/poster-2023-08-06-dan-role-showcase.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2023年8月', day: '2023年8月6日（週日）', time: '下午1:00', place: '法拉盛市政廳', tag: '展演', title: '京劇旦角展演專場',
+      ts: '2023-08-06', img: '/assets/poster-2023-08-06-dan-role-showcase.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2023年8月', day: '2023年8月6日（週日）', time: '下午1:00', place: '法拉盛市政廳', tag: '展演', title: '京劇旦角展演專場',
       cn: '紐約梨園社京劇旦角展演專場', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
       note: '2023廿夏京劇展演：紐約梨園社及其青年團主辦，演出廉錦極、鎖麟嚢、春秋配、拾玉鎸。',
       facts: [
@@ -4065,7 +4237,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2023-08-20', img: 'assets/poster-2023-08-20-summer-workshop.webp', kind: 'community', art: 'opera', fmt: 'inperson', date: '2023年8月', day: '2023年8月20日（週日）', time: '下午1:00', place: '法拉盛市政廳', tag: '工作坊', title: '消夏戲曲工作坊',
+      ts: '2023-08-20', img: '/assets/poster-2023-08-20-summer-workshop.webp', kind: 'community', art: 'opera', fmt: 'inperson', date: '2023年8月', day: '2023年8月20日（週日）', time: '下午1:00', place: '法拉盛市政廳', tag: '工作坊', title: '消夏戲曲工作坊',
       cn: '2023 Summer Chinese Opera Workshop', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
       note: '紐約梨園社青年團製作：京劇、崑曲、國畫、書法消夏匯演。',
       facts: [
@@ -4078,8 +4250,8 @@ const ZH = {
       ]
     },
     {
-      ts: '2019-02-16', img: 'assets/poster-2019-02-16-spring-concert-youth-troupe.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2019年2月', day: '2019年2月16日（週六）', time: '下午2:00 – 3:30', place: '法拉盛圖書館劇場', tag: '展演', title: '2019年紐約梨園社青年團京劇專場',
-      cn: 'Spring Concert of Peking Opera by Youth Troupe', venue: '法拉盛圖書館劇場 Flushing Library Auditorium', shots: 0,
+      ts: '2019-02-16', img: '/assets/poster-2019-02-16-spring-concert-youth-troupe.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2019年2月', day: '2019年2月16日（週六）', time: '下午2:00 – 3:30', place: '法拉盛圖書館劇場', tag: '展演', title: '2019年紐約梨園社青年團京劇專場',
+      cn: 'Spring Concert of Beijing Opera by Youth Troupe', venue: '法拉盛圖書館劇場 Flushing Library Auditorium', shots: 0,
       note: '紐約梨園社、紐約梨園社青年團舉辦，京劇清唱：旦角班及青年團成員，並演出《荷珠配》《武家坡》摺子戲。免費入場。',
       facts: [
         { k: '日期', v: '2019年2月16日（週六）下午2:00 – 3:30' },
@@ -4095,7 +4267,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2009-12-04', img: 'assets/poster-2009-12-04-winter-festival-thumb.webp', program: 'assets/poster-2009-12-04-winter-festival.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2009年12月', day: '2009年12月4日（週五）至6日（週日）', time: '晚上7:30 · 下午2:00 · 下午1:30', place: 'Michael Schimmel Center for the Arts, Pace University', tag: '文化交流節', title: '紐約梨園社冬季文化交流節京劇專場',
+      ts: '2009-12-04', img: '/assets/poster-2009-12-04-winter-festival-thumb.webp', program: '/assets/poster-2009-12-04-winter-festival.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2009年12月', day: '2009年12月4日（週五）至6日（週日）', time: '晚上7:30 · 下午2:00 · 下午1:30', place: 'Michael Schimmel Center for the Arts, Pace University', tag: '文化交流節', title: '紐約梨園社冬季文化交流節京劇專場',
       cn: 'Winter Cultural Exchange Festival: Jingju', venue: 'Michael Schimmel Center for the Arts', shots: 0,
       note: '紐約梨園社製作：三日京劇經典劇目匯演，特邀北京、天津名家。',
       facts: [
@@ -4110,7 +4282,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2011-12-02', img: 'assets/poster-2011-12-02-winter-festival.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2011年12月', day: '2011年12月2日（週五）至4日（週日）', time: '晚上7:30 · 下午2:00 · 下午1:30', place: 'Michael Schimmel Center for the Arts, Pace University', tag: '週年匯演', title: '紐約梨園社五週年公演',
+      ts: '2011-12-02', img: '/assets/poster-2011-12-02-winter-festival.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2011年12月', day: '2011年12月2日（週五）至4日（週日）', time: '晚上7:30 · 下午2:00 · 下午1:30', place: 'Michael Schimmel Center for the Arts, Pace University', tag: '週年匯演', title: '紐約梨園社五週年公演',
       cn: '5th Annual Winter Cultural Exchange Festival', venue: 'Michael Schimmel Center for the Arts', shots: 0,
       note: '紐約梨園社製作：五週年紀念三日京劇經典劇目匯演，曼哈頓。',
       facts: [
@@ -4130,7 +4302,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2026-02-01', img: 'assets/poster-2026-spring-concert.webp', program: 'assets/program-2026-spring-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2026年2月', day: '2026年2月1日（週日）', time: '下午 1:00 – 4:00', place: '法拉盛市政廳', tag: '專場', title: '春季師生專場演出',
+      ts: '2026-02-01', img: '/assets/poster-2026-spring-concert.webp', program: '/assets/program-2026-spring-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2026年2月', day: '2026年2月1日（週日）', time: '下午 1:00 – 4:00', place: '法拉盛市政廳', tag: '專場', title: '春季師生專場演出',
       cn: '2026 Spring Concert of Chinese Opera by Youth Troupe', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
       note: '紐約梨園社製作：青年團春季專場，師生同台。',
       facts: [
@@ -4144,7 +4316,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2023-11-19', img: 'assets/poster-2023-11-19-thanksgiving.webp', kind: 'community', art: 'opera', fmt: 'inperson', date: '2023年11月', day: '2023年11月19日（週日）', time: '下午 3:00 – 5:00', place: 'Superb Gallery of Art NYC · 曼哈頓', tag: '社區活動', title: '京劇與感恩：經典劇目《鎖麟囊》賞析',
+      ts: '2023-11-19', img: '/assets/poster-2023-11-19-thanksgiving.webp', kind: 'community', art: 'opera', fmt: 'inperson', date: '2023年11月', day: '2023年11月19日（週日）', time: '下午 3:00 – 5:00', place: 'Superb Gallery of Art NYC · 曼哈頓', tag: '社區活動', title: '京劇與感恩：經典劇目《鎖麟囊》賞析',
       cn: 'When Chinese Opera Meets Thanksgiving', venue: 'Superb Gallery of Art NYC', shots: 0,
       note: '紐約梨園社青年團舉辦：與親友相聚，透過經典劇目《鎖麟囊》一同感恩懷德。',
       facts: [
@@ -4158,7 +4330,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2024-02-03', img: 'assets/poster-2024-02-03-spring-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2024年2月', day: '2024年2月3日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '青年團', title: '2024紐約梨園社青年團京劇專場：張派《女起解》選段《三堂會審》',
+      ts: '2024-02-03', img: '/assets/poster-2024-02-03-spring-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2024年2月', day: '2024年2月3日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '青年團', title: '2024紐約梨園社青年團京劇專場：張派《女起解》選段《三堂會審》',
       cn: 'Youth Troupe Jingju: Zhang-School "Woman Escorted Under Guard" & "The Trial"', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
       note: '紐約梨園社製作：青年團京劇經典選段春季演唱會。',
       facts: [
@@ -4176,7 +4348,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2024-06-23', img: 'assets/poster-2024-06-23-summer-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2024年6月', day: '2024年6月23日（週日）', time: '下午 1:00', place: '法拉盛市政廳', tag: '演唱會', title: '美東京劇名家名票海外專場演唱會',
+      ts: '2024-06-23', img: '/assets/poster-2024-06-23-summer-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2024年6月', day: '2024年6月23日（週日）', time: '下午 1:00', place: '法拉盛市政廳', tag: '演唱會', title: '美東京劇名家名票海外專場演唱會',
       cn: 'East Coast Jingju Masters & Amateurs Overseas Concert', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
       note: '紐約梨園社製作：紀念梅蘭芳誕辰130週年暨梅葆玖誕辰90週年。',
       facts: [
@@ -4195,7 +4367,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2024-10-20', img: 'assets/poster-2024-10-20-silang-tanmu.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2024年10月', day: '2024年10月20日（週日）', time: '下午 1:00', place: '法拉盛市政廳', tag: '全本大戲', title: '全本京劇《四郎探母》',
+      ts: '2024-10-20', img: '/assets/poster-2024-10-20-silang-tanmu.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2024年10月', day: '2024年10月20日（週日）', time: '下午 1:00', place: '法拉盛市政廳', tag: '全本大戲', title: '全本京劇《四郎探母》',
       cn: 'Jingju — General Yang Silang Visits His Mother', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
       note: '紐約梨園社製作：紀念梅蘭芳誕辰130週年系列演出之二，全本京劇演出。',
       facts: [
@@ -4217,7 +4389,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2026-03-26', img: 'assets/poster-2026-03-26-nyu-showcase.webp', youtube: 'https://www.youtube.com/watch?v=E07bBRHjqx8', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2026年3月', day: '2026年3月26日（週四）', time: '晚上 7:00 – 9:00', place: '紐約大學音樂與表演藝術系 · 303室', tag: '展演', title: '紐約大學京昆展演',
+      ts: '2026-03-26', img: '/assets/poster-2026-03-26-nyu-showcase.webp', youtube: 'https://www.youtube.com/watch?v=E07bBRHjqx8', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2026年3月', day: '2026年3月26日（週四）', time: '晚上 7:00 – 9:00', place: '紐約大學音樂與表演藝術系 · 303室', tag: '展演', title: '紐約大學京昆展演',
       cn: 'NYU Chinese Opera Showcase', venue: 'NYU Department of Music and Performing Arts Professions', shots: 0,
       note: '於紐約大學呈現的中國表演藝術之夜：京劇、崑曲，另有笛子獨奏。',
       facts: [
@@ -4231,7 +4403,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2025-03-15', img: 'uploads/lingke-poster.webp', youtube: 'https://youtube.com/playlist?list=PLhdFj4mpkMuKwfstZjiOgN9gpy3X33Kq6&si=rLKqitv1-0qMbyB1', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2025年3月', day: '2025年3月15日（週六）', time: '下午 1:30 – 5:30', place: 'Florence Gould Theater · 曼哈頓', tag: '展演', title: '青年團京劇崑曲展演專場',
+      ts: '2025-03-15', img: '/uploads/lingke-poster.webp', youtube: 'https://youtube.com/playlist?list=PLhdFj4mpkMuKwfstZjiOgN9gpy3X33Kq6&si=rLKqitv1-0qMbyB1', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2025年3月', day: '2025年3月15日（週六）', time: '下午 1:30 – 5:30', place: 'Florence Gould Theater · 曼哈頓', tag: '展演', title: '青年團京劇崑曲展演專場',
       cn: 'Youth Troupe Chinese Opera Concert', venue: 'L’Alliance New York · Florence Gould Theater', shots: 12,
       note: '青年團在本社春季文化交流節中的專場演出：四小時的午後，京劇與崑曲並陳。',
       facts: [
@@ -4249,7 +4421,7 @@ const ZH = {
       linkLabel: '原活動頁面'
     },
     {
-      ts: '2022-08-20', img: 'assets/poster-2022-08-20-summer-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2022年8月', day: '2022年8月20日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '專場', title: '夏季京劇專場',
+      ts: '2022-08-20', img: '/assets/poster-2022-08-20-summer-concert.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2022年8月', day: '2022年8月20日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '專場', title: '夏季京劇專場',
       cn: '2022 Summer Concert of Chinese Opera', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
       note: '本社夏季專場：兩齣京劇，於法拉盛市政廳實況演出。',
       facts: [
@@ -4262,7 +4434,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2022-06-18', img: 'assets/poster-2022-06-18-teachers-students.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2022年6月', day: '2022年6月18日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '專場', title: '夏季師生交流京劇專場',
+      ts: '2022-06-18', img: '/assets/poster-2022-06-18-teachers-students.webp', kind: 'stage', art: 'opera', fmt: 'inperson', date: '2022年6月', day: '2022年6月18日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '專場', title: '夏季師生交流京劇專場',
       cn: 'Performance by Teachers and Students', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
       note: '青年團師生同台：經典名段與三齣折子戲。',
       facts: [
@@ -4277,7 +4449,7 @@ const ZH = {
       ]
     },
     {
-      ts: '2022-03-19', img: 'assets/poster-2022-03-19-10th-anniversary.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2022年3月', day: '2022年3月19日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '週年專場', title: '青年團十週年京劇專場',
+      ts: '2022-03-19', img: '/assets/poster-2022-03-19-10th-anniversary.webp', kind: 'stage', art: 'opera', fmt: 'inperson', feat: true, date: '2022年3月', day: '2022年3月19日（週六）', time: '下午 1:00', place: '法拉盛市政廳', tag: '週年專場', title: '青年團十週年京劇專場',
       cn: '10th Anniversary Jingju Concert', venue: '法拉盛市政廳 Flushing Town Hall', shots: 0,
       note: '青年團成立十週年：三齣折子戲、四段名段，另有笛子獨奏與獨舞。',
       facts: [
@@ -4471,7 +4643,7 @@ const ZH = {
       affil: ['中國書法家協會會員', '北美書法家協會會員']
     },
     {
-      name: '虞文輝', cn: 'Daniel Yu', style: '共同創辦人 · 財務總監', img: 'assets/daniel-yu.webp',
+      name: '虞文輝', cn: 'Daniel Yu', style: '共同創辦人 · 財務總監', img: '/assets/daniel-yu.webp',
       role: '書法指導老師',
       teaches: '書法班',
       since: '本社幹部',
@@ -4480,7 +4652,7 @@ const ZH = {
       affil: ['美洲中華書法學會：董事、會長', '北美書法家協會：董事', '華夏書法會會員']
     },
     {
-      name: '陳定佳', cn: 'Charlie Chen', style: '生於香港', img: 'assets/instructor-charlie-chen.webp', own: true,
+      name: '陳定佳', cn: 'Charlie Chen', style: '生於香港', img: '/assets/instructor-charlie-chen.webp', own: true,
       role: '書法指導老師',
       teaches: '書法班',
       since: '二〇一二年個人展覽於法拉盛',
@@ -4489,7 +4661,7 @@ const ZH = {
       affil: ['華夏書法會會員', '美洲中華書法學會：董事、副會長兼財務']
     },
     {
-      name: '何山', cn: 'He Shan', style: '生於廣州', img: 'assets/instructor-he-shan.webp', own: true,
+      name: '何山', cn: 'He Shan', style: '生於廣州', img: '/assets/instructor-he-shan.webp', own: true,
       role: '國畫指導老師',
       teaches: '國畫班',
       since: '自二〇〇三年起教學',
@@ -4504,10 +4676,42 @@ const ZH = {
 
 const CONTENT = { en: EN, zh: ZH };
 
+// Every screen used to live at the same URL ("/") with navigation handled
+// entirely by React state — fine for in-app clicks, but it meant Google had
+// exactly one page to index for the whole site, direct links to any screen
+// but home 404'd, and refreshing mid-navigation always dumped you back to
+// the homepage. This table is the single source of truth mapping each
+// screen to a real path, read in both directions: on mount (URL -> screen,
+// so a direct visit or refresh lands on the right screen) and on navigate
+// (screen -> URL, via history.pushState in go() below, so the address bar
+// actually reflects where you are). vercel.json's catch-all rewrite is what
+// makes a fresh visit to one of these paths serve index.html instead of a
+// 404 in the first place — Vercel checks real files and /api routes before
+// applying it, so this doesn't touch anything that already resolves.
+const ROUTES = {
+  '/': 'home',
+  '/about': 'about',
+  '/programs': 'programs',
+  '/programs/opera': 'opera',
+  '/programs/brush': 'brush',
+  '/programs/workshops': 'workshops',
+  '/guide': 'guide',
+  '/youth': 'youth',
+  '/events': 'events',
+  '/membership': 'membership',
+  '/volunteer': 'volunteer',
+  '/contact': 'contact',
+  '/donate': 'donate'
+};
+const SCREEN_TO_PATH = Object.fromEntries(Object.entries(ROUTES).map(([path, screen]) => [screen, path]));
+function screenFromPath(pathname) {
+  return ROUTES[pathname] || null;
+}
+
 class Component extends DCLogic {
   state = {
     lang: null,
-    screen: null,
+    screen: (typeof window !== 'undefined' && screenFromPath(window.location.pathname)) || null,
     open: null,
     submitted: false,
     regLoading: false,
@@ -4555,6 +4759,7 @@ class Component extends DCLogic {
     } catch (e) {}
     this.observeMission();
     this._lastScreen = this.state.screen || this.props.startScreen || 'home';
+    this.syncMeta();
     scanReveal();
     fetch('/api/paypal-config').then(r => r.ok ? r.json() : null).then(data => {
       if (data && data.clientId) this.setState({ paypalClientId: data.clientId });
@@ -4562,6 +4767,18 @@ class Component extends DCLogic {
     this.syncPaypalButtons();
     this.syncDonatePaypalButtons();
     if (typeof window !== 'undefined') window.__nycosGoDonate = () => this.go('donate');
+    // The browser's own back/forward buttons move history without going
+    // through go() — this is the other half of that: react to the URL the
+    // browser already changed to, rather than pushing a new entry on top of
+    // it (which is what calling go() here would do, corrupting the history
+    // stack the user is trying to navigate).
+    this._onPopState = () => {
+      const screen = screenFromPath(window.location.pathname) || 'home';
+      this.setState({ screen, menu: null, dd: null, mobileNavOpen: false });
+      stopScrollAnim();
+      window.scrollTo(0, 0);
+    };
+    if (typeof window !== 'undefined') window.addEventListener('popstate', this._onPopState);
     this._onMasonryResize = () => { this.scheduleMasonryLayout(); this.scheduleYouthCreditLayout(); };
     if (typeof window !== 'undefined') window.addEventListener('resize', this._onMasonryResize);
     this.scheduleMasonryLayout();
@@ -4593,13 +4810,24 @@ class Component extends DCLogic {
   componentWillUnmount() {
     if (this._mObs) { this._mObs.disconnect(); this._mObs = null; }
     if (typeof window !== 'undefined' && this._onMasonryResize) window.removeEventListener('resize', this._onMasonryResize);
+    if (typeof window !== 'undefined' && this._onPopState) window.removeEventListener('popstate', this._onPopState);
     if (typeof window !== 'undefined' && window.__nycosGoDonate) window.__nycosGoDonate = null;
   }
 
   go(screen) {
-    const ok = ['home', 'about', 'programs', 'opera', 'brush', 'workshops', 'youth', 'events', 'membership', 'volunteer', 'contact', 'donate'];
-    this.setState({ screen: ok.indexOf(screen) >= 0 ? screen : 'home', menu: null, submitted: false, lb: null, pastN: 6, dd: null, joined: false, sent: false, mReveal: false, mobileNavOpen: false });
+    const ok = ['home', 'about', 'programs', 'opera', 'brush', 'workshops', 'guide', 'youth', 'events', 'membership', 'volunteer', 'contact', 'donate'];
+    const resolved = ok.indexOf(screen) >= 0 ? screen : 'home';
+    this.setState({ screen: resolved, menu: null, submitted: false, lb: null, pastN: 6, dd: null, joined: false, sent: false, mReveal: false, mobileNavOpen: false });
     if (this._mObs) { this._mObs.disconnect(); this._mObs = null; }
+    // Reflect the new screen in the address bar so it's a real, sharable,
+    // refresh-safe URL rather than app state nobody outside this tab can
+    // see — see the ROUTES table above for why this exists at all. Skipped
+    // when already on the right path (e.g. go() called for a side effect,
+    // or the popstate handler below already moved history itself).
+    if (typeof window !== 'undefined') {
+      const path = SCREEN_TO_PATH[resolved] || '/';
+      if (window.location.pathname !== path) window.history.pushState({ screen: resolved }, '', path);
+    }
     // Land at the top instantly — an eased scroll here would fight the
     // incoming page transition.
     if (typeof window !== 'undefined') { stopScrollAnim(); window.scrollTo(0, 0); }
@@ -4706,6 +4934,7 @@ class Component extends DCLogic {
     }
     scanReveal();
 
+    this.syncMeta();
     this.syncPaypalButtons();
     this.syncDonatePaypalButtons();
     this.scheduleMasonryLayout();
@@ -4834,6 +5063,39 @@ class Component extends DCLogic {
     window.NYCOSPaypal.mount(container, this.state.paypalClientId, amount, (result) => this.onDonatePaypalSuccess(result), () => this.onDonatePaypalError());
   }
 
+  // Each screen (About, Membership, Donate…) now has a real URL (see ROUTES
+  // above), but this is still a single static index.html with no
+  // server-side render — there's no per-request opportunity to write a
+  // different <title>/<meta> into the response before it reaches the
+  // browser. This is the runtime-side compensation: keep the tab title,
+  // canonical URL, and description/OG/Twitter meta tags in the real <head>
+  // in sync with whichever screen and language are actually showing, so a
+  // JS-executing crawler (and anyone tabbing between pages) sees the right
+  // ones rather than the one static fallback baked into <head>.
+  syncMeta = () => {
+    if (typeof document === 'undefined') return;
+    const lang = this.state.lang || this.props.lang || 'en';
+    const screen = this.state.screen || this.props.startScreen || 'home';
+    const t = CONTENT[lang] || EN;
+    const meta = (t.seo && t.seo[screen]) || (t.seo && t.seo.home);
+    if (!meta) return;
+    if (document.title !== meta.title) document.title = meta.title;
+    document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : 'en';
+    const setContent = (selector, value) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute('content', value);
+    };
+    setContent('meta[name="description"]', meta.description);
+    setContent('meta[property="og:title"]', meta.title);
+    setContent('meta[property="og:description"]', meta.description);
+    setContent('meta[name="twitter:title"]', meta.title);
+    setContent('meta[name="twitter:description"]', meta.description);
+    const url = 'https://www.nycos.org' + (SCREEN_TO_PATH[screen] || '/');
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', url);
+    setContent('meta[property="og:url"]', url);
+  };
+
   set(k, v) { this.setState(s => ({ form: { ...s.form, [k]: v } })); }
 
   mset(k, v) { this.setState(s => ({ mform: { ...s.mform, [k]: v } })); }
@@ -4845,7 +5107,7 @@ class Component extends DCLogic {
   renderVals() {
     const lang = this.state.lang || this.props.lang || 'en';
     const t = CONTENT[lang] || EN;
-    const wkHeroImg = (this.props.wkHeroVariant === 'red') ? 'assets/workshop-hero-red.jpg' : 'assets/workshop-hero-dark.jpg';
+    const wkHeroImg = (this.props.wkHeroVariant === 'red') ? '/assets/workshop-hero-red.jpg' : '/assets/workshop-hero-dark.jpg';
     const screen = this.state.screen || this.props.startScreen || 'home';
     const isOpera = screen === 'opera';
     const isBrush = screen === 'brush';
@@ -5086,6 +5348,9 @@ class Component extends DCLogic {
       isDonate: screen === 'donate',
       goDonate: () => this.go('donate'),
       goMembership: () => this.go('membership'),
+      isGuide: screen === 'guide',
+      goGuide: () => this.go('guide'),
+      goOpera: () => this.go('opera'),
       evFactRows: (t.evFacts || []).map(f => {
         if (f.id === 'count') return { k: f.k, v: t.evCountTpl.replace('{n}', upNow.length) };
         if (f.id === 'free') return { k: f.k, v: t.evFreeTpl.replace('{free}', upNow.filter(e => e.free).length).replace('{total}', upNow.length) };
