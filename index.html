@@ -186,7 +186,7 @@ select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary)
 .nycos-tk-flip{grid-template-columns:minmax(0,1fr) 340px}
 .nycos-tk-flip .nycos-tk-left{order:2;-webkit-mask:radial-gradient(circle 24px at 100% calc(var(--tk-h) / 2),transparent 98%,#000 100%);mask:radial-gradient(circle 24px at 100% calc(var(--tk-h) / 2),transparent 98%,#000 100%)}
 .nycos-tk-flip .nycos-tk-right{order:1;-webkit-mask:radial-gradient(circle 24px at 0 calc(var(--tk-h) / 2),transparent 98%,#000 100%);mask:radial-gradient(circle 24px at 0 calc(var(--tk-h) / 2),transparent 98%,#000 100%)}
-@media (max-width:1000px){.nycos-fe-band{padding-left:24px !important;padding-right:24px !important}.nycos-tk{--tk-pad:44px}.nycos-tk-right{padding:var(--tk-pad) 36px}}
+@media (max-width:1000px){.nycos-tk{--tk-pad:44px}.nycos-tk-right{padding:var(--tk-pad) 36px}}
 @media (max-width:900px){
   .nycos-tk{grid-template-columns:1fr}
   .nycos-tk-left{padding:34px 40px;-webkit-mask:none;mask:none}
@@ -196,10 +196,7 @@ select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary)
   .nycos-tk-flip{grid-template-columns:1fr}
   .nycos-tk-flip .nycos-tk-left,.nycos-tk-flip .nycos-tk-right{order:0;-webkit-mask:none;mask:none}
 }
-@media (max-width:640px){.nycos-fe-band{padding-left:16px !important;padding-right:16px !important}.nycos-tk-part{border-radius:20px}.nycos-tk{--tk-pad:38px}.nycos-tk-right{padding:var(--tk-pad) 24px}}
-/* Jingju and Kunqu sit in rounded cards inset from the page edge, like the festival hero card. */
-@media (max-width:1000px){.nycos-fe-band{padding-left:24px !important;padding-right:24px !important}.nycos-fe-band-card{padding-left:40px !important;padding-right:40px !important}}
-@media (max-width:640px){.nycos-fe-band{padding-left:16px !important;padding-right:16px !important}.nycos-fe-band-card{padding:48px 22px !important;border-radius:20px !important}}
+@media (max-width:640px){.nycos-tk-part{border-radius:20px}.nycos-tk{--tk-pad:38px}.nycos-tk-right{padding:var(--tk-pad) 24px}}
 /* Program calendar: one week sheet. Show days are wide, empty days are narrow slivers (widths come from the inline grid-template-columns). */
 .nycos-cal{border:1px solid var(--border-subtle);border-radius:6px;background:var(--surface-card);overflow:hidden;margin-top:24px}
 .nycos-cal-month{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:18px 22px 14px;border-bottom:1px solid var(--border-subtle)}
@@ -2685,7 +2682,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </section>
 
-<section id="jingju" class="nycos-fe-band" style="padding:0 40px;margin-top:40px">
+<section id="jingju" class="nycos-fe-band" style="max-width:1200px;margin:40px auto 0;padding:0 32px">
 <div class="nycos-tk">
 <div class="nycos-tk-part nycos-tk-left" style="background:#E3E2DE">
 <a href="{{ feJ.poster.src }}" onClick="{{ feJ.poster.open }}" aria-label="{{ feJ.poster.cap }}" style="display:block;cursor:zoom-in;width:100%">
@@ -2727,7 +2724,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </section>
 
-<section id="kunqu" class="nycos-fe-band" style="padding:24px 40px 40px">
+<section id="kunqu" class="nycos-fe-band" style="max-width:1200px;margin:0 auto;padding:24px 32px 40px">
 <div class="nycos-tk nycos-tk-flip">
 <div class="nycos-tk-part nycos-tk-left" style="background:#e3e2de">
 <a href="{{ feK.poster.src }}" onClick="{{ feK.poster.open }}" aria-label="{{ feK.poster.cap }}" style="display:block;cursor:zoom-in;width:100%">
@@ -2769,7 +2766,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </div>
 </section>
 
-<section id="chou" class="nycos-fe-band" style="padding:24px 40px 40px">
+<section id="chou" class="nycos-fe-band" style="max-width:1200px;margin:0 auto;padding:24px 32px 40px">
 <div class="nycos-tk">
 <div class="nycos-tk-part nycos-tk-left" style="background:#242426">
 <a href="{{ feChP.src }}" onClick="{{ feChP.open }}" aria-label="{{ feChP.cap }}" style="display:block;cursor:zoom-in;width:100%">
