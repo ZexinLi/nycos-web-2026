@@ -20,7 +20,7 @@
     return loadingPromise;
   }
 
-  async function mount(container, clientId, amount, onSuccess, onError) {
+  async function mount(container, clientId, amount, onSuccess, onError, purpose) {
     try {
       await loadSdk(clientId);
     } catch (err) {
@@ -37,7 +37,7 @@
         const r = await fetch('/api/paypal-create-order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount })
+          body: JSON.stringify({ amount, purpose })
         });
         const data = await r.json();
         if (!r.ok || !data.id) throw new Error(data.error || 'Could not start PayPal order');

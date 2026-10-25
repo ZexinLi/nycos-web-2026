@@ -2,17 +2,24 @@ import { getAccessToken, paypalBase } from '../lib/paypal-server.js';
 
 const MAX_AMOUNT = 2000;
 
+const DESCRIPTIONS = {
+  membership: 'NYCOS Membership',
+  donation: 'Donation to New York Chinese Opera Society',
+  registration: 'NYCOS class registration',
+};
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { amount } = req.body || {};
+  const { amount, purpose } = req.body || {};
   const value = Number(amount);
   if (!Number.isFinite(value) || value <= 0 || value > MAX_AMOUNT) {
     return res.status(400).json({ error: 'Invalid amount' });
   }
+  const description = DESCRIPTIONS[purpose] || DESCRIPTIONS.registration;
 
   try {
     const accessToken = await getAccessToken();
@@ -26,7 +33,7 @@ export default async function handler(req, res) {
         intent: 'CAPTURE',
         purchase_units: [
           {
-            description: 'NYCOS class registration',
+            description,
             amount: { currency_code: 'USD', value: value.toFixed(2) },
           },
         ],
