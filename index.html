@@ -112,8 +112,7 @@ select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary)
 @keyframes nycos-drop-in{from{opacity:0;transform:scale(0.96) translateY(-4px)}to{opacity:1;transform:scale(1) translateY(0)}}
 /* "Registration opening soon" ticket (supplied artwork), flat and still at the right of the Program heading. */
 .nycos-pro-head{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:12px}
-.nycos-soon-ticket{display:block;flex:0 0 auto;width:280px;max-width:100%;height:auto}
-@media (max-width:760px){.nycos-pro-head{flex-wrap:wrap;align-items:flex-start;gap:20px}.nycos-soon-ticket{width:min(240px,70vw)}}
+@media (max-width:760px){.nycos-pro-head{flex-wrap:wrap;align-items:flex-start;gap:20px}}
 /* Festival hero: two poster cards fanned out and overlapping on the right of the blue
    card (second one is a stand-in until its poster is ready). */
 .nycos-fe-posters{position:relative;display:flex;align-items:center;justify-content:center;padding:18px 10px}
@@ -156,6 +155,58 @@ select:focus-visible,input:focus-visible{outline:2px solid var(--accent-primary)
 .nycos-tk-right{background:var(--accent-primary);transition:background 700ms var(--ease-soft)}
 .nycos-tk-right.is-open{background:#242424}
 #kunqu .nycos-tk-right.is-open{background:#2F2C2A}
+/* Halloween week: html.nycos-halloween is set by script until the end of Nov 1, 2026; the hero ghost and pumpkin only exist then. */
+.nycos-hero-ghost{display:none;position:absolute;left:-8px;bottom:calc(100% - 13px);width:32px}
+.nycos-hero-web{display:none;position:absolute;left:-25px;top:-9px;width:38px}
+html.nycos-halloween .nycos-hero-web{display:block}
+.nycos-web-svg{display:block;width:100%;height:auto;overflow:visible}
+.nycos-web-spider{transition:transform 650ms var(--ease-soft)}
+a:hover .nycos-web-spider{transform:translateY(-24px)}
+@media (prefers-reduced-motion: reduce){.nycos-web-spider{transition:none}}
+@media (max-width:640px){.nycos-hero-web{width:32px;left:-20px;top:-7px}}
+.nycos-fe-eyebrow{position:relative;display:inline-block}
+.nycos-fe-eyebrow .nycos-hero-ghost{left:calc(100% + 14px);bottom:auto;top:50%;margin-top:-18px}
+html.nycos-halloween .nycos-hero-ghost{display:block}
+.nycos-hero-ghost img{display:block;width:100%;height:auto;transform:rotate(-12deg)}
+/* Hover: the ghost floats up a little. The ::after extends the hit area downward so the lifted ghost never slips out from under the pointer. */
+.nycos-hero-ghost{transition:transform 600ms var(--ease-soft)}
+.nycos-hero-ghost::after{content:'';position:absolute;left:-6px;right:-6px;top:0;bottom:-24px}
+.nycos-hero-ghost:hover{transform:translateY(-17px)}
+.nycos-hero-ghost img{transition:transform 600ms var(--ease-soft)}
+.nycos-hero-ghost:hover img{transform:rotate(8deg)}
+@media (max-width:640px){.nycos-hero-ghost{width:28px;left:-2px;bottom:calc(100% - 11px)}}
+.nycos-hero-pumpkin{display:none;position:absolute;right:6px;top:2px;width:34px}
+html.nycos-halloween .nycos-hero-pumpkin{display:block}
+.nycos-hero-pumpkin img{display:block;width:100%;height:auto;transform:rotate(14deg)}
+.nycos-hero-pumpkin .nycos-pumpkin-lit{position:absolute;left:0;top:0;opacity:0;transition:opacity 320ms var(--ease-out);filter:drop-shadow(0 0 4px rgba(255,170,40,0.8))}
+.nycos-hero-pumpkin:hover .nycos-pumpkin-lit{opacity:1;animation:nycos-pumpkin-breathe 1.7s ease-in-out infinite}
+/* The lit face breathes between glowing orange and the pumpkin's original black. */
+@keyframes nycos-pumpkin-breathe{0%,100%{filter:drop-shadow(0 0 0 rgba(255,170,40,0)) brightness(0.03)}40%{filter:drop-shadow(0 0 9px rgba(255,178,50,1)) brightness(1.15)}}
+.nycos-hero-cat{display:none;position:absolute;left:-102px;bottom:-2px;width:68px}
+.nycos-cal-perch{position:relative;height:0}
+.nycos-cal-perch .nycos-hero-cat{left:calc(60% - 34px);right:auto;bottom:-13.5px;z-index:2}
+html.nycos-halloween .nycos-hero-cat{display:block}
+.nycos-cat-body{display:block;width:100%;height:auto}
+.nycos-cat-hat{position:absolute;left:36px;top:-8.5px;width:24px;height:auto;transform:rotate(10deg);transform-origin:50% 100%;pointer-events:none}
+.nycos-cat-arm{position:absolute;left:0;top:0;width:100%;height:auto;transform-origin:78.6% 60.8%;pointer-events:none}
+.nycos-hero-cat:hover .nycos-cat-arm{animation:nycos-cat-paw 4600ms ease-in-out}
+@keyframes nycos-cat-paw{0%{transform:none}4%{transform:translate(0,-1px) rotate(-8deg)}10%{transform:translate(1px,1px) rotate(7deg)}20%{transform:rotate(2deg)}32%,100%{transform:none}}
+/* The pumpkin lives in the perch (as wide as the calendar), so it can roll the full length of the card's top border. */
+.nycos-cal-perch .nycos-cat-pumpkin{display:none;position:absolute;left:calc(60% + 41px);bottom:-12px;width:26px;height:auto;opacity:0;pointer-events:none;z-index:3}
+html.nycos-halloween .nycos-cal-perch .nycos-cat-pumpkin{display:block}
+.nycos-cal-perch:has(.nycos-hero-cat:hover) .nycos-cat-pumpkin{animation:nycos-pumpkin-roll 4600ms linear forwards}
+@keyframes nycos-pumpkin-roll{0%{left:calc(60% + 41px);bottom:-12px;opacity:0;transform:rotate(14deg) scale(.5)}6%{left:calc(60% + 41px);bottom:-12px;opacity:1;transform:rotate(14deg) scale(1)}11%{left:calc(60% + 41px);bottom:-12px;opacity:1;transform:rotate(14deg) scale(1);animation-timing-function:cubic-bezier(.4,0,.7,1)}86%{left:calc(100% - 12px);bottom:-12px;opacity:1;transform:rotate(734deg);animation-timing-function:cubic-bezier(.5,0,.9,.6)}96%{left:calc(100% + 2px);bottom:-52px;opacity:1;transform:rotate(790deg)}100%{left:calc(100% + 4px);bottom:-70px;opacity:0;transform:rotate(810deg)}}
+.nycos-cat-whoosh{position:absolute;left:68px;top:37px;width:9px;height:8px;opacity:0;pointer-events:none}
+.nycos-hero-cat:hover .nycos-cat-whoosh{animation:nycos-cat-whoosh 450ms ease-out 460ms}
+@keyframes nycos-cat-whoosh{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
+@media (max-width:640px){.nycos-hero-cat{display:none !important}}
+@media (max-width:640px){.nycos-cal-perch .nycos-cat-pumpkin{display:none !important}}
+@media (prefers-reduced-motion: reduce){.nycos-cal-perch:has(.nycos-hero-cat:hover) .nycos-cat-pumpkin,.nycos-hero-cat:hover .nycos-cat-whoosh,.nycos-hero-cat:hover .nycos-cat-arm{animation:none}}
+@media (max-width:640px){.nycos-hero-pumpkin{width:28px;right:4px;top:0}}
+html[lang^="zh"] .nycos-hero-pumpkin{right:-14px;top:-2px}
+@media (max-width:640px){html[lang^="zh"] .nycos-hero-pumpkin{right:-8px;top:-4px}}
+@media (prefers-reduced-motion: reduce){.nycos-hero-pumpkin .nycos-pumpkin-lit{transition:none}.nycos-hero-pumpkin:hover .nycos-pumpkin-lit{animation:none}}
+@media (prefers-reduced-motion: reduce){.nycos-hero-ghost,.nycos-hero-ghost img{transition:none}.nycos-hero-ghost:hover{transform:none}.nycos-hero-ghost:hover img{transform:rotate(-12deg)}}
 /* The Chou piece opens to the light page tone (its content is dark-on-light) instead of charcoal. */
 #chou .nycos-tk-right.is-open{background:var(--surface-page-alt);box-shadow:inset 0 0 0 1px var(--border-subtle)}
 #chou .nycos-tk-right.is-open::before{border-color:rgba(36,36,36,0.2)}
@@ -221,6 +272,32 @@ a.nycos-cal-cell.is-event:hover,a.nycos-cal-cell.is-event:focus-visible{backgrou
 .nycos-cal-poster{display:flex;justify-content:center;padding:6px 0 4px}
 .nycos-cal-img{display:block;width:96px;height:144px;object-fit:cover;border:1px solid var(--border-subtle);border-radius:4px;transform:rotate(var(--tilt,-4deg));transition:transform 360ms var(--ease-out)}
 /* Posters sit still; they lift, straighten and bob gently only while their day is hovered or focused. */
+/* Registration tickets in the festival hero: one per kind of show. */
+.nycos-fe-tixstack{display:flex;flex-direction:column;gap:10px;width:min(270px,100%);margin-top:12px}
+.nycos-fe-tixstack .nycos-tix{grid-template-columns:54px minmax(0,1fr);gap:2px;min-height:64px}
+.nycos-fe-tixstack .nycos-tix-stub,.nycos-fe-tixstack .nycos-tix-body{padding:6px 5px;border-radius:6px;-webkit-mask-size:100% 100%}
+.nycos-fe-tixstack .nycos-tix-stub::before,.nycos-fe-tixstack .nycos-tix-body::before{inset:3px;border-radius:3px}
+.nycos-fe-tixstack .nycos-tix-stub b{font-size:9px}
+.nycos-fe-tixstack .nycos-tix-stub i{font-size:13px}
+.nycos-fe-tixstack .nycos-tix-stub em{font-size:6px;margin-top:3px}
+.nycos-fe-tixstack .nycos-tix-body small{font-size:6px}
+.nycos-fe-tixstack .nycos-tix-body strong{font-size:16px;margin:3px 0 1px}
+.nycos-fe-tixstack .nycos-tix-sub{font-size:10px}
+.nycos-tix{display:grid;grid-template-columns:80px minmax(0,1fr);gap:3px;width:100%;min-height:96px;text-decoration:none;color:var(--color-paper);transition:transform 220ms var(--ease-out),filter 220ms var(--ease-out)}
+.nycos-tix:hover,.nycos-tix:focus-visible{transform:translateY(-3px);filter:drop-shadow(0 8px 10px rgba(20,20,32,0.18));color:var(--color-paper)}
+.nycos-tix:active{transform:translateY(-1px) scale(0.99)}
+.nycos-tix-stub,.nycos-tix-body{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:8px;padding:10px 8px}
+.nycos-tix-stub{background:#1B1B1F;color:#D9463F;-webkit-mask:radial-gradient(circle 8px at 0 50%,transparent 97%,#000);mask:radial-gradient(circle 8px at 0 50%,transparent 97%,#000)}
+.nycos-tix-body{background:var(--accent-primary);color:var(--color-paper);-webkit-mask:radial-gradient(circle 8px at 100% 50%,transparent 97%,#000);mask:radial-gradient(circle 8px at 100% 50%,transparent 97%,#000)}
+.nycos-tix-stub::before,.nycos-tix-body::before{content:'';position:absolute;inset:5px;border:1px dashed rgba(247,244,238,0.4);border-radius:5px;pointer-events:none}
+.nycos-tix-stub::before{border-color:rgba(217,70,63,0.4)}
+.nycos-tix-stub b{font-family:var(--font-body);font-weight:600;font-size:13px;line-height:1.1;letter-spacing:0.02em}
+.nycos-tix-stub i{font-style:normal;font-family:var(--font-body);font-weight:600;font-size:19px;line-height:1.1;white-space:nowrap}
+.nycos-tix-stub em{font-style:normal;font-family:var(--font-mono);font-size:8px;letter-spacing:0.22em;margin-top:5px;opacity:.9}
+.nycos-tix-body small{font-family:var(--font-mono);font-size:8px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--color-paper);opacity:.92}
+.nycos-tix-body strong{font-family:var(--font-display);font-weight:400;font-size:24px;line-height:1.05;letter-spacing:-0.06em;margin:5px 0 3px;color:#fff;text-wrap:balance}
+.nycos-tix-sub{font-family:var(--font-display);font-style:italic;font-size:14px;line-height:1.2;letter-spacing:-0.02em;color:var(--color-paper);text-wrap:balance}
+@media (prefers-reduced-motion: reduce){.nycos-tix{transition:none}}
 @keyframes nycos-cal-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 a.nycos-cal-cell:hover .nycos-cal-img,a.nycos-cal-cell:focus-visible .nycos-cal-img{transform:translateY(-8px) rotate(calc(var(--tilt,-4deg) * -0.4)) scale(1.06)}
 a.nycos-cal-cell:hover .nycos-cal-poster,a.nycos-cal-cell:focus-visible .nycos-cal-poster{animation:nycos-cal-bob var(--dur,4.2s) ease-in-out 360ms infinite}
@@ -255,7 +332,7 @@ a.nycos-cal-cell:hover .nycos-cal-go,a.nycos-cal-cell:focus-visible .nycos-cal-g
 .nycos-fe-play-tab{flex:1 1 0;min-width:0;display:inline-flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;background:none;border:none;border-bottom:2px solid transparent;margin:0;padding:14px 2px 15px;cursor:pointer;font-family:var(--font-display);letter-spacing:-0.05em;font-size:20px;line-height:1.2;color:rgba(247,244,238,0.5);transition:color 160ms var(--ease-out),border-color 160ms var(--ease-out)}
 .nycos-fe-play-tab:hover{color:rgba(247,244,238,0.85)}
 .nycos-fe-play-tab.is-active{color:var(--color-paper);border-bottom-color:var(--accent-primary)}
-.nycos-fe-play-alt{font-family:var(--font-cjk-serif);letter-spacing:0;font-size:15px;opacity:0.75}
+.nycos-fe-play-alt{font-family:var(--font-display);letter-spacing:0;font-size:15px;opacity:0.75}
 @media (max-width:1000px){.nycos-fe-play-tab{flex:0 0 auto;max-width:200px}}
 @media (max-width:640px){.nycos-fe-play-tabs{gap:22px}.nycos-fe-play-tab{font-size:18px;max-width:170px}}
 /* Light-section variant of the play tabs. */
@@ -270,6 +347,14 @@ a.nycos-cal-cell:hover .nycos-cal-go,a.nycos-cal-cell:focus-visible .nycos-cal-g
 .nycos-fe-tab-icon{font-size:16px;line-height:1;letter-spacing:0}
 .nycos-fe-tab-dark{color:var(--color-paper);border-color:rgba(247,244,238,0.4)}
 .nycos-fe-tab-dark:hover{background:rgba(247,244,238,0.1);border-color:var(--color-paper)}
+/* Registration button under a ticket's "About the show": paper on the closed red ticket, NYCOS red once the panel is open. */
+.nycos-fe-reg{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:230px;box-sizing:border-box;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius-sm);padding:15px 18px;background:var(--accent-primary);color:#fff;transition:background 700ms var(--ease-soft),color 700ms var(--ease-soft),transform var(--press-out) var(--ease-press-out)}
+.nycos-fe-reg:hover,.nycos-fe-reg:focus-visible{background:var(--accent-primary-hover);color:#fff;transition:background 160ms var(--ease-out),color 160ms var(--ease-out)}
+.nycos-fe-reg:active{transform:scale(0.98)}
+#jingju .nycos-fe-tab,#kunqu .nycos-fe-tab,#chou .nycos-fe-tab{min-width:243px}
+.nycos-tk-right:not(.is-open) .nycos-fe-reg{background:var(--color-paper);color:var(--accent-primary)}
+.nycos-tk-right:not(.is-open) .nycos-fe-reg:hover,.nycos-tk-right:not(.is-open) .nycos-fe-reg:focus-visible{background:#fff;color:var(--accent-primary-hover)}
+@media (prefers-reduced-motion: reduce){.nycos-fe-reg{transition:none}}
 @media (prefers-reduced-motion: reduce){.nycos-fe-tab{transition:none}}
 /* Arrow that only appears on hover: it grows in from nothing (so the button is balanced at rest) and fades/slides in. */
 .nycos-reveal-arrow{display:inline-block;max-width:0;margin-left:0;opacity:0;transform:translateX(-8px);overflow:hidden;white-space:nowrap;vertical-align:bottom;transition:max-width 260ms var(--ease-out),margin-left 260ms var(--ease-out),opacity 200ms var(--ease-out),transform 260ms var(--ease-out)}
@@ -924,10 +1009,11 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <section style="position:relative;background:var(--surface-page);padding:68px 32px 24px;overflow-x:clip;overflow-y:visible">
 <div style="max-width:820px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center">
 <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold)">{{ t.aEyebrow }}</span>
-<h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.05;letter-spacing:-0.08em;color:#22328c;margin:0;text-wrap:pretty">{{ t.cTitle }}</h1>
+<div style="position:relative;max-width:100%"><h1 class="nycos-hero-h1" style="font-family:var(--font-display);font-weight:400;font-size:64px;line-height:1.05;letter-spacing:-0.08em;color:#22328c;margin:0;text-wrap:pretty">{{ t.cTitle }}</h1><span class="nycos-hero-pumpkin" aria-hidden="true"><img src="/assets/halloween-pumpkin.webp" alt="" width="339" height="294" decoding="async"><img class="nycos-pumpkin-lit" src="/assets/halloween-pumpkin-lit.webp" alt="" width="339" height="294" decoding="async"></span></div>
 <p style="font-size:17px;line-height:1.7;color:#3b4aa8;margin:0;max-width:520px;text-wrap:pretty">{{ t.cSub }}</p>
-<div class="nycos-hero-cta-row" style="display:flex;gap:14px;margin-top:6px">
-<a href="#upcoming" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;letter-spacing:0.02em;padding:15px 30px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.cCta1 }}</a>
+<div class="nycos-hero-cta-row" style="position:relative;display:flex;gap:14px;margin-top:20px">
+
+<a href="{{ eventsUrl }}" onClick="{{ goEventsLink }}" style="position:relative;font-family:var(--font-body);font-weight:500;font-size:14.5px;letter-spacing:0.02em;padding:15px 30px;background:var(--accent-primary);color:#fff;border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;transition:background 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--accent-primary-hover)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)"><span class="nycos-hero-web" aria-hidden="true"><svg class="nycos-web-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><polygon points="40.85,6.96 82.70,20.56 91.85,63.60 59.15,93.04 17.30,79.44 8.15,36.40" fill="#3b3b3d" stroke="#2f2f31" stroke-width="7" stroke-linejoin="round"/><g stroke="#F7F4EE" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" fill="none"><line x1="50" y1="50" x2="41.89" y2="11.85"/><line x1="50" y1="50" x2="78.98" y2="23.90"/><line x1="50" y1="50" x2="87.09" y2="62.05"/><line x1="50" y1="50" x2="58.11" y2="88.15"/><line x1="50" y1="50" x2="21.02" y2="76.10"/><line x1="50" y1="50" x2="12.91" y2="37.95"/><polygon points="41.89,11.85 78.98,23.90 87.09,62.05 58.11,88.15 21.02,76.10 12.91,37.95"/><polygon points="44.59,24.57 69.32,32.60 74.73,58.03 55.41,75.43 30.68,67.40 25.27,41.97"/><polygon points="47.30,37.28 59.66,41.30 62.36,54.02 52.70,62.72 40.34,58.70 37.64,45.98"/></g><g class="nycos-web-spider"><g stroke="#1b1b1d" stroke-width="2.2" stroke-linecap="round" fill="none"><path d="M42 44Q34 38 30 40M41.5 48Q32 46 28 50M41.5 52Q33 55 29 60M43 56Q37 62 35 68"/><path d="M58 44Q66 38 70 40M58.5 48Q68 46 72 50M58.5 52Q67 55 71 60M57 56Q63 62 65 68"/></g><ellipse cx="50" cy="55" rx="8.5" ry="10.5" fill="#1b1b1d"/><circle cx="50" cy="43.5" r="6" fill="#1b1b1d"/><circle cx="47.6" cy="42.5" r="1.5" fill="#F08A3C"/><circle cx="52.4" cy="42.5" r="1.5" fill="#F08A3C"/><ellipse cx="47" cy="52" rx="2.4" ry="3.6" fill="#4a4a4d" transform="rotate(-12 47 52)"/></g></svg></span>{{ t.cCta1 }}</a>
 <button type="button" onClick="{{ goPrograms }}" style="font-family:var(--font-body);font-weight:500;font-size:14.5px;letter-spacing:0.02em;padding:15px 30px;margin:0;background:transparent;color:var(--text-primary);border:1px solid var(--border-strong);border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;cursor:pointer;transition:background 160ms var(--ease-out),border-color 160ms var(--ease-out),transform var(--press-out) var(--ease-press-out);" style-hover="background:var(--surface-page-alt);border-color:var(--text-primary)" style-active="transform:scale(0.97);transition:transform var(--press-in) var(--ease-press-in)">{{ t.cCta2 }}</button>
 </div>
 </div>
@@ -952,12 +1038,6 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 
 <section ref="{{ missionRef }}" data-no-reveal="" style="position:relative;max-width:760px;margin:0 auto;padding:96px 32px 88px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;overflow:hidden">
 <div style="position:absolute;left:50%;top:50%;width:120%;height:130%;transform:translate(-50%,-50%);background:radial-gradient(60% 58% at 50% 42%,rgba(255,255,255,0.9) 0%,rgba(255,255,255,0) 68%);pointer-events:none"></div>
-
-<div style="position:relative;width:220px;height:1px;margin-bottom:6px">
-<div style="{{ mSeam }}"></div>
-<div style="{{ mCurtainL }}"></div>
-<div style="{{ mCurtainR }}"></div>
-</div>
 
 <div style="{{ mMarkWrap }}">
 <svg class="mMarkSvg {{ mMarkRevealClass }}" viewBox="0 0 150 150" width="55" height="55" style="overflow:visible;display:block">
@@ -2625,9 +2705,17 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <div class="nycos-hero-card" style="margin:0;position:relative;background:var(--color-blue);border-radius:24px;padding:72px 64px;overflow:hidden">
 <div class="nycos-grid-collapse" style="position:relative;max-width:1200px;margin:0 auto;padding:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:48px;align-items:center">
 <div style="display:flex;flex-direction:column;gap:18px;align-items:flex-start">
-<span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.feEyebrow }}</span>
+<div class="nycos-fe-eyebrow"><span style="font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;color:var(--color-gold-soft)">{{ t.feEyebrow }}</span><span class="nycos-hero-ghost" aria-hidden="true"><img src="/assets/halloween-ghost.webp" alt="" width="246" height="285" decoding="async"></span></div>
 <h1 class="nycos-hero-h1" style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:64px;line-height:1.04;color:var(--color-paper);margin:0;max-width:720px;text-wrap:pretty">{{ t.feTitle }}</h1>
 <p style="font-size:16.5px;line-height:1.7;color:rgba(247,244,238,0.78);margin:0;max-width:600px;text-wrap:pretty">{{ t.feLede }}</p>
+<div class="nycos-fe-tixstack">
+<sc-for list="{{ feTix }}" as="x" hint-placeholder-count="2">
+<a class="nycos-tix" href="{{ x.url }}" target="_blank" rel="noopener" aria-label="{{ x.label }}">
+<span class="nycos-tix-stub"><b>{{ x.month }}</b><i>{{ x.dates }}</i><em>{{ x.year }}</em></span>
+<span class="nycos-tix-body"><small>{{ x.eyebrow }}</small><strong>{{ x.head }}</strong><span class="nycos-tix-sub">{{ x.sub }}</span></span>
+</a>
+</sc-for>
+</div>
 </div>
 <div class="nycos-fe-posters">
 <sc-for list="{{ fePoster }}" as="p" hint-placeholder-count="2">
@@ -2648,8 +2736,8 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <p style="font-size:14.5px;line-height:1.7;color:var(--text-secondary);margin:4px 0 0;text-wrap:pretty">{{ t.feProIntro }}</p>
 <p style="font-size:13px;line-height:1.7;color:var(--text-tertiary);margin:0;text-wrap:pretty">{{ t.feProNote }}</p>
 </div>
-<img class="nycos-soon-ticket" src="/assets/registration-ticket.webp" alt="{{ t.feSoon }}" width="280" height="113">
 </div>
+<div class="nycos-cal-perch"><span class="nycos-hero-cat" aria-hidden="true"><img class="nycos-cat-body" src="/assets/halloween-cat.webp" alt="" width="176" height="143" decoding="async"><img class="nycos-cat-arm" src="/assets/halloween-cat-arm.webp" alt="" width="176" height="143" decoding="async"><img class="nycos-cat-hat" src="/assets/halloween-hat.webp" alt="" width="194" height="142" decoding="async"><svg class="nycos-cat-whoosh" viewBox="0 0 9 8" fill="none" stroke="#0E0E10" stroke-width="0.9" stroke-linecap="round" xmlns="http://www.w3.org/2000/svg"><path d="M0.6 2.6Q3.2 0.4 6.2 1.6"/><path d="M2 6.4Q4.6 4.2 8 5.2"/></svg></span><img class="nycos-cat-pumpkin" src="/assets/halloween-pumpkin.webp" alt="" width="339" height="294" decoding="async"></div>
 <div class="nycos-cal">
 <div class="nycos-cal-month"><b>{{ t.feProMonthLine }}</b><span>{{ t.feProRange }}</span></div>
 <div class="nycos-cal-grid" style="grid-template-columns:{{ feCalCols }}">
@@ -2695,6 +2783,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <h2 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:46px;line-height:1.05;color:var(--color-paper);margin:0;text-wrap:pretty">{{ feJ.head }}</h2>
 <p style="font-family:var(--font-display);letter-spacing:-0.04em;font-size:22px;line-height:1.35;color:rgba(247,244,238,0.7);margin:0;text-wrap:pretty">{{ feJ.sub }}</p>
 <button type="button" class="nycos-fe-tab nycos-fe-tab-dark" aria-expanded="{{ feJ.ariaExpanded }}" onClick="{{ feJ.toggle }}"><span>{{ t.feAbLabel }}</span><span class="nycos-fe-tab-icon">{{ feJ.icon }}</span></button>
+<a class="nycos-fe-reg" href="{{ feOperaTickets }}" target="_blank" rel="noopener"><span>{{ t.feFreeReg }}</span><span aria-hidden="true">↗</span></a>
 </div>
 <div style="{{ feJ.panelStyle }}">
 <div style="{{ feJ.innerStyle }}">
@@ -2712,8 +2801,25 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <div style="display:flex;flex-direction:column;gap:12px;padding:28px 30px;border:1px solid rgba(247,244,238,0.2);border-radius:var(--radius-sm)">
 <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(247,244,238,0.55)">{{ t.feOpPlayK }}</span>
 <span style="font-family:var(--font-display);letter-spacing:-0.05em;font-size:30px;line-height:1.2;color:var(--color-paper)">{{ feJ.cur.title }}</span>
-<span style="font-family:var(--font-cjk-serif);font-size:17px;line-height:1.4;color:rgba(247,244,238,0.7);font-style:italic">{{ feJ.cur.alt }}</span>
+<span style="font-family:var(--font-display);font-size:17px;line-height:1.4;color:rgba(247,244,238,0.7);font-style:italic">{{ feJ.cur.alt }}</span>
 <span style="font-family:var(--font-mono),var(--font-cjk-serif);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--color-gold-soft)">{{ feJ.cur.tag }}</span>
+<sc-if value="{{ feJ.cur.hasSyn }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;padding-top:18px;border-top:1px solid rgba(247,244,238,0.2)">
+<span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(247,244,238,0.55)">{{ t.feOpSynK }}</span>
+<p style="font-size:15px;line-height:1.8;color:rgba(247,244,238,0.78);margin:0;text-wrap:pretty">{{ feJ.cur.syn }}</p>
+</div>
+</sc-if>
+<sc-if value="{{ feJ.cur.hasRoles }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;padding-top:18px;border-top:1px solid rgba(247,244,238,0.2)">
+<span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(247,244,238,0.55)">{{ t.feOpRolesK }}</span>
+<sc-for list="{{ feJ.cur.roles }}" as="rl" hint-placeholder-count="2">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:8px 0;border-bottom:1px solid rgba(247,244,238,0.12)">
+<span style="font-family:var(--font-display);letter-spacing:-0.04em;font-size:20px;line-height:1.2;color:var(--color-paper)">{{ rl.name }}</span>
+<span style="font-family:var(--font-mono),var(--font-cjk-serif);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-gold-soft);text-align:right">{{ rl.role }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
 </div>
 </div>
 </div>
@@ -2737,6 +2843,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <h2 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:46px;line-height:1.05;color:var(--color-paper);margin:0;text-wrap:pretty">{{ feK.head }}</h2>
 <p style="font-family:var(--font-display);letter-spacing:-0.04em;font-size:22px;line-height:1.35;color:rgba(247,244,238,0.7);margin:0;text-wrap:pretty">{{ feK.sub }}</p>
 <button type="button" class="nycos-fe-tab nycos-fe-tab-dark" aria-expanded="{{ feK.ariaExpanded }}" onClick="{{ feK.toggle }}"><span>{{ t.feAbLabel }}</span><span class="nycos-fe-tab-icon">{{ feK.icon }}</span></button>
+<a class="nycos-fe-reg" href="{{ feOperaTickets }}" target="_blank" rel="noopener"><span>{{ t.feFreeReg }}</span><span aria-hidden="true">↗</span></a>
 </div>
 <div style="{{ feK.panelStyle }}">
 <div style="{{ feK.innerStyle }}">
@@ -2754,8 +2861,25 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <div style="display:flex;flex-direction:column;gap:12px;padding:28px 30px;border:1px solid rgba(247,244,238,0.2);border-radius:var(--radius-sm)">
 <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(247,244,238,0.55)">{{ t.feOpPlayK }}</span>
 <span style="font-family:var(--font-display);letter-spacing:-0.05em;font-size:30px;line-height:1.2;color:var(--color-paper)">{{ feK.cur.title }}</span>
-<span style="font-family:var(--font-cjk-serif);font-size:17px;line-height:1.4;color:rgba(247,244,238,0.7);font-style:italic">{{ feK.cur.alt }}</span>
+<span style="font-family:var(--font-display);font-size:17px;line-height:1.4;color:rgba(247,244,238,0.7);font-style:italic">{{ feK.cur.alt }}</span>
 <span style="font-family:var(--font-mono),var(--font-cjk-serif);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--color-gold-soft)">{{ feK.cur.tag }}</span>
+<sc-if value="{{ feK.cur.hasSyn }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;padding-top:18px;border-top:1px solid rgba(247,244,238,0.2)">
+<span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(247,244,238,0.55)">{{ t.feOpSynK }}</span>
+<p style="font-size:15px;line-height:1.8;color:rgba(247,244,238,0.78);margin:0;text-wrap:pretty">{{ feK.cur.syn }}</p>
+</div>
+</sc-if>
+<sc-if value="{{ feK.cur.hasRoles }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;padding-top:18px;border-top:1px solid rgba(247,244,238,0.2)">
+<span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(247,244,238,0.55)">{{ t.feOpRolesK }}</span>
+<sc-for list="{{ feK.cur.roles }}" as="rl" hint-placeholder-count="2">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:8px 0;border-bottom:1px solid rgba(247,244,238,0.12)">
+<span style="font-family:var(--font-display);letter-spacing:-0.04em;font-size:20px;line-height:1.2;color:var(--color-paper)">{{ rl.name }}</span>
+<span style="font-family:var(--font-mono),var(--font-cjk-serif);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-gold-soft);text-align:right">{{ rl.role }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
 </div>
 </div>
 </div>
@@ -2784,6 +2908,7 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 </sc-for>
 </div>
 <button type="button" class="nycos-fe-tab" aria-expanded="{{ feCh.ariaExpanded }}" onClick="{{ feCh.toggle }}"><span>{{ t.feAbLabel }}</span><span class="nycos-fe-tab-icon">{{ feCh.icon }}</span></button>
+<a class="nycos-fe-reg" href="{{ feChTickets }}" target="_blank" rel="noopener"><span>{{ t.pEnrolCta }}</span><span aria-hidden="true">↗</span></a>
 </div>
 <div style="{{ feCh.panelStyle }}">
 <div style="{{ feCh.innerStyle }}">
@@ -3066,6 +3191,26 @@ const prefersReducedMotion = () =>
 // the stylesheet) — otherwise a script failure would leave content invisible.
 if (typeof document !== 'undefined' && !prefersReducedMotion()) {
   document.documentElement.classList.add('nycos-reveal');
+}
+
+// Halloween week (to the end of Nov 1, New York time): arms html.nycos-halloween, which shows the hero ghost and pumpkin.
+if (typeof document !== 'undefined' && Date.now() < Date.UTC(2026, 10, 2, 5, 0, 0)) {
+  document.documentElement.classList.add('nycos-halloween');
+
+  // The black cat meows when the pointer reaches it. Browsers refuse to play audio before the visitor has clicked,
+  // tapped or pressed a key on the page, so a first hover before any interaction stays silent.
+  const meow = new Audio('/assets/meow.m4a');
+  meow.preload = 'auto';
+  meow.volume = 0.6;
+  let meowAt = 0;
+  document.addEventListener('mouseover', (e) => {
+    const cat = e.target && e.target.closest ? e.target.closest('.nycos-hero-cat') : null;
+    if (!cat || cat.contains(e.relatedTarget) || performance.now() - meowAt < 1200) return;
+    meowAt = performance.now();
+    meow.currentTime = 0;
+    const playing = meow.play();
+    if (playing && playing.catch) playing.catch(() => {});
+  });
 }
 
 const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -3416,7 +3561,7 @@ const EN = {
   aDesc: 'NYCOS is a volunteer society bringing Kunqu and Jingju — and the brush arts that grew up alongside them — to audiences and students across the city. No experience needed. Come as you are.',
   aCta: 'See what’s on',
   cTitle: 'Voices Across Centuries',
-  cSub: 'Jingju, Kunqu, calligraphy and brush painting — taught, rehearsed and performed by a volunteer society in Lower Manhattan.',
+  cSub: 'Sharing Chinese opera in New York, including Jingju and Kunqu, through classes, performances and cultural exchange.',
   cCta1: 'See what’s on',
   cCta2: 'Take a class',
   trust: ['Founded 2006', '501(c)(3) nonprofit', 'Volunteer-run', 'Kunqu 崑曲', 'Jingju 京劇', 'Calligraphy 書法', 'Chinese painting 國畫', 'NYCOS Youth Troupe'],
@@ -3790,7 +3935,7 @@ const EN = {
   evMoreCta: 'Explore schedule',
   feEyebrow: 'Winter Festival · Nov 24–29, 2026',
   feTitle: 'Winter Cultural Exchange Festival',
-  feLede: 'Jingju, Kunqu and a one-woman comedy — the 2026 NYCOS festival at A.R.T./New York Theatres in Hell’s Kitchen.',
+  feLede: 'Two nights of Jingju and Kunqu, then a one-woman comedy, all at A.R.T./New York Theatres in Hell’s Kitchen.',
   feSoon: 'Registration opening soon',
   feProLabel: 'The week',
   feProTitle: 'Program',
@@ -3813,22 +3958,26 @@ const EN = {
   feKSub: 'Kunqu Opera Concert · 昆曲专场',
   feOpPlayK: 'Program title',
   feOpSynK: 'Synopsis',
+  feOpRolesK: 'Main roles',
   feOpNights: [
-    { when: 'Tue, Nov 24 · 7 PM', kind: 'Beijing Opera Concert 京剧专场', form: 'Painted faces, sweeping sleeves and percussion-driven stagecraft — the theatrical form that took shape in nineteenth-century Beijing.', plays: [
-      { tabTitle: 'Capturing and Releasing Cao Cao: Lodging at the Inn', tabAlt: '捉放曹 · 宿店', title: 'Capturing and Releasing Cao Cao: Lodging at the Inn', alt: '捉放曹 · 宿店', tag: 'Selected scenes · 选场', synopsis: 'Synopsis coming soon.' },
-      { tabTitle: 'Youth Troupe Students', tabAlt: '青年团学员汇报', title: 'Performance by Students of the Youth Troupe’s Beijing Opera Class', alt: '青年团京剧课程学员汇报', tag: 'Student showcase', synopsis: 'Program details coming soon.' },
-      { tabTitle: 'The Story of the Black Basin', tabAlt: '乌盆记', title: 'The Story of the Black Basin', alt: '乌盆记', tag: 'Selected scenes · 选场', synopsis: 'Synopsis coming soon.' }
+    { when: 'Tue, Nov 24 · 7 PM', kind: 'Beijing Opera Concert 京剧专场', form: 'Classic Jingju scenes, together with a showcase by students of the Youth Troupe.', plays: [
+      { tabTitle: 'Capturing and Releasing Cao Cao: Lodging at the Inn', tabAlt: '捉放曹 · 宿店', title: 'Capturing and Releasing Cao Cao: Lodging at the Inn', alt: '捉放曹 · 宿店', tag: 'Selected scenes · 选场', roles: [{ name: 'Chen Gong', role: 'Laosheng (older male role)' }, { name: 'Cao Cao', role: 'Jing (painted-face role)' }], syn: 'Late in the Han dynasty, Cao Cao fails to assassinate the tyrant Dong Zhuo and flees in disguise, only to be captured at Zhongmou. In court he talks the magistrate, Chen Gong, into giving up his post and escaping with him. They stop at Chenggao, where Lü Boshe, an old friend of Cao Cao’s father, welcomes them to his home. Hearing a knife being sharpened, Cao Cao wrongly suspects a plot and kills Lü’s entire household. Appalled by such cruelty to the innocent, Chen Gong leaves a poem beside the sleeping Cao Cao at the inn and walks away alone. The inn scene is almost a solo showcase for Chen Gong. Its famous aria “A Bright Moon” (Yi Lun Ming Yue) puts his singing to the test, much like an aria in Western opera.', synopsis: 'Synopsis coming soon.' },
+      { tabTitle: 'Youth Troupe Dan Class Students', tabAlt: '青年团旦角班学员汇报', title: 'Performance by Students of the Youth Troupe’s Beijing Opera Dan Class', alt: '青年团京剧课程旦角班学员汇报', tag: 'Student showcase', synopsis: 'Program details coming soon.' },
+      { tabTitle: 'The Story of the Black Basin', tabAlt: '乌盆记', title: 'The Story of the Black Basin', alt: '乌盆记', tag: 'Selected scenes · 选场', roles: [{ name: 'Liu Shichang', role: 'Laosheng (older male role)' }, { name: 'Zhang Biegu', role: 'Chou (clown role)' }], syn: 'Northern Song dynasty. The silk merchant Liu Shichang is poisoned by the innkeeper Zhao Da and his wife, who covet his heavy luggage and hide the crime by working his remains into the clay of a black basin. Years later, the old man Zhang Biegu comes to collect a small debt and is given the basin instead. On his way home, Liu’s ghost speaks from inside it and begs for justice. Zhang takes the basin to the judge Bao Zheng, and Zhao Da confesses at the first hearing. This scene follows Liu’s ghost as he tells Zhang his grievance, led by two famous arias: the erhuang yuanban “Old sir, do not be afraid” and the fan erhuang “Before I speak, my cheeks are wet with tears”. Like arias in Western opera, they reveal character and pour out feeling.', synopsis: 'Synopsis coming soon.' }
     ] },
-    { when: 'Wed, Nov 25 · 7 PM', kind: 'Kunqu Opera Concert 昆曲专场', form: 'One of the oldest surviving forms of Chinese opera — lyrical, refined and slow-blooming, often called the mother of a hundred operas.', plays: [
-      { tabTitle: 'Yearning for the Secular World', tabAlt: '思凡', title: 'Yearning for the Secular World', alt: '思凡', tag: 'Kunqu excerpt · 折子戏', synopsis: 'Synopsis coming soon.' },
+    { when: 'Wed, Nov 25 · 7 PM', kind: 'Kunqu Opera Concert 昆曲专场', form: 'Classic Kunqu scenes, together with a showcase by students of the Youth Troupe.', plays: [
+      { tabTitle: 'Yearning for the Secular World', tabAlt: '思凡', title: 'Yearning for the Secular World', alt: '思凡', tag: 'Kunqu excerpt · 折子戏', roles: [{ name: 'Sekong', role: 'Wudan (young female role)' }], syn: 'A young nun, Sekong, cannot bear the loneliness of convent life and longs for a family and a happy home. In the end she tears off her robe and runs down the mountain. The scene, thought to come from a Qing-dynasty play, shows a young woman breaking Buddhist rules in pursuit of happiness. A single performer carries the whole piece, with flowing melodies and demanding, ever-changing movement, and it remains one of the most frequently performed scenes on the Kunqu stage.', synopsis: 'Synopsis coming soon.' },
       { tabTitle: 'Youth Troupe Students', tabAlt: '青年团学员汇报', title: 'Performance by Students of the Youth Troupe’s Kunqu Opera Class', alt: '青年团昆曲课程学员汇报', tag: 'Student showcase', synopsis: 'Program details coming soon.' },
-      { tabTitle: 'Broken Bridge', tabAlt: '断桥', title: 'Broken Bridge', alt: '断桥', tag: 'Kunqu excerpt · 折子戏', synopsis: 'Synopsis coming soon.' }
+      { tabTitle: 'Broken Bridge', tabAlt: '断桥', title: 'Broken Bridge', alt: '断桥', tag: 'Kunqu excerpt · 折子戏', roles: [{ name: 'Bai Suzhen', role: 'Dan (female role)' }, { name: 'Xu Xian', role: 'Xiaosheng (young male role)' }, { name: 'Xiaoqing', role: 'Dan (female role)' }], syn: 'From the Legend of the White Snake. Defeated by Fahai’s heavenly soldiers at Golden Mountain Temple, Madam Bai, the White Snake, flees back to West Lake with her sister Xiaoqing. Blaming herself yet unable to forget her husband Xu Xian, she is heartbroken, and her sincerity only exposes his faithlessness. At Broken Bridge, grief brings on sudden labor pains and she cannot go on. Xu Xian arrives carrying Fahai’s golden bowl, and Xiaoqing draws her sword to strike him down, but Madam Bai begs her to stop. Weeping, she tells him of his wrongs, and still takes him home, while Xiaoqing stands by with her hand on her sword, seething.', synopsis: 'Synopsis coming soon.' }
     ] }
   ],
   feChLabel: 'Nov 28–29 · Theatre',
   feChTitle: 'The Chou Speaks Back',
   feChRed: 'Chou',
   feChTag: 'One woman show. Four comedy legends.',
+  feFreeReg: 'Free registration',
+  feTixGet: 'Get tickets',
+  feOperaTixHead: 'Jingju & Kunqu',
   feChCredits: ['Written, performed and directed by Dii Fu', 'Codirector: Celeste Lin'],
   feChPosterCap: 'The Chou Speaks Back · Nov 28 & 29',
   feOpPosterCap: 'Chinese Opera · Nov 24 & 25',
@@ -4402,7 +4551,7 @@ const ZH = {
   aDesc: '紐約梨園社是一個由義工組成的非營利藝術機構，把崑曲、京劇，以及與之並生的書法與國畫，帶給全紐約的觀眾與學員。不需要任何基礎，歡迎你來。',
   aCta: '近期演出',
   cTitle: '跨越世紀的聲音',
-  cSub: '在曼哈頓下城，大家一起學崑曲、京劇、書法和國畫，從課堂到舞台。',
+  cSub: '在紐約傳播戲曲，以京劇、崑曲等為主，以課堂、舞台與文化交流，促進多元文化相遇。',
   cCta1: '近期演出',
   cCta2: '報名上課',
   trust: ['創社於二〇〇六年', '501(c)(3) 非營利組織', '義工運作', '崑曲', '京劇', '書法', '國畫', '梨園社青年團'],
@@ -4777,7 +4926,7 @@ const ZH = {
   evMoreCta: '查看活動時程',
   feEyebrow: '冬季藝術節 · 2026年11月24–29日',
   feTitle: '冬季文化交流節',
-  feLede: '京劇、崑曲與獨角喜劇——2026 紐約梨園社冬季藝術節，於曼哈頓地獄廚房 A.R.T./New York Theatres 舉行。',
+  feLede: '兩晚京劇與崑曲，再加一場獨角喜劇，全都在曼哈頓地獄廚房的 A.R.T./New York Theatres 舉行。',
   feSoon: '即將開放報名',
   feProLabel: '本週節目',
   feProTitle: '節目表',
@@ -4800,22 +4949,26 @@ const ZH = {
   feKSub: '崑曲專場 · Kunqu Opera Concert',
   feOpPlayK: '劇目名稱',
   feOpSynK: '劇目簡介',
+  feOpRolesK: '主要角色',
   feOpNights: [
-    { when: '11月24日（週二）晚上7:00', kind: '京劇專場', form: '勾臉、水袖與鑼鼓點驅動的舞台表演——形成於十九世紀北京的戲曲劇種。', plays: [
-      { tabTitle: '捉放曹 · 宿店', tabAlt: 'Capturing and Releasing Cao Cao: Lodging at the Inn', title: '《捉放曹 · 宿店》', alt: 'Capturing and Releasing Cao Cao: Lodging at the Inn', tag: '選場', synopsis: '劇目簡介即將公佈。' },
-      { tabTitle: '青年團學員匯報', tabAlt: 'Youth Troupe Students', title: '青年團京劇課程學員匯報', alt: 'Performance by Students of the Youth Troupe’s Beijing Opera Class', tag: '學員匯報', synopsis: '節目內容即將公佈。' },
-      { tabTitle: '烏盆記', tabAlt: 'The Story of the Black Basin', title: '《烏盆記》', alt: 'The Story of the Black Basin', tag: '選場', synopsis: '劇目簡介即將公佈。' }
+    { when: '11月24日（週二）晚上7:00', kind: '京劇專場', form: '京劇經典選段，與青年團學員的匯報演出。', plays: [
+      { tabTitle: '捉放曹 · 宿店', tabAlt: 'Capturing and Releasing Cao Cao: Lodging at the Inn', title: '《捉放曹 · 宿店》', alt: 'Capturing and Releasing Cao Cao: Lodging at the Inn', tag: '選場', roles: [{ name: '陳宮', role: '老生' }, { name: '曹操', role: '淨' }], syn: '漢末，曹操刺殺董卓未遂，改裝逃亡，行至中牟縣被擒。公堂之上，曹操以言語說動縣令陳宮，二人棄官同逃。途經成皋，投宿父親故友呂伯奢莊中，曹操聽見磨刀聲，誤以為對方存心加害，竟殺盡呂家老小，焚莊而去。陳宮見他心狠手辣、枉殺無辜，悔恨不已，趁曹操熟睡，留詩一首，獨自離去。《宿店》一折，幾乎是陳宮一人的獨角戲。其中「一輪明月」是著名唱段，極為考驗唱功，堪比西方歌劇中的詠嘆調。', synopsis: '劇目簡介即將公佈。' },
+      { tabTitle: '青年團旦角班學員匯報', tabAlt: 'Youth Troupe Dan Class Students', title: '青年團京劇課程旦角班學員匯報', alt: 'Performance by Students of the Youth Troupe’s Beijing Opera Dan Class', tag: '學員匯報', synopsis: '節目內容即將公佈。' },
+      { tabTitle: '烏盆記', tabAlt: 'The Story of the Black Basin', title: '《烏盆記》', alt: 'The Story of the Black Basin', tag: '選場', roles: [{ name: '劉世昌', role: '老生' }, { name: '張別古', role: '丑' }], syn: '北宋年間，綢商劉世昌投宿客店，店主趙大夫婦見其行囊沉重，起了歹心，將他毒死，把屍身混入泥土，團成烏盆。數年後，張別古上門討草鞋錢，趙大不肯給錢，便以烏盆相抵。張別古捧盆回家，盆中忽傳鬼聲，哭訴冤情。他攜盆到包拯處告狀，包公准狀，傳趙大到案，一審即服。此折演劉世昌魂附烏盆後，向張別古訴冤求助。其中二黃原板「老丈不必膽怕驚」與反二黃「未曾開言淚滿腮」是兩段著名唱段，若比作西方歌劇，功能近似詠嘆調，用來刻畫人物、抒發情感。', synopsis: '劇目簡介即將公佈。' }
     ] },
-    { when: '11月25日（週三）晚上7:00', kind: '崑曲專場', form: '現存最古老的戲曲劇種之一——婉轉、雅致、慢慢綻放，常被稱為「百戲之母」。', plays: [
-      { tabTitle: '思凡', tabAlt: 'Yearning for the Secular World', title: '崑曲折子戲《思凡》', alt: 'Yearning for the Secular World', tag: '折子戲', synopsis: '劇目簡介即將公佈。' },
+    { when: '11月25日（週三）晚上7:00', kind: '崑曲專場', form: '崑曲經典選段，與青年團學員的匯報演出。', plays: [
+      { tabTitle: '思凡', tabAlt: 'Yearning for the Secular World', title: '崑曲折子戲《思凡》', alt: 'Yearning for the Secular World', tag: '折子戲', roles: [{ name: '色空', role: '五旦' }], syn: '年輕的尼姑色空，不甘空門寂苦，嚮往美滿的家庭生活，終於扯破袈裟，逃下山來。此折表現小尼姑衝破佛門戒律、追求幸福生活的思想歷程，富有人民性。全出由一人演到底，旋律優美流暢，身段繁重、姿態多變，是崑曲舞台上常演的劇目之一。', synopsis: '劇目簡介即將公佈。' },
       { tabTitle: '青年團學員匯報', tabAlt: 'Youth Troupe Students', title: '青年團崑曲課程學員匯報', alt: 'Performance by Students of the Youth Troupe’s Kunqu Opera Class', tag: '學員匯報', synopsis: '節目內容即將公佈。' },
-      { tabTitle: '斷橋', tabAlt: 'Broken Bridge', title: '崑曲折子戲《斷橋》', alt: 'Broken Bridge', tag: '折子戲', synopsis: '劇目簡介即將公佈。' }
+      { tabTitle: '斷橋', tabAlt: 'Broken Bridge', title: '崑曲折子戲《斷橋》', alt: 'Broken Bridge', tag: '折子戲', roles: [{ name: '白素貞', role: '旦' }, { name: '許仙', role: '小生' }, { name: '小青', role: '旦' }], syn: '出自《白蛇傳》。白氏在金山寺被法海以天兵殺敗，受創後與小青逃回西湖。一路自怨自艾，心中卻仍牽掛許仙，哀傷欲絕，這份真情，更襯出許仙的薄倖。行經斷橋，她憂鬱過度，忽然腹痛欲裂，寸步難行。許仙恰袖藏法海金缽趕到，小青見狀大怒，拔劍欲斬，幸得白氏再三勸阻。白氏且泣且訴，歷數許仙不義，仍令他一同歸去，小青在旁按劍怒目，憤憤不平。', synopsis: '劇目簡介即將公佈。' }
     ] }
   ],
   feChLabel: '11月28–29日 · 戲劇',
   feChTitle: '《丑角回嘴》',
   feChRed: '丑角',
   feChTag: '一人獨角戲。四位喜劇傳奇。',
+  feFreeReg: '免費報名',
+  feTixGet: '購票',
+  feOperaTixHead: '京劇與崑曲',
   feChCredits: ['編劇、主演、導演：Dii Fu', '聯合導演：Celeste Lin'],
   feChPosterCap: '《丑角回嘴》· 11/28、29',
   feOpPosterCap: '戲曲 · 11/24、25',
@@ -5360,6 +5513,9 @@ const CONTENT = { en: EN, zh: ZH };
 // makes a fresh visit to one of these paths serve index.html instead of a
 // 404 in the first place — Vercel checks real files and /api routes before
 // applying it, so this doesn't touch anything that already resolves.
+const FE_OPERA_TICKETS = 'https://www.eventbrite.com/e/2026-2026-nycos-winter-concert-of-chinese-opera-tickets-2003713253279?aff=ebdsoporgprofile';
+const FE_CHOU_TICKETS = 'https://www.eventbrite.com/e/the-chou-speaks-back-a-one-woman-play-tickets-2002296107558?aff=oddtdtcreator';
+
 const ROUTES = {
   '/': 'home',
   '/about': 'about',
@@ -6273,28 +6429,6 @@ class Component extends DCLogic {
       missionRef: this.missionRef,
       mRevealed: this.mr,
       mMarkRevealClass: this.mr ? 'mMark-revealed' : '',
-      mSeam: {
-        position: 'absolute', left: '50%', top: '50%', width: '2px',
-        height: this.mr ? '26px' : '0px',
-        transform: 'translate(-50%,-50%)',
-        background: 'linear-gradient(180deg,rgba(201,173,121,0) 0%,var(--color-gold) 30%,#F7EAD2 50%,var(--color-gold) 70%,rgba(201,173,121,0) 100%)',
-        opacity: this.mr ? 0 : 1,
-        transition: this.mNo ? 'none' : 'height 420ms cubic-bezier(0.37,0,0.63,1), opacity 700ms cubic-bezier(0.37,0,0.63,1) 300ms'
-      },
-      mCurtainL: {
-        position: 'absolute', right: '50%', top: 0, height: '1px', width: '50%',
-        background: 'linear-gradient(270deg,var(--accent-primary) 0%,rgba(200,16,46,0) 100%)',
-        transformOrigin: 'right center',
-        transform: this.mr ? 'scaleX(1)' : 'scaleX(0)',
-        transition: this.mNo ? 'none' : 'transform 1150ms cubic-bezier(0.77,0,0.175,1) 60ms'
-      },
-      mCurtainR: {
-        position: 'absolute', left: '50%', top: 0, height: '1px', width: '50%',
-        background: 'linear-gradient(90deg,var(--accent-primary) 0%,rgba(200,16,46,0) 100%)',
-        transformOrigin: 'left center',
-        transform: this.mr ? 'scaleX(1)' : 'scaleX(0)',
-        transition: this.mNo ? 'none' : 'transform 1150ms cubic-bezier(0.77,0,0.175,1) 60ms'
-      },
       mMarkWrap: {
         position: 'relative', display: 'flex', justifyContent: 'center', width: '100%',
         transform: this.mr ? 'scale(1)' : 'scale(1.018)',
@@ -6378,8 +6512,12 @@ class Component extends DCLogic {
       hub: t.hub.map((h, i) => ({ ...h, n: i + 1, go: () => this.go(h.id) })),
       page, visibleGroups, isScheduleView, isPathwayView, pathwayTracks,
       eventbrite: 'https://www.eventbrite.com/o/new-york-chinese-opera-society-8524733325',
+      feChTickets: FE_CHOU_TICKETS,
+      feOperaTickets: FE_OPERA_TICKETS,
       festivalUrl: '/winter-festival',
       goFestival: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); this.go('festival'); },
+      eventsUrl: '/events',
+      goEventsLink: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); this.go('events'); },
       isFestival: screen === 'festival',
       ...(() => {
         const posters = {
@@ -6419,8 +6557,27 @@ class Component extends DCLogic {
           bands.push({ cls: (d.isEvent ? 'nycos-cal-band' : 'nycos-cal-gap') + isLast, label: d.isEvent ? d.group : '', style: 'grid-column:' + (i + 1) + ' / span ' + n });
           i += n;
         }
+        // Registration tickets for the hero: one per run of same-kind show days (Chinese Opera, then the comedy).
+        const tix = [];
+        for (let i = 0; i < cal.length;) {
+          const d = cal[i];
+          let n = 1;
+          if (d.isEvent) { while (i + n < cal.length && cal[i + n].isEvent && cal[i + n].group === d.group) n++; }
+          if (d.isEvent) {
+            const chou = d.anchor === '#chou';
+            const dates = n > 1 ? d.num + '–' + cal[i + n - 1].num : String(d.num);
+            const head = chou ? t.feChTitle : t.feOperaTixHead;
+            const sub = chou ? t.feTixGet : t.feFreeReg;
+            tix.push({
+              month: d.month, dates, year: '2026', eyebrow: d.group, head, sub,
+              url: chou ? FE_CHOU_TICKETS : FE_OPERA_TICKETS,
+              label: head + ' — ' + d.month + ' ' + dates + ' — ' + sub
+            });
+          }
+          i += n;
+        }
         return {
-          feCal: cal, feCalCols: cols, feCalBands: bands,
+          feCal: cal, feCalCols: cols, feCalBands: bands, feTix: tix,
           feCalDow: dows.map((w, i) => ({ t: w, cls: 'nycos-cal-dow' + (i === dows.length - 1 ? ' is-last' : '') }))
         };
       })(),
@@ -6434,7 +6591,7 @@ class Component extends DCLogic {
           return {
             eyebrow: night.when, head, sub,
             poster: { src, cap, open: (ev) => { if (ev) ev.preventDefault(); this.setState({ posterView: { src, alt: cap } }); } },
-            cur: plays[idx] || {},
+            cur: { ...(plays[idx] || {}), hasSyn: !!(plays[idx] && plays[idx].syn), hasRoles: !!(plays[idx] && plays[idx].roles && plays[idx].roles.length) },
             tabs: plays.map((pl, i) => ({
               title: pl.tabTitle || pl.title, alt: pl.tabAlt || pl.alt,
               sel: i === idx ? 'true' : 'false',
