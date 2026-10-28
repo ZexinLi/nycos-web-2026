@@ -274,8 +274,8 @@ a.nycos-cal-cell.is-event:hover,a.nycos-cal-cell.is-event:focus-visible{backgrou
 /* Posters sit still; they lift, straighten and bob gently only while their day is hovered or focused. */
 /* Registration tickets in the festival hero: one per kind of show. */
 .nycos-fe-tixstack{display:flex;flex-direction:column;gap:10px;width:min(270px,100%);margin-top:12px}
-.nycos-fe-tixstack .nycos-tix{grid-template-columns:54px minmax(0,1fr);gap:2px;min-height:64px}
-.nycos-fe-tixstack .nycos-tix-stub,.nycos-fe-tixstack .nycos-tix-body{padding:6px 5px;border-radius:6px;-webkit-mask-size:100% 100%}
+.nycos-fe-tixstack .nycos-tix{grid-template-columns:66px minmax(0,1fr);gap:2px;min-height:64px}
+.nycos-fe-tixstack .nycos-tix-stub,.nycos-fe-tixstack .nycos-tix-body{padding:6px 7px;border-radius:6px;-webkit-mask-size:100% 100%}
 .nycos-fe-tixstack .nycos-tix-stub::before,.nycos-fe-tixstack .nycos-tix-body::before{inset:3px;border-radius:3px}
 .nycos-fe-tixstack .nycos-tix-stub b{font-size:9px}
 .nycos-fe-tixstack .nycos-tix-stub i{font-size:13px}
@@ -2783,7 +2783,6 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <h2 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:46px;line-height:1.05;color:var(--color-paper);margin:0;text-wrap:pretty">{{ feJ.head }}</h2>
 <p style="font-family:var(--font-display);letter-spacing:-0.04em;font-size:22px;line-height:1.35;color:rgba(247,244,238,0.7);margin:0;text-wrap:pretty">{{ feJ.sub }}</p>
 <button type="button" class="nycos-fe-tab nycos-fe-tab-dark" aria-expanded="{{ feJ.ariaExpanded }}" onClick="{{ feJ.toggle }}"><span>{{ t.feAbLabel }}</span><span class="nycos-fe-tab-icon">{{ feJ.icon }}</span></button>
-<a class="nycos-fe-reg" href="{{ feOperaTickets }}" target="_blank" rel="noopener"><span>{{ t.feFreeReg }}</span><span aria-hidden="true">↗</span></a>
 </div>
 <div style="{{ feJ.panelStyle }}">
 <div style="{{ feJ.innerStyle }}">
@@ -2843,7 +2842,6 @@ main{animation:nycos-page-in 460ms var(--ease-soft) both}
 <h2 style="font-family:var(--font-display);letter-spacing:-0.08em;font-weight:400;font-size:46px;line-height:1.05;color:var(--color-paper);margin:0;text-wrap:pretty">{{ feK.head }}</h2>
 <p style="font-family:var(--font-display);letter-spacing:-0.04em;font-size:22px;line-height:1.35;color:rgba(247,244,238,0.7);margin:0;text-wrap:pretty">{{ feK.sub }}</p>
 <button type="button" class="nycos-fe-tab nycos-fe-tab-dark" aria-expanded="{{ feK.ariaExpanded }}" onClick="{{ feK.toggle }}"><span>{{ t.feAbLabel }}</span><span class="nycos-fe-tab-icon">{{ feK.icon }}</span></button>
-<a class="nycos-fe-reg" href="{{ feOperaTickets }}" target="_blank" rel="noopener"><span>{{ t.feFreeReg }}</span><span aria-hidden="true">↗</span></a>
 </div>
 <div style="{{ feK.panelStyle }}">
 <div style="{{ feK.innerStyle }}">
